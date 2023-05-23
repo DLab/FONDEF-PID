@@ -1,0 +1,1 @@
+java -classpath target/GeneraArchivosCalidadDelAire-0.0.4.jar:libs/slf4j-api-1.7.25.jar:libs/bson-3.7.1.jar:libs/logback-classic-1.2.7.jar:libs/logback-core-1.2.7.jar:libs/mongo-java-driver-3.12.10.jar cl.dlab.pid.calidaddelaire.ConsultaPorFecha

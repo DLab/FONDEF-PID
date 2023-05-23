@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	sqlName="ConsultaAccionesxFuncion">
+
+  <field property="idAccion"          sqlName="acc_id"         		type="Integer"  key="true"/>
+  <field property="descripcion"       sqlName="acc_descripcion"    	type="String"/>
+
+  <query id="consulta">
+  	 <field property="idFuncion"   type="Integer"/>
+  </query>   
+  
+  <sql>
+  <![CDATA[select acc_id, acc_descripcion
+            from accion, accionesxfuncion
+            where acc_id = axf_acc_id 
+              and axf_fnc_id = :idFuncion   
+            
+]]>
+</sql>
+</Entity>

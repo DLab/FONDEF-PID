@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="validaciones_normativas">
+
+  <field property="codigoTipoArchivo"       sqlName="vnv_tar_codigo"         		type="String"   key="true" akey="true"/>
+  <field property="id"   					sqlName="vnv_id"    					type="Integer"  key="true"/>
+  <field property="codigoTipoValidacion"   	sqlName="vnv_tva_codigo"    			type="String"   />
+  <field property="datosAdicionales"    	sqlName="vnv_datosadicionales"    		type="String" />
+  
+  
+  
+</Entity>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Entity" xmlns:tns="http://www.example.org/Entity" elementFormDefault="qualified">
+
+	<element name="Entity" type="tns:EntityType"></element>
+
+
+	<complexType name="EntityType">
+		<sequence>
+			<element name="field" type="tns:FieldType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+			<element name="join" type="tns:JoinType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+		<attribute name="tableName" type="string"></attribute>
+	</complexType>
+
+	<complexType name="JoinType">
+		<sequence>
+			<element name="Field" type="tns:FieldType"
+				maxOccurs="unbounded" minOccurs="1">
+			</element>
+		</sequence>
+		<attribute name="tableName" type="string"></attribute>
+		<attribute name="name" type="string"></attribute>
+	</complexType>
+
+	<complexType name="FieldType">
+    	<attribute name="sqlName" type="string"></attribute>
+    	<attribute name="sqlNameRef" type="string"></attribute>
+    	<attribute name="property" type="string"></attribute>
+    	<attribute name="type" type="int"></attribute>
+    	<attribute name="typeRef" type="int"></attribute>
+    	<attribute name="key" type="boolean"></attribute>
+    	<attribute name="joinRef" type="string"></attribute>
+    </complexType>
+
+</schema>

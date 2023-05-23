@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="comuna">
+
+  <field property="id"            sqlName="cmn_id"         	    type="Integer"  key="true"/>
+  <field property="descripcion"   sqlName="cmn_descripcion"    	type="String" sort="1"/>
+  <field property="idRegion"      sqlName="cmn_rgn_id"    		type="Integer"/>
+  
+</Entity>

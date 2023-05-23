@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="accion">
+
+  <field property="id"                sqlName="acc_id"         		type="Integer"  key="true"/>
+  <field property="descripcion"       sqlName="acc_descripcion"    	type="String"/>
+  
+</Entity>

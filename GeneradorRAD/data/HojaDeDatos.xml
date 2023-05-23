@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="hoja_de_datos">
+
+  <field property="codigoTipoArchivo"   sqlName="hdd_tar_codigo"         	type="String"  key="true" akey="true"/>
+  <field property="nombre"   			sqlName="hdd_nombre"    			type="String"/>
+  <field property="encabezado"   		sqlName="hdd_encabezado"    		type="String"/>
+  
+</Entity>

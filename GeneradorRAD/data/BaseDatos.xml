@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="base_datos">
+
+  <field property="codigo"            sqlName="bdt_codigo"         	type="String"  key="true"/>
+  <field property="descripcion"       sqlName="bdt_descripcion"    	type="String"/>
+  
+</Entity>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="tipos_validaciones">
+
+  <field property="codigo"            sqlName="tva_codigo"         	type="String"  key="true"/>
+  <field property="descripcion"       sqlName="tva_descripcion"    	type="String"/>
+  <field property="esNormativa"       sqlName="tva_es_normativa"    type="Boolean"/>
+  
+</Entity>

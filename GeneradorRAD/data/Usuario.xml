@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="usuario">
+
+  <field property="id"           sqlName="usr_id"         	type="String"  key="true" />
+  <field property="password"     sqlName="usr_password"    	type="Bytes"/>
+  <field property="nombre"       sqlName="usr_nombre"    	type="String"/>
+  <field property="idRol"        sqlName="usr_rol_id"       type="Integer"/>
+  
+  <field property="rol"           sqlNameRef="rol_descripcion"    type="Join" typeRef="String" joinRef="join1"/>
+  
+  <join name="join1" tableName="rol">
+      <field sqlName="usr_rol_id" sqlNameRef="rol_id" />
+  </join>
+  
+  <query id="unitary">
+  	<field property="id"/>
+  </query>
+  
+</Entity>

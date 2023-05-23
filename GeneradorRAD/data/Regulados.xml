@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Entity xmlns="http://www.example.org/Entity" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.example.org/Entity Entity.xsd "
+	tableName="regulados">
+
+  <field property="id"            sqlName="rgd_id"         	    type="Integer"  key="true"/>
+  <field property="descripcion"   sqlName="rgd_descripcion"    	type="String" sort="1"/>
+  <field property="idComuna"      sqlName="rgd_cmn_id"    		type="Integer" akey="true"/>
+  
+</Entity>
