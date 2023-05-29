@@ -31,7 +31,7 @@ def getLimites():
         return obj
 
 class Item():
-    def __init__(self, ufId, procesoId, dispositivoId, parametro, valor, unidad, fecha):
+    def __init__(self, ufId, procesoId, dispositivoId, parametro, valor, unidad, fecha, tipoDato):
         self.id= str(ufId) + '_' + str(procesoId) + '_' + parametro + '_' + fecha.strftime('%Y%m%d%H%M%S')
         self.idLimite = str(ufId) + '_' + str(procesoId) + '_' + str(dispositivoId) + '_' + parametro
         self.ufId = ufId
@@ -41,6 +41,7 @@ class Item():
         self.dispositivoId = dispositivoId
         self.parametro = parametro
         self.fecha = fecha
+        self.tipoDato = tipoDato
 
 class Limite():
     
@@ -54,15 +55,15 @@ class Limite():
             if (values != None):
                 if (values['unidad'] != obj.unidad):
                     if (notifica):
-                        self.notificaciones[obj.id] = {'error': 'Unidad de medida no corresponde'}
+                        self.notificaciones[obj.id] = {'error': 'Unidad de medida no corresponde', 'limite': values, 'obj': obj}
                     return False
                 elif (obj.valor < values['minimo']):
                     if (notifica):
-                        self.notificaciones[obj.id] = {'error': 'Valor es menor que el mínimo permitido'}
+                        self.notificaciones[obj.id] = {'error': 'Valor es menor que el mínimo permitido', 'limite': values, 'obj': obj}
                     return False
                 elif (obj.valor > values['maximo']):
                     if (notifica):
-                        self.notificaciones[obj.id] = {'error': 'Valor es mayor que el máximo permitido'}
+                        self.notificaciones[obj.id] = {'error': 'Valor es mayor que el máximo permitido', 'limite': values, 'obj': obj}
                     return False
                 else:
                     self.notificaciones[obj.id] = None
@@ -75,13 +76,14 @@ class Limite():
             #print(p, self.notificaciones[p])
             val = self.notificaciones[p]
             if (val != None):
-                notificar('LIMITE', val['error'])
+                print(val['obj'].__dict__)
+                notificar('LIMITE', val['error'], val['limite'], val['obj'])
                 
         
 def guadarPromedios(fechaInicial, fechaFinal, property, data):
     with getConnect() as con:
         cur = con.cursor()
-        cur.execute("delete from datos_promedios where dpr_tipo = %s and dpr_fecha >= %s and dpr_fecha < %s", [property, fechaInicial.strftime('%Y-%m-%d %H:%M:%S'), fechaFinal.strftime('%Y-%m-%d %H:%M:%S')])
+        cur.execute("delete from datos_promedios2 where dpr_tipo = %s and dpr_fecha >= %s and dpr_fecha < %s", [property, fechaInicial.strftime('%Y-%m-%d %H:%M:%S'), fechaFinal.strftime('%Y-%m-%d %H:%M:%S')])
         cur.close()
 
         cur = con.cursor()
@@ -95,7 +97,7 @@ def guadarPromedios(fechaInicial, fechaFinal, property, data):
         for index, row in data.iterrows():
             n += 1
             try:
-                cur.execute("insert into datos_promedios (dpr_bdt_codigo, dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor, dpr_cantidad, dpr_tipo) values (%s, %s, %s, %s, %s, %s, %s, %s)", ['AIRE', row.UfId, row.ProcesoId, row.fecha.strftime('%Y-%m-%d %H:%M:%S'), row.parametro, row.valor, row.dataPoint_count, property])
+                cur.execute("insert into datos_promedios2 (dpr_bdt_codigo, dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor, dpr_cantidad, dpr_tipo) values (%s, %s, %s, %s, %s, %s, %s, %s)", ['AIRE', row.UfId, row.ProcesoId, row.fecha.strftime('%Y-%m-%d %H:%M:%S'), row.parametro, row.valor, row.dataPoint_count, property])
             except (Exception) as error:
                 print(n, 'ERROR en ', row.UfId, row.ProcesoId, row.fecha.strftime('%Y-%m-%d %H:%M:%S'), row.parametro, row.valor, row.dataPoint_count, property)
                 raise error
@@ -131,9 +133,9 @@ def processData(property, fechaInicial, fechaFinal, ufIds, ProcesoId, dispositiv
         print('guarda ok', property)
     
 def calculaPromedios(db, fechaInicial, fechaFinal):
-    print(datetime.now(), fechaInicial, fechaFinal)
+    print('CALCULANDO promedios para:', datetime.now(), fechaInicial, fechaFinal, flush=True)
     #rows = []
-    cursor = db.CA_ApiRest.find({'$and': [{ 'timestamp': { '$gte': fechaInicial }},{ 'timestamp': { '$lt': fechaFinal } }]} )
+    cursor = db.CA_ApiRest.find({'$and': [{ 'data.Parametros.estampaTiempo': { '$gte': fechaInicial, '$lt': fechaFinal } }]} )
     ufIds = initArray()
     ProcesoId = initArray()
     dispositivoId = initArray()
@@ -153,39 +155,32 @@ def calculaPromedios(db, fechaInicial, fechaFinal):
                 validado = getPropertyValue(param, 'Validados')
                 if (crudo == 'DC' or validado == 'DV'):
 
-                    obj = Item(doc['UfId'], doc['ProcesoId'], data['dispositivoId'], param['nombre'], param['valor'], param['unidad'], param['estampaTiempo'])
                     tipoDato = None
+                    obj = Item(doc['UfId'], doc['ProcesoId'], data['dispositivoId'], param['nombre'], param['valor'], param['unidad'], param['estampaTiempo'], tipoDato)
                     if (validado != 'nan'):
                         tipoDato = validado
+                        obj.tipoDato = tipoDato
+                        limites.validaLimite(obj, True)
+                        addValue('validados', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
                         try:
                             index = objects[obj.id]
-                            if (limites.validaLimite(obj, index, True)):
-                                ufIds['mixtos'][index] = obj.ufId
-                                ProcesoId['mixtos'][index] = obj.procesoId
-                                dispositivoId['mixtos'][index] = obj.dispositivoId
-                                parametro['mixtos'][index] = obj.parametro
-                                valor['mixtos'][index] = obj.valor
-                                unidad['mixtos'][index] = obj.unidad
-                                fecha['mixtos'][index] = obj.fecha
-                                tiposDatos['mixtos'][index] = tipoDato
-                                addValue('validados', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
-                            else:
-                                ufIds['mixtos'][index] = np.nan
-                                ProcesoId['mixtos'][index] = np.nan
-                                dispositivoId['mixtos'][index] = np.nan
-                                parametro['mixtos'][index] = np.nan
-                                valor['mixtos'][index] = np.nan
-                                unidad['mixtos'][index] = np.nan
-                                fecha['mixtos'][index] = np.nan
-                                tiposDatos['mixtos'][index] = np.nan
+                            ufIds['mixtos'][index] = obj.ufId
+                            ProcesoId['mixtos'][index] = obj.procesoId
+                            dispositivoId['mixtos'][index] = obj.dispositivoId
+                            parametro['mixtos'][index] = obj.parametro
+                            valor['mixtos'][index] = obj.valor
+                            unidad['mixtos'][index] = obj.unidad
+                            fecha['mixtos'][index] = obj.fecha
+                            tiposDatos['mixtos'][index] = tipoDato
                             continue
                         except:
                             objects[obj.id] = len(ufIds['mixtos'])
 
                     else: #datos crudo
                         tipoDato = crudo
-                        if (limites.validaLimite(obj, False)):
-                            addValue('crudos', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
+                        obj.tipoDato = tipoDato
+                        limites.validaLimite(obj, False)
+                        addValue('crudos', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
                         
                         try:
                             index = objects[obj.id]
@@ -193,18 +188,7 @@ def calculaPromedios(db, fechaInicial, fechaFinal):
                         except:
                             objects[obj.id] = len(ufIds['mixtos'])
                             
-                    index = objects[obj.id]
-                    if (limites.validaLimite(obj, True)):
-                        addValue('mixtos', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
-                    else:
-                        ufIds['mixtos'].append(np.nan)
-                        ProcesoId['mixtos'].append(np.nan)
-                        dispositivoId['mixtos'].append(np.nan)
-                        parametro['mixtos'].append(np.nan)
-                        valor['mixtos'].append(np.nan)
-                        unidad['mixtos'].append(np.nan)
-                        fecha['mixtos'].append(np.nan)
-                        tiposDatos['mixtos'].append(np.nan)
+                    addValue('mixtos', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
                         
     limites.notificar()
     print('total de registros leidos:', n)
@@ -230,19 +214,21 @@ def calculaPromediosPorHora(fecha:str, hora:str):
 def calculaUltimosPromedios():
     with getConnect() as conn:
         cur = conn.cursor()
-        cur.execute("SELECT max(dpr_fecha) as fecha from datos_promedios")
+        cur.execute("SELECT max(dpr_fecha) as fecha from datos_promedios2")
         fechas = cur.fetchone()
         cur.close()
         fecha = fechas[0]
         if fecha == None:
             fecha = datetime.strptime(getProperty('MongoDatabaseSection', 'dlab.pid.mongodb.fechaminima') + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
+        else:
+            fecha = datetime.strptime(fecha.strip(), '%Y-%m-%d %H:%M:%S')
         now = datetime.now()
         print(fecha, now)
         with getMongoConnection() as mongo:
             db = mongo.ExportData
             while fecha < now:
                 fechaInicial = fecha
-                fecha = fecha + timedelta(hours=1)
+                fecha = fecha + timedelta(days=1)
                 calculaPromedios(db, fechaInicial, fecha)
     return 'OK'
                     
