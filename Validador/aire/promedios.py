@@ -222,6 +222,7 @@ def calculaUltimosPromedios():
             fecha = datetime.strptime(getProperty('MongoDatabaseSection', 'dlab.pid.mongodb.fechaminima') + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
         else:
             fecha = datetime.strptime(fecha.strip(), '%Y-%m-%d %H:%M:%S')
+            fecha = fecha + timedelta(hours=1)
         now = datetime.now()
         print(fecha, now)
         with getMongoConnection() as mongo:
