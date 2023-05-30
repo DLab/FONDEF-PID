@@ -57,3 +57,15 @@ def validacionesNormativasAire():
         if (len(df) > 0):
             df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
         return valida_normativas_aire(df)
+
+@app.get("/getRangoDatosxUfId")
+def getRangoDatosxUfId():
+    with getConnect() as conn:
+        cur = conn.cursor()
+        cur.execute("select dpr_ufId, dpr_idproceso, min(dpr_fecha) fechaInicio, max(dpr_fecha) fechaTermino from datos_promedios group by dpr_ufId, dpr_idproceso")
+        data = cur.fetchall()
+        cur.close()   
+        result = []     
+        for d in data:
+            result.push({'ufId': d[0], 'provcesoId': d[1], 'fechaInicio': d[2], 'fechaTermino': d[3], })
+        return result
