@@ -49,14 +49,7 @@ def analiticaIA():
 
 @app.get("/validacionesNormativasAire")
 def validacionesNormativasAire():
-    with getConnect() as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha <= %s and dpr_tipo = %s", [request.args.get('inicio'), request.args.get('termino'), request.args.get('fuente')])
-        df = DataFrame(cur.fetchall())
-        cur.close()        
-        if (len(df) > 0):
-            df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
-        return valida_normativas_aire(df)
+    return valida_normativas_aire(request.args.get('agno'))
 
 @app.get("/getRangoDatosxUfId")
 def getRangoDatosxUfId():
