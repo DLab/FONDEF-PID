@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from validador import valida_archivo
-from aire.promedios import calculaPromediosPorHora, calculaUltimosPromedios
+from aire.promedios import calculaPromediosPorHora, calculaUltimosPromedios, generaPromedios
 from aire.analitica import generaAnalitica
 from aire.analiticaIA import generaAnaliticaIA
 from aire.validaciones_normativas import valida_normativas_aire
@@ -69,3 +69,11 @@ def getRangoDatosxUfId():
         for d in data:
             result.push({'ufId': d[0], 'provcesoId': d[1], 'fechaInicio': d[2], 'fechaTermino': d[3], })
         return result
+
+@app.post("/calculaPromedios")
+def calculaPromedios():
+    errores = generaPromedios(request.get_json(True))
+    return jsonify(errores)
+
+
+#calculaUltimosPromedios()
