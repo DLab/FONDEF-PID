@@ -1,3 +1,4 @@
+import pandas as pd
 from flask import Flask, request, jsonify
 from validador import valida_archivo
 from aire.promedios import calculaPromediosPorHora, calculaUltimosPromedios, generaPromedios
@@ -6,6 +7,7 @@ from aire.analiticaIA import generaAnaliticaIA
 from aire.validaciones_normativas import valida_normativas_aire
 from connect_db import getConnect
 from pandas import DataFrame
+
 
 
 app = Flask(__name__)
@@ -30,11 +32,15 @@ def promediosActuales():
 def analitica():
     with getConnect() as conn:
         cur = conn.cursor()
-        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha <= %s and dpr_tipo = %s", [request.args.get('inicio'), request.args.get('termino'), request.args.get('fuente')])
+        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", [request.args.get('inicio'), request.args.get('termino'), request.args.get('tipoDato'), request.args.get('regulado'), request.args.get('estacion'), request.args.get('fuente')])
         df = DataFrame(cur.fetchall())
-        df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
-        cur.close()        
-        return generaAnalitica(request.args.get('inicio'), request.args.get('termino'), request.args.get('tipoDato'), request.args.get('regulado'), request.args.get('estacion'), request.args.get('analitica'), df)
+        cur.close()      
+        if (len(df) > 0):
+            df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
+            df["fecha"] = pd.to_datetime(df["fecha"]) 
+            return generaAnalitica(request.args.get('analitica'), df)
+        else:
+            return 'NODATA'
 
 @app.get("/analiticaIA")
 def analiticaIA():

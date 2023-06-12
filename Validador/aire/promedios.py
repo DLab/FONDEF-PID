@@ -94,8 +94,13 @@ def addMonth(fecha):
 def guadarPromedios(fechaInicial, fechaFinal, property, data):
     with getConnect() as con:
         print('guarda registros para', fechaInicial, fechaFinal, flush=True)
+        row = None
+        for index, r in data.iterrows():
+            row = r
+            break
+        
         cur = con.cursor()
-        cur.execute("delete from datos_promedios where dpr_tipo = %s and dpr_fecha >= %s and dpr_fecha < %s", [property, fechaInicial.strftime('%Y-%m-%d %H:%M:%S'), fechaFinal.strftime('%Y-%m-%d %H:%M:%S')])
+        cur.execute("delete from datos_promedios2 where dpr_ufid = %s and dpr_idproceso = %s and dpr_tipo = %s and dpr_fecha >= %s and dpr_fecha < %s", [row.UfId, row.ProcesoId, property, fechaInicial.strftime('%Y-%m-%d %H:%M:%S'), fechaFinal.strftime('%Y-%m-%d %H:%M:%S')])
         cur.close()
 
         cur = con.cursor()
@@ -109,7 +114,7 @@ def guadarPromedios(fechaInicial, fechaFinal, property, data):
         for index, row in data.iterrows():
             n += 1
             try:
-                cur.execute("insert into datos_promedios (dpr_bdt_codigo, dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor, dpr_cantidad, dpr_tipo) values (%s, %s, %s, %s, %s, %s, %s, %s)", ['AIRE', row.UfId, row.ProcesoId, row.fecha.strftime('%Y-%m-%d %H:%M:%S'), row.parametro, row.valor, row.dataPoint_count, property])
+                cur.execute("insert into datos_promedios2 (dpr_bdt_codigo, dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor, dpr_cantidad, dpr_tipo) values (%s, %s, %s, %s, %s, %s, %s, %s)", ['AIRE', row.UfId, row.ProcesoId, row.fecha.strftime('%Y-%m-%d %H:%M:%S'), row.parametro, row.valor, row.dataPoint_count, property])
             except (Exception) as error:
                 print(n, 'ERROR en ', row.UfId, row.ProcesoId, row.fecha.strftime('%Y-%m-%d %H:%M:%S'), row.parametro, row.valor, row.dataPoint_count, property)
                 raise error
@@ -248,7 +253,7 @@ def calculaPromediosPorHora(fecha:str, hora:str):
 def calculaUltimosPromedios():    
     with getConnect() as conn:
         cur = conn.cursor()
-        cur.execute("SELECT max(dpr_fecha) as fecha from datos_promedios")
+        cur.execute("SELECT max(dpr_fecha) as fecha from datos_promedios2")
         fechas = cur.fetchone()
         cur.close()
         fecha = fechas[0]
