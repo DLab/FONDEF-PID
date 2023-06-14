@@ -17,6 +17,22 @@ def validaArchivo():
     errores = valida_archivo(request.get_json(True))
     return jsonify(errores)
 
+@app.post("/analitica")
+def analitica():
+    data = request.get_json(True)
+    #print(data)
+    with getConnect() as conn:
+        cur = conn.cursor()        
+        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", [data['inicio'], data['termino'], data['tipoDato'], data['regulado'], data['estacion'], data['fuente']])
+        df = DataFrame(cur.fetchall())
+        cur.close()      
+        if (len(df) > 0):
+            df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
+            df["fecha"] = pd.to_datetime(df["fecha"]) 
+            return generaAnalitica(data['analitica'], df)
+        else:
+            return {'ERROR': 'NODATA'}
+
 #los parámetros de entrada solo para aire: fecha, hora (0-23)
 #dataframe, ufid, idproceso, fecha timestamp, parametro, valor
 # los datos son: ufid, idProceso, fecha timestamp, parametro, valor
@@ -27,21 +43,7 @@ def promediosPorHora():
 @app.get("/ultimosPromedios")
 def promediosActuales():
     return calculaUltimosPromedios()
-        
-@app.get("/analitica")
-def analitica():
-    with getConnect() as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", [request.args.get('inicio'), request.args.get('termino'), request.args.get('tipoDato'), request.args.get('regulado'), request.args.get('estacion'), request.args.get('fuente')])
-        df = DataFrame(cur.fetchall())
-        cur.close()      
-        if (len(df) > 0):
-            df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
-            df["fecha"] = pd.to_datetime(df["fecha"]) 
-            return generaAnalitica(request.args.get('analitica'), df)
-        else:
-            return 'NODATA'
-
+                
 @app.get("/analiticaIA")
 def analiticaIA():
     with getConnect() as conn:

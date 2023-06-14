@@ -137,7 +137,7 @@ def linear_regression(timestamp, data):
 
 
 
-def polynomial_regression(UfId, sensorId, timestamp, data, order = 2):
+def polynomial_regression(timestamp, data, order = 2):
 
     """ Calculate the linear trend
 
@@ -165,13 +165,13 @@ def polynomial_regression(UfId, sensorId, timestamp, data, order = 2):
     coefs           =   np.polyfit(numeric_dates.flatten(), Y, order)
     poly_predict    =   np.polyval(coefs, numeric_dates.flatten())
 
-    return UfId, sensorId, timestamp[-1], poly_predict
+    return X, poly_predict
 
 
 
 #-------------------------- CLUSTERING METHODS --------------------------#
 
-def kmeans_clustering(UfId, sensorId, timestamp, data, n_clusters = 2):
+def kmeans_clustering(timestamp, data, n_clusters = 2):
 
     """ Calculate the linear trend
 
@@ -203,11 +203,11 @@ def kmeans_clustering(UfId, sensorId, timestamp, data, n_clusters = 2):
     kmeans      =   KMeans(n_clusters=n_clusters)
     clusters    =   kmeans.fit_predict(points)
 
-    return UfId, sensorId, timestamp[-1], clusters
+
+    return X, clusters
 
 
-
-def DBSCAN_clustering(UfId, sensorId, timestamp, data, eps = 0.5, min_samples = 100):
+def DBSCAN_clustering(timestamp, data, eps = 0.5, min_samples = 100):
 
     """ Calculate the linear trend
 
@@ -237,7 +237,7 @@ def DBSCAN_clustering(UfId, sensorId, timestamp, data, eps = 0.5, min_samples = 
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
     clusters = dbscan.fit_predict(X)
 
-    return UfId, sensorId, timestamp[-1], clusters
+    return X, clusters
 
 
 
