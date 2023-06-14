@@ -137,7 +137,7 @@ def linear_regression(timestamp, data):
 
 
 
-def polynomial_regression(timestamp, data, order = 2):
+def polynomial_regression(timestamp, data, order = 4):
 
     """ Calculate the linear trend
 
@@ -162,7 +162,7 @@ def polynomial_regression(timestamp, data, order = 2):
 
     numeric_dates   =   numeric_dates.values.reshape(-1, 1)
 
-    coefs           =   np.polyfit(numeric_dates.flatten(), Y, order)
+    coefs           =   np.polyfit(numeric_dates.flatten(), pd.to_numeric(Y, downcast='float') , order)
     poly_predict    =   np.polyval(coefs, numeric_dates.flatten())
 
     return X, poly_predict
