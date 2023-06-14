@@ -13,7 +13,7 @@ from sklearn.cluster import DBSCAN
 
 #-------------------------- DECOMPOSITION METHODS --------------------------#
 
-def additive_seasonal_decompose(UfId, sensorId, timestamp, data, period = 100):
+def additive_seasonal_decompose(timestamp, data, period = 100):
 
     """Calculate the Seasonal Decompose with Additive method
 
@@ -39,9 +39,9 @@ def additive_seasonal_decompose(UfId, sensorId, timestamp, data, period = 100):
     time_series     =   pd.Series(Y, index=X)
     decomposition   =   sm.tsa.seasonal_decompose(time_series, model="additive", period=period)
 
-    return UfId, sensorId, timestamp[-1], decomposition
+    return X, decomposition
 
-def multiplicative_seasonal_decompose(UfId, sensorId, timestamp, data, period = 100):
+def multiplicative_seasonal_decompose(timestamp, data, period = 100):
 
     """Calculate the Seasonal Decompose with Multiplicative method
 
@@ -68,9 +68,9 @@ def multiplicative_seasonal_decompose(UfId, sensorId, timestamp, data, period = 
     time_series     =   pd.Series(Y, index=X)
     decomposition   =   sm.tsa.seasonal_decompose(time_series, model="multiplicative", period=period)
 
-    return UfId, sensorId, timestamp[-1], decomposition
+    return X, decomposition
 
-def singular_spectrum_analysis(UfId, sensorId, timestamp, data, window_size = 100, n_components = 2):
+def singular_spectrum_analysis(timestamp, data, window_size = 100, n_components = 2):
 
     """ Decomposing by a Singular Spectrum Analisys
 
@@ -99,7 +99,7 @@ def singular_spectrum_analysis(UfId, sensorId, timestamp, data, window_size = 10
     ssa             =   SingularSpectrumAnalysis(window_size=window_size, groups=n_components)
     components      =   ssa.fit_transform(data)
 
-    return UfId, sensorId, timestamp[-1], components
+    return X, components
 
 #-------------------------- REGRESIONS --------------------------#
 
