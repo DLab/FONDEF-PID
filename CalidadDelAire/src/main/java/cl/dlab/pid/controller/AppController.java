@@ -26,6 +26,7 @@ import cl.dlab.pid.calidaddelaire.DataBase;
 import cl.dlab.pid.calidaddelaire.FileVO;
 import cl.dlab.pid.calidaddelaire.GeneraArchivos;
 import cl.dlab.pid.calidaddelaire.GeneraIds;
+import cl.dlab.pid.calidaddelaire.GeneraPromedios;
 import cl.dlab.pid.calidaddelaire.ImportaDatosSMA;
 import cl.dlab.pid.util.PropertyUtil;
 import cl.dlab.pid.util.TaskUtil;
@@ -58,7 +59,7 @@ public class AppController implements ApplicationContextAware {
         }
         try
         {
-        	TaskUtil.getInstance().programmingTask();
+        	//TaskUtil.getInstance().programmingTask();
         }
         catch(Exception e)
         {
@@ -78,6 +79,10 @@ public class AppController implements ApplicationContextAware {
 	@GetMapping("/importDataSMA")
 	public void importDataSMA() throws Exception {
         new ImportaDatosSMA().importData();
+    }
+	@GetMapping("/generaPromedios")
+	public void generaPromedios() throws Exception {
+        new GeneraPromedios().calculaUltimosPromedios();
     }
 	
 	@SuppressWarnings("rawtypes")

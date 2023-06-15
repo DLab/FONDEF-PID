@@ -5,6 +5,9 @@ from aire.limpieza_y_validacion_pandas import validaLimpia
 from notificaciones import notificar
 import pandas as pd
 import numpy as np
+import json
+import gc
+
 
 def getHour(hora:str):
     if (len(hora) == 1):
@@ -76,18 +79,32 @@ class Limite():
             #print(p, self.notificaciones[p])
             val = self.notificaciones[p]
             if (val != None):
-                print(val['obj'].__dict__)
+                #print(val['obj'].__dict__)
                 notificar('LIMITE', val['error'], val['limite'], val['obj'])
                 
+def addMonth(fecha):
+    t = fecha.strftime('%Y-%m-%d').split('-')
+    mes = int(t[1])
+    agno = int(t[0])
+    if (mes == 12):
+        return datetime.strptime(str(agno + 1) + '-01-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+    else:
+        return datetime.strptime(t[0] + '-' + str(mes + 1) + '-01 00:00:00', '%Y-%m-%d %H:%M:%S')
         
 def guadarPromedios(fechaInicial, fechaFinal, property, data):
     with getConnect() as con:
+        print('guarda registros para', fechaInicial, fechaFinal, flush=True)
+        row = None
+        for index, r in data.iterrows():
+            row = r
+            break
+        
         cur = con.cursor()
-        cur.execute("delete from datos_promedios2 where dpr_tipo = %s and dpr_fecha >= %s and dpr_fecha < %s", [property, fechaInicial.strftime('%Y-%m-%d %H:%M:%S'), fechaFinal.strftime('%Y-%m-%d %H:%M:%S')])
+        cur.execute("delete from datos_promedios2 where dpr_ufid = %s and dpr_idproceso = %s and dpr_tipo = %s and dpr_fecha >= %s and dpr_fecha < %s", [row.UfId, row.ProcesoId, property, fechaInicial.strftime('%Y-%m-%d %H:%M:%S'), fechaFinal.strftime('%Y-%m-%d %H:%M:%S')])
         cur.close()
 
         cur = con.cursor()
-        print('nro de registros:', len(data))
+        print('nro de registros:', len(data), flush=True)
         #n = 0
         #for index, row in data.iterrows():
         #    n += 1
@@ -116,26 +133,30 @@ def addValue(property, ufIds, ProcesoId, dispositivoId, parametro, valor, unidad
     fecha[property].append(obj.fecha)
     tiposDatos[property].append(tipoDato)
     
+def _processData(property, fechaInicial, fechaFinal, dataFrame):
+    print('entrada', property, len(dataFrame), flush=True)
+    dataFrame = dataFrame.dropna()
+    print('se sacan los limites', property, len(dataFrame))
+    #dataFrame = validaLimpia(dataFrame)
+    #print('limpios', property, len(dataFrame))
+    dataFrame = promedios(dataFrame)
+    print('salida', property, len(dataFrame), flush=True)
+    guadarPromedios(fechaInicial, fechaFinal, property, dataFrame)
+    print('guarda ok', property, flush=True)
+
 def processData(property, fechaInicial, fechaFinal, ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos):
     if len(ufIds[property]) > 0:
         dataFrame = pd.DataFrame({'UfId': ufIds[property], 'ProcesoId': ProcesoId[property], 'dispositivoId': dispositivoId[property]
                              , 'parametro' : parametro[property], 'valor': valor[property], 'unidad' : unidad[property]
                              , 'fecha': fecha[property], 'tipoDato': tiposDatos[property]})
-        
-        print('entrada', property, len(dataFrame))
-        dataFrame = dataFrame.dropna()
-        print('se sacan los limites', property, len(dataFrame))
-        #dataFrame = validaLimpia(dataFrame)
-        #print('limpios', property, len(dataFrame))
-        dataFrame = promedios(dataFrame)
-        print('salida', property, len(dataFrame))
-        guadarPromedios(fechaInicial, fechaFinal, property, dataFrame)
-        print('guarda ok', property)
+        _processData(fechaInicial, fechaFinal, dataFrame)
     
-def calculaPromedios(db, fechaInicial, fechaFinal):
+def calculaPromedios(db, fechaInicial, fechaFinal, allRecords):
     print('CALCULANDO promedios para:', datetime.now(), fechaInicial, fechaFinal, flush=True)
     #rows = []
-    cursor = db.CA_ApiRest.find({'$and': [{ 'data.Parametros.estampaTiempo': { '$gte': fechaInicial, '$lt': fechaFinal } }]} )
+    mes = fechaInicial.strftime('%m')
+    cursor = db.CA_ApiRest.find({'timestamp': { '$gte': fechaInicial, '$lt': fechaFinal } })
+    print('retorna consulta', datetime.now())
     ufIds = initArray()
     ProcesoId = initArray()
     dispositivoId = initArray()
@@ -151,12 +172,18 @@ def calculaPromedios(db, fechaInicial, fechaFinal):
         for data in doc['data']:
             for param in data['Parametros']:
                 n = n + 1
+                
+                estampaTiempo = param['estampaTiempo']
+                if (allRecords == False):
+                    if (mes != estampaTiempo.strftime('%m')):
+                        continue
+                
                 crudo = getPropertyValue(param, 'Crudo')
                 validado = getPropertyValue(param, 'Validados')
                 if (crudo == 'DC' or validado == 'DV'):
 
                     tipoDato = None
-                    obj = Item(doc['UfId'], doc['ProcesoId'], data['dispositivoId'], param['nombre'], param['valor'], param['unidad'], param['estampaTiempo'], tipoDato)
+                    obj = Item(doc['UfId'], doc['ProcesoId'], data['dispositivoId'], param['nombre'], param['valor'], param['unidad'], estampaTiempo, tipoDato)
                     if (validado != 'nan'):
                         tipoDato = validado
                         obj.tipoDato = tipoDato
@@ -191,6 +218,8 @@ def calculaPromedios(db, fechaInicial, fechaFinal):
                     addValue('mixtos', ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos, tipoDato, obj)
                         
     limites.notificar()
+    if (allRecords == False):
+        fechaFinal = addMonth(fechaInicial)
     print('total de registros leidos:', n)
     processData('mixtos', fechaInicial, fechaFinal, ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos)
     processData('crudos', fechaInicial, fechaFinal, ufIds, ProcesoId, dispositivoId, parametro, valor, unidad, fecha, tiposDatos)
@@ -201,17 +230,27 @@ def calculaPromediosPorHora(fecha:str, hora:str):
     print(hora)
     fechaInicial = None
     fechaFinal = None
+    
     if (hora == ''):
-        fechaInicial = datetime.strptime(fecha + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
-        fechaFinal = fechaInicial + timedelta(days=1)
+        fechaFinal = datetime.strptime(fecha + ' 00:00:00', '%Y-%m-%d %H:%M:%S') + timedelta(days=1)
     else:
-        fechaInicial = datetime.strptime(fecha + ' ' + getHour(hora), '%Y-%m-%d %H:%M:%S')
-        fechaFinal = fechaInicial + timedelta(hours=1)
+        fechaFinal = datetime.strptime(fecha + ' ' + getHour(hora), '%Y-%m-%d %H:%M:%S') + timedelta(hours=1)
+    t = fechaFinal.strftime('%Y-%m-%d').split('-')
+    day = int(t[2])
+    if (day > 15):
+        fechaInicial = datetime.strptime(t[0] + '-' + t[1] + '-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+    else:
+        mes = int(t[1])
+        if (mes == 1):
+            fechaInicial = datetime.strptime(str(int(t[0]) - 1) + '-12-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+        else:
+            fechaInicial = datetime.strptime(t[0] + '-' + str(mes - 1) + '-01 00:00:00', '%Y-%m-%d %H:%M:%S')
+        
     with getMongoConnection() as mongo:
         db = mongo.ExportData
-        return calculaPromedios(db, fechaInicial, fechaFinal)
-
-def calculaUltimosPromedios():
+        return calculaPromedios(db, fechaInicial, fechaFinal, True)
+        
+def calculaUltimosPromedios():    
     with getConnect() as conn:
         cur = conn.cursor()
         cur.execute("SELECT max(dpr_fecha) as fecha from datos_promedios2")
@@ -222,14 +261,35 @@ def calculaUltimosPromedios():
             fecha = datetime.strptime(getProperty('MongoDatabaseSection', 'dlab.pid.mongodb.fechaminima') + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
         else:
             fecha = datetime.strptime(fecha.strip(), '%Y-%m-%d %H:%M:%S')
-            fecha = fecha + timedelta(hours=1)
+        fecha = fecha + timedelta(hours=1)
+        t = fecha.strftime('%Y-%m-%d').split('-')
+        fecha = datetime.strptime(t[0] + '-' + t[1] + '-01 00:00:00', '%Y-%m-%d %H:%M:%S')
         now = datetime.now()
         print(fecha, now)
         with getMongoConnection() as mongo:
             db = mongo.ExportData
             while fecha < now:
                 fechaInicial = fecha
-                fecha = fecha + timedelta(days=1)
-                calculaPromedios(db, fechaInicial, fecha)
+                fecha = addMonth(fecha)
+                calculaPromedios(db, fechaInicial, fecha + timedelta(days=15), False)
     return 'OK'
                     
+def generaPromedios(params):
+    path = params['data']
+    print(path)
+    f = open(path)
+    data = json.load(f)['data']
+    fechas = []
+    fechaInicio = datetime.strptime(data['fechaInicio'], '%Y-%m-%d %H:%M:%S')
+    fechaTermino = datetime.strptime(data['fechaTermino'], '%Y-%m-%d %H:%M:%S')
+    tipo = data['tipo']
+    for f in data['fecha']:
+        fechas.append(datetime.strptime(f, '%Y-%m-%d %H:%M:%S'))
+
+    if len(fechas) > 0:
+        dataFrame = pd.DataFrame({'UfId': data['ufIds'], 'ProcesoId': data['procesoId'], 'dispositivoId': data['dispositivoId']
+                             , 'parametro' : data['parametro'], 'valor': data['valor'], 'unidad' : data['unidad']
+                             , 'fecha': fechas, 'tipoDato': data['tiposDatos']})
+        _processData(tipo, fechaInicio, fechaTermino, dataFrame)
+    
+    print("objectos recolectados:", gc.collect())

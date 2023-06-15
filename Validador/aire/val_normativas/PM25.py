@@ -1,4 +1,5 @@
-from concentraciones import promedios_dia, concentracion_mensual, concentracion_anual
+
+from aire.concentraciones import promedios_dia, concentracion_mensual, concentracion_anual
 import pandas as pd
 import numpy as np
 
