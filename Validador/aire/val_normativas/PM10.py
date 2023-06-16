@@ -29,12 +29,12 @@ def normaPM10_promedio_diario(df):
     
     return result
 
-
+"""
 def normaPM10_promedio_trianual(df:pd.DataFrame)-> pd.DataFrame:
-    """
-    Entrada: df(dataframe): fecha(datetime), UfId(int), ProcesoId(int), parametro(str), valor(float)
-    Salida: result(dataframe): UfId(int), promedio_trianual(float), norma_sobrepasada(Boolean)
-    """
+
+    #Entrada: df(dataframe): fecha(datetime), UfId(int), ProcesoId(int), parametro(str), valor(float)
+    #Salida: result(dataframe): UfId(int), promedio_trianual(float), norma_sobrepasada(Boolean)
+
     
     limite = 50
     
@@ -60,3 +60,44 @@ def normaPM10_promedio_trianual(df:pd.DataFrame)-> pd.DataFrame:
     df['norma_sobrepasada'] = df['promedio_trianual'] > limite
     
     return df
+"""
+    
+
+def normaPM10_promedio_trianual(df:pd.DataFrame)-> pd.DataFrame:
+
+    """
+    Entrada: df(dataframe): fecha(datetime), UfId(int), ProcesoId(int), parametro(str), valor(float)
+    Salida: result(dataframe): UfId(int), promedio_trianual(float), norma_sobrepasada(Boolean), years_available(Boolean)
+    """
+
+    limite = 50
+
+    df = ( 
+            df.copy()
+            .loc[df['parametro'] == 'PM10']
+            .pipe(promedios_dia)
+            .pipe(concentracion_mensual)
+            .pipe(concentracion_anual)
+            .groupby(['UfId','año'], as_index=False)
+            .agg(valor=('valor', 'mean'))
+            )
+
+    # Calcular promedio trianual
+    rolling = (
+                df.sort_values(by='año')
+                .groupby('UfId')
+                ['valor']
+                .rolling(window=3)
+                )
+    
+    df['promedio_trianual'] = rolling.mean().reset_index(level=0, drop=True)
+    df['datos_suficientes'] = rolling.count().reset_index(level=0, drop=True) == 3
+    df['norma_sobrepasada'] = df['promedio_trianual'] > limite
+    df = df.drop(columns=['valor'])
+
+    return df
+
+    
+    
+    
+    
