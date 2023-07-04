@@ -39,7 +39,7 @@ from datetime import datetime
 
 # import promedios_por_hora as proms
 # import preprocessing as proms
-import functions as fn
+import aire.functions_no2_so2 as fn
 
 # dataframe = proms.dataframe   # importar dataframe
 
@@ -193,7 +193,7 @@ def cuentaAhorro(df, yearCalendar, concType, perc):
 
 
 
-def main(df, yearCalendar, tipoNorma, concType=None, perc=99):
+def normaSO2(df, yearCalendar, tipoNorma, concType=None, perc=99):
     """
     tipoNorma: 'normaTrianual', 'normaAnual', 'emergenciaAmbiental', 'cuentaAhorro'
     concType: 'Lyear', 'L24h', 'L1h'
@@ -220,6 +220,32 @@ def main(df, yearCalendar, tipoNorma, concType=None, perc=99):
 
     return SO2
 
+def normaSO2_trianual_agno(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'normaTrianual', 'Lyear')
+
+def normaSO2_trianual_horario(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'normaTrianual', 'L1h')
+
+def normaSO2_trianual_diario(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'normaTrianual', 'L24h')
+
+def normaSO2_anual_agno(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'normaAnual', 'Lyear')
+
+def normaSO2_anual_horario(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'normaAnual', 'L1h')
+
+def normaSO2_anual_diario(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'normaAnual', 'L24h')
+
+def normaSO2_emergencia_ambiental(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'emergenciaAmbiental')
+
+def normaSO2_cuenta_ahorro_diario(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'cuentaAhorro', 'L24h')
+
+def normaSO2_cuenta_ahorro_horario(df, yearCalendar):
+    return normaSO2(df, yearCalendar, 'cuentaAhorro', 'L1h')
 
 # norma_trianual  = main(dataframe, 2022, 'normaTrianual', concType='Lyear')
 # norma_anual     = main(dataframe, 2022, 'normaAnual', concType='Lyear')

@@ -1,12 +1,15 @@
 from aire.analytics.analytics import *
-import json
 import numbers
+import numpy as np
+import pandas as pd
 from flask import jsonify
 
 def getList(data):
     list = []
     for i in data:
-        if isinstance(i, numbers.Integral):
+        if isinstance(i, float) and np.isnan(i):
+            i = 'nan'
+        elif isinstance(i, numbers.Integral):
             i = int(i)
         list.append(i)
     return list
@@ -26,6 +29,27 @@ def generaAnalitica(analiticas, dataFrame):
         fn = globals()[funcion]
         resultFn = fn(dataFrame['fecha'].values, dataFrame['valor'].values)
         #print(analitica['descripcion'], resultFn[1])
-        data.append({'name': analitica['descripcion'],  'Y': getList(resultFn[1])})
+        #data.append({'name': analitica['descripcion'],  'Y': getList(resultFn[1])})
+        try:
+            print('aa1')
+            inOtherGraph = resultFn[0]['inOtherGraph']
+            if inOtherGraph:
+                n = len(resultFn[0]['timestamp'])
+                result['X'] = X[0: n]
+        except (Exception) as error:
+            print(error)
+            pass
+        
+        n = len(resultFn)
+        for i in range(1, n):
+            try:
+                series = resultFn[i]['series']
+                for serie in series:
+                    serie['data'] = getList(serie['data'])
+                data.append({'series': series})    
+            except (Exception) as error:
+                #print(error)
+                data.append({'name': resultFn[i]['name'],  'Y': getList(resultFn[i]['data'])})
+            
     return result
 

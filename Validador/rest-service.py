@@ -4,10 +4,10 @@ from validador import valida_archivo
 from aire.promedios import calculaPromediosPorHora, calculaUltimosPromedios, generaPromedios
 from aire.analitica import generaAnalitica
 from aire.analiticaIA import generaAnaliticaIA
-from aire.validaciones_normativas import valida_normativas_aire
+from aire.validaciones_normativas import valida_normativas_aire, valida_normativas_aire_trianual
 from connect_db import getConnect
 from pandas import DataFrame
-
+from valida_limites import validaLimitesChile
 
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ def validaArchivo():
 @app.post("/analitica")
 def analitica():
     data = request.get_json(True)
-    #print(data)
+    print(data)
     with getConnect() as conn:
         cur = conn.cursor()        
         cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", [data['inicio'], data['termino'], data['tipoDato'], data['regulado'], data['estacion'], data['fuente']])
@@ -57,7 +57,12 @@ def analiticaIA():
 
 @app.get("/validacionesNormativasAire")
 def validacionesNormativasAire():
+    print('entra')
     return valida_normativas_aire(request.args.get('agno'))
+
+@app.get("/validacionesNormativasAireTrianual")
+def validacionesNormativasAireTrianual():
+    return valida_normativas_aire_trianual(request.args.get('agno'))
 
 @app.get("/getRangoDatosxUfId")
 def getRangoDatosxUfId():
@@ -74,6 +79,11 @@ def getRangoDatosxUfId():
 @app.post("/calculaPromedios")
 def calculaPromedios():
     errores = generaPromedios(request.get_json(True))
+    return jsonify(errores)
+
+@app.post("/validaLimites")
+def validaLimites():
+    errores = validaLimitesChile(request.get_json(True))
     return jsonify(errores)
 
 

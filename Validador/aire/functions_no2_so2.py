@@ -5,8 +5,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 ######################################
-import preprocessing as proms
-dataframe = proms.dataframe   # importar dataframe
+#import preprocessing as proms
+#dataframe = proms.dataframe   # importar dataframe
 ######################################
 
 
@@ -164,6 +164,6 @@ def percentil(df, nPerc):
     return df
 
 
-byPeriod(dataframe, 2023)
+#byPeriod(dataframe, 2023)
 
 

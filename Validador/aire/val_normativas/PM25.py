@@ -23,12 +23,13 @@ def normaPM25_promedio_diario(df):
     percentil98_año = 7
     limite = 50
     
+    print('aaa', df)
     df = (df
         .loc[df['parametro'] == 'PM25'].copy()
         .pipe(promedios_dia))
     
     df['año'] = df['dia'].dt.year
-    
+    print('aaa2', df)
     # Filtrar dias sobre 50
     df_sobre_50 = df[df['valor'] > limite].copy()
     

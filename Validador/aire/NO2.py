@@ -35,7 +35,7 @@ import numpy as np
 from datetime import datetime
 
 # import preprocessing as proms
-import functions as fn
+import aire.functions_no2_so2 as fn
 
 # dataframe = proms.dataframe   # importar dataframe
 
@@ -159,7 +159,7 @@ def normaTrianual(df, yearCalendar, concType):
     return concDF
 
 
-def main(df, yearCalendar, tipoNorma, concType=None):
+def normaNO2(df, yearCalendar, tipoNorma, concType=None):
     """
     tipoNorma: 'normaTrianual', 'emergenciaAmbiental'
     concType: 'Lyear', 'L1h'
@@ -185,6 +185,14 @@ def main(df, yearCalendar, tipoNorma, concType=None):
 
     return NO2
 
+def normaNO2_trianual_horario(df, yearCalendar):
+    return normaNO2(df, yearCalendar, 'normaTrianual', 'L1h')
+
+def normaNO2_trianual_agno(df, yearCalendar):
+    return normaNO2(df, yearCalendar, 'normaTrianual', 'Lyear')
+
+def normaNO2_emergencia_ambiental(df, yearCalendar):
+    return normaNO2(df, yearCalendar, 'emergenciaAmbiental')
 
 # emerg_ambiental = main(dataframe, 2021, 'emergenciaAmbiental')
 # norma_trianual  = main(dataframe, 2022, 'normaTrianual', concType='L1h')
