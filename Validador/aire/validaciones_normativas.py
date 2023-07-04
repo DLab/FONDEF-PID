@@ -4,8 +4,8 @@ from pandas import DataFrame
 from datetime import datetime, timedelta
 from aire.val_normativas.PM10 import normaPM10_promedio_diario, normaPM10_promedio_trianual
 from aire.val_normativas.PM25 import normaPM25_promedio_diario, normaPM25_promedio_trianual
-from aire.SO2 import normaSO2_anual_agno, normaSO2_anual_diario, normaSO2_anual_horario, normaSO2_trianual_agno, normaSO2_anual_horario, normaSO2_trianual_diario, normaSO2_trianual_horario, normaSO2_cuenta_ahorro_diario, normaSO2_cuenta_ahorro_horario, normaSO2_emergencia_ambiental
-from aire.NO2 import normaNO2_trianual_horario, normaNO2_trianual_agno, normaNO2_emergencia_ambiental
+from aire.val_normativas.SO2 import normaSO2_anual_agno, normaSO2_anual_diario, normaSO2_anual_horario, normaSO2_trianual_agno, normaSO2_anual_horario, normaSO2_trianual_diario, normaSO2_trianual_horario, normaSO2_cuenta_ahorro_diario, normaSO2_cuenta_ahorro_horario, normaSO2_emergencia_ambiental
+from aire.val_normativas.NO2 import normaNO2_trianual_horario, normaNO2_trianual_agno, normaNO2_emergencia_ambiental
 
 
 def getDataFrame(con, fechaInicial, fechaFinal, parametro):

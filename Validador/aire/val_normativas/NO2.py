@@ -35,7 +35,7 @@ import numpy as np
 from datetime import datetime
 
 # import preprocessing as proms
-import aire.functions_no2_so2 as fn
+import aire.val_normativas.functions_no2_so2 as fn
 
 # dataframe = proms.dataframe   # importar dataframe
 
