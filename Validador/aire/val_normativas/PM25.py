@@ -49,33 +49,37 @@ en cualquier estación monitora calificada como EMRP.
 
 Promedio tri-anual: es el promedio aritmético de tres años calendario consecutivos de la concentración anual, en cualquier estación monitora.
 """
+
 def normaPM25_promedio_trianual(df:pd.DataFrame)-> pd.DataFrame:
+
     """
     Entrada: df(dataframe): fecha(datetime), UfId(int), ProcesoId(int), parametro(str), valor(float)
-    Salida: result(dataframe): UfId(int), promedio_trianual(float), norma_sobrepasada(Boolean)
+    Salida: result(dataframe): UfId(int), promedio_trianual(float), norma_sobrepasada(Boolean), years_available(Boolean)
     """
-    
+
     limite = 20
-    
+
     df = ( 
-          df.copy()
-            .loc[df['parametro'] == 'PM25']
+            df.copy()
+            .loc[df['parametro'] == 'PM10']
             .pipe(promedios_dia)
             .pipe(concentracion_mensual)
             .pipe(concentracion_anual)
             .groupby(['UfId','año'], as_index=False)
             .agg(valor=('valor', 'mean'))
-          )
-    
+            )
+
     # Calcular promedio trianual
-    df['promedio_trianual'] = (
-        df.sort_values(by='año')
-        .groupby('UfId')['valor']
-        .rolling(window=3)
-        .mean()
-        .reset_index(level=0, drop=True)
-    )
+    rolling = (
+                df.sort_values(by='año')
+                .groupby('UfId')
+                ['valor']
+                .rolling(window=3)
+                )
     
+    df['promedio_trianual'] = rolling.mean().reset_index(level=0, drop=True)
+    df['datos_suficientes'] = rolling.count().reset_index(level=0, drop=True) == 3
     df['norma_sobrepasada'] = df['promedio_trianual'] > limite
-    
+    df = df.drop(columns=['valor'])
+
     return df
