@@ -30,21 +30,25 @@ def valida_normativas_aire(agno):
         print('antes', fechaInicial, fechaFinal)
         df = getDataFrame(conn, fechaInicial, fechaFinal, 'PM10')
         if (len(df) > 0):
-            df2 = df.copy()
             df = normaPM10_promedio_diario(df)
             df = df[df['dias_cuentaAhorro'] <= 0]
-            print('normaPM10_promedio_diario con error\n', df)
-            
-            df = df2.copy()
-            #df = normaPM25_promedio_diario(df)
+            print('normaPM10_promedio_diario con error', len(df), '\n', df)
+        
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'PM25')
+        if (len(df) > 0):
+            df = normaPM25_promedio_diario(df)
+            df = df[df['dias_cuentaAhorro'] <= 0]
             #PENDIENTE revisar con giani Empty DataFrame
-            print('normaPM25_promedio_diario\n', df)
+            print('normaPM25_promedio_diario', len(df), '\n', df)
                         
-            df = df2.copy()
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'NO2')
+        if (len(df) > 0):
             df = normaNO2_emergencia_ambiental(df, agno)
-            print('normaNO2_emergencia_ambiental\n', df)
+            print('normaNO2_emergencia_ambiental', len(df), '\n', df)
             
-            df = df2.copy()
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'SO2')
+        if (len(df) > 0):
+            df2 = df.copy()
             df = normaSO2_emergencia_ambiental(df, agno)
             print('normaSO2_emergencia_ambiental\n', df)
             

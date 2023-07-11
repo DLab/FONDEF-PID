@@ -30,26 +30,11 @@ def generaAnalitica(analiticas, dataFrame):
         resultFn = fn(dataFrame['fecha'].values, dataFrame['valor'].values)
         #print(analitica['descripcion'], resultFn[1])
         #data.append({'name': analitica['descripcion'],  'Y': getList(resultFn[1])})
-        try:
-            print('aa1')
-            inOtherGraph = resultFn[0]['inOtherGraph']
-            if inOtherGraph:
-                n = len(resultFn[0]['timestamp'])
-                result['X'] = X[0: n]
-        except (Exception) as error:
-            print(error)
-            pass
         
+        list = [];
         n = len(resultFn)
         for i in range(1, n):
-            try:
-                series = resultFn[i]['series']
-                for serie in series:
-                    serie['data'] = getList(serie['data'])
-                data.append({'series': series})    
-            except (Exception) as error:
-                #print(error)
-                data.append({'name': resultFn[i]['name'],  'Y': getList(resultFn[i]['data'])})
-            
+            list.append(getList(resultFn[i]))
+        data.append({'analitica': analitica['codigo'], 'data': list})
     return result
 

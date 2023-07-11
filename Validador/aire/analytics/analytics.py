@@ -43,7 +43,7 @@ def linear_regression(timestamp, data):
     # Calculate the fitted curve
     fitted_curve = model.predict(X)
     
-    return timestamp, {'name': 'linear_regression', 'data': fitted_curve}
+    return timestamp, fitted_curve
 
 
 def polynomial_regression(timestamp, data, order = 2):
@@ -71,7 +71,7 @@ def polynomial_regression(timestamp, data, order = 2):
     coefs           =   np.polyfit(numeric_dates.flatten(), pd.to_numeric(Y, downcast='float') , order)
     poly_predict    =   np.polyval(coefs, numeric_dates.flatten())
 
-    return timestamp, {'name': 'polynomial_regression', 'data': poly_predict}
+    return timestamp, poly_predict
 
 
 def simple_moving_average(timestamp, data, window_size=3):
@@ -87,7 +87,7 @@ def simple_moving_average(timestamp, data, window_size=3):
     """
     data_series = pd.Series(data)
     moving_avg = data_series.rolling(window_size).mean().tolist()
-    return timestamp, {'name': 'simple_moving_average', 'data': moving_avg}
+    return timestamp, moving_avg
 
 def exponential_moving_average(timestamp, data, span=3):
     """Calculate the exponential moving average of the data.
@@ -102,7 +102,7 @@ def exponential_moving_average(timestamp, data, span=3):
     """
     data_series = pd.Series(data, index=pd.to_datetime(timestamp))
     ema = data_series.ewm(span=span).mean().tolist()
-    return timestamp, {'name': 'exponential_moving_average', 'data': ema}
+    return timestamp, ema
 
 '''
 ================= Autocorrelation =================
@@ -131,6 +131,7 @@ def autocorrelation(timestamp, data, nlags=None):
     data_series = pd.Series(data, index=dt_index)
     
     # Calculate autocorrelation
+    nlags = len(timestamp)
     autocorr, conf_int  = acf(data_series, nlags=nlags, alpha=0.05)
     # lower and upper confidence interval at 95%
     low_conf_int = conf_int[:, 0] - autocorr
@@ -141,10 +142,7 @@ def autocorrelation(timestamp, data, nlags=None):
     #series.push({type: 'bar', barWidth: 1, smooth: true, name: e.name, data: e.Y});
     #series = [{'type': 'scatter', 'symbol': 'circle', 'symbolSize': 10, 'smooth': True, 'name': 'autocorrelation', 'data': autocorr}
     #        , {'type': 'bar', 'barWidth': 1, 'smooth': True, 'name': 'autocorrelation', 'data': autocorr}]
-    series = [{'type': 'line', 'stack': 'Total', 'areaStyle': {'opacity': 0.2}, 'lineStyle': {'type': 'dotted', 'opacity': 0.01}, 'emphasis': {'focus': 'series'}, 'name': 'up_conf_int', 'data': up_conf_int}
-            , {'type': 'line', 'stack': 'Total', 'areaStyle': {'opacity': 0.2}, 'lineStyle': {'type': 'dotted', 'opacity': 0.01},'emphasis': {'focus': 'series'}, 'name': 'low_conf_int', 'data': low_conf_int}
-            , {'type': 'custom', 'name': 'autocorrelation', 'data': autocorr, 'renderItem': "renderStem"}]
-    return {'inOtherGraph': True, 'timestamp': lag}, {'series': series}
+    return timestamp, up_conf_int, low_conf_int, autocorr
     #return lag, autocorr, low_conf_int, up_conf_int
 
 def partial_autocorrelation(timestamp, data, nlags=None):
@@ -190,7 +188,7 @@ def statistical_process_control(timestamp, data):
     Returns:
     tuple: A tuple containing the timestamp, and the control chart.
     """
-    return timestamp, {'name': 'statistical_process_control', 'data': data}
+    return timestamp, data
 
 '''
 ================= Decomposition =================
@@ -225,7 +223,7 @@ def additive_seasonal_decompose(timestamp, data, period = 100):
     seasonal    = decomposition.seasonal.values
     residual    = decomposition.resid.values
 
-    return timestamp, {'name': 'Trend', 'data': trend}, {'name': 'Additive Seasonal', 'data': seasonal}, {'name':'Additive Residual', 'data': residual}
+    return timestamp, trend, seasonal, residual
 
 
 def multiplicative_seasonal_decompose(timestamp, data, period = 100):
@@ -254,7 +252,7 @@ def multiplicative_seasonal_decompose(timestamp, data, period = 100):
     seasonal    = decomposition.seasonal.values
     residual    = decomposition.resid.values
 
-    return timestamp, {'name': 'Trend', 'data': trend}, {'name': 'Multiplicative Seasonal', 'data': seasonal}, {'name':'Multiplicative Residual', 'data': residual}
+    return timestamp, trend, seasonal, residual
 '''
 ================= Clustering =================
 This section contains functions for clustering.
@@ -290,7 +288,7 @@ def kmeans_clustering(timestamp, data, n_clusters = 2):
     kmeans      =   KMeans(n_clusters=n_clusters)
     clusters    =   kmeans.fit_predict(points)
 
-    return timestamp, {'name': 'kmeans_clustering', 'data': clusters}
+    return timestamp, clusters
 
 
 def DBSCAN_clustering(timestamp, data, eps = 0.5, min_samples = 100):
@@ -319,7 +317,7 @@ def DBSCAN_clustering(timestamp, data, eps = 0.5, min_samples = 100):
     dbscan = DBSCAN(eps=eps, min_samples=min_samples)
     clusters = dbscan.fit_predict(X)
 
-    return timestamp, {'name': 'DBSCAN_clustering', 'data': clusters}
+    return timestamp, clusters
 
 '''
 ================= Causality =================

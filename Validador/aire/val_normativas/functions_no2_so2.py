@@ -31,7 +31,7 @@ def concatDF(df, nameCol):
     else:
         dfTmp = df
 
-    dfTmp = dfTmp[['fecha', 'UfId', 'ProcesoId', 'parametro', 'valor', 'dataPoint_count']]
+    dfTmp = dfTmp[['fecha', 'UfId', 'ProcesoId', 'parametro', 'valor']]
     dfTmp = dfTmp.reset_index(drop = True)
 
     return dfTmp
