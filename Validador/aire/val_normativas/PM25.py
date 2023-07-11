@@ -61,7 +61,7 @@ def normaPM25_promedio_trianual(df:pd.DataFrame)-> pd.DataFrame:
 
     df = ( 
             df.copy()
-            .loc[df['parametro'] == 'PM10']
+            .loc[df['parametro'] == 'PM25']
             .pipe(promedios_dia)
             .pipe(concentracion_mensual)
             .pipe(concentracion_anual)
