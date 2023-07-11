@@ -81,24 +81,27 @@ def valida_normativas_aire_trianual(agno):
     fechaFinal = str(int(agno) + 3) + '-01-01 00:00:00'
     with getConnect() as conn:
         print('antes', fechaInicial, fechaFinal)
-        df = getDataFrame(conn, fechaInicial, fechaFinal, 'PM10')
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'PM25')
         if (len(df) > 0):
-            df2 = df.copy()
             df = normaPM25_promedio_trianual(df)
             print('normaPM25_promedio_trianual\n', df)
             
-            df = df2.copy()
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'PM10')
+        if (len(df) > 0):
             df = normaPM10_promedio_trianual(df)
             print('normaPM10_promedio_trianual\n', df)
             
-            df = df2.copy()
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'NO2')
+        if (len(df) > 0):
+            df2 = df.copy()
             df = normaNO2_trianual_agno(df, agno)
             print('normaNO2_trianual_agno\n', df)
 
-            df = df2.copy()
             df = normaNO2_trianual_horario(df, agno)
             print('normaNO2_trianual_horario\n', df)
 
+        df = getDataFrame(conn, fechaInicial, fechaFinal, 'SO2')
+        if (len(df) > 0):
             df = df2.copy()
             df = normaSO2_trianual_agno(df, agno)
             print('normaSO2_trianual_agno\n', df)

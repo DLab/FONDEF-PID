@@ -41,6 +41,9 @@ def concentracion_mensual(df):
     result = df.copy()
     result['mes'] = df['dia'].dt.to_timestamp('s').dt.to_period('M')
 
+    if (len(result) == 0):
+        return result
+    
     result = (result.groupby(['mes', 'UfId', 'ProcesoId', 'parametro'], as_index=False)
               ['valor']
               .mean())
@@ -60,6 +63,9 @@ def concentracion_anual(df):
     result = df.copy()
     result['año'] = df['mes'].dt.to_timestamp('s').dt.to_period('Y')
     
+    if (len(result) == 0):
+        return result
+
     result = (result.groupby(['año', 'UfId', 'ProcesoId', 'parametro'], as_index=False)
               ['valor']
               .mean())
