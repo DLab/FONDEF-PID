@@ -34,10 +34,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-# import preprocessing as proms
 import aire.val_normativas.functions_no2_so2 as fn
-
-# dataframe = proms.dataframe   # importar dataframe
 
 
 # ACÁ VA CONVERSIÓN ppb to ug/m3
@@ -47,8 +44,6 @@ def preprocessing(df, ufid, procId, param):
     
     # df['valor']  = df['valor'] * 2.62   # conversión ppb to ug/m3
     df = df.reset_index(drop = True)
-    # print("df")
-    # print(df)
 
     return df
 
@@ -75,12 +70,16 @@ def emergenciaAmbiental(df, yearCalendar):
     """
     Devuelve episodios de alerta medioambiental. Se utiliza únicamente el resample horario. Retorna un dataframe con los valores en ugm3 o ppb (excluyentemente) 
     """
+
+    # print("df en emergenciaAmbiental")
+    # print(df)
+
     df = fn.byYearCalendar(df, yearCalendar)
     df = df.assign(nivel1 = 0, nivel2 = 0, nivel3 = 0)
 
-    df['nivel1']  = np.where((df['valor'] >= limites('episodio', 'nivel1')) & (df['valor'] < limites('episodio', 'nivel2')), 1, df['nivel1'])
+    df['nivel1'] = np.where((df['valor'] >= limites('episodio', 'nivel1')) & (df['valor'] < limites('episodio', 'nivel2')), 1, df['nivel1'])
     df['nivel2'] = np.where((df['valor'] >= limites('episodio', 'nivel2')) & (df['valor'] < limites('episodio', 'nivel3')), 1, df['nivel2'])
-    df['nivel3']   = np.where(df['valor'] > limites('episodio', 'nivel3'), 1, df['nivel3'])
+    df['nivel3'] = np.where(df['valor'] > limites('episodio', 'nivel3'), 1, df['nivel3'])
 
     return df
 
@@ -92,7 +91,6 @@ def normaTrianual(df, yearCalendar, concType):
     concDF = pd.DataFrame(columns = df.columns)
     perc = 99
 
-    y1, y2, y3 = yearCalendar - 2, yearCalendar - 1, yearCalendar
     limite     = limites('norma', concType)
     value      = None
 
@@ -167,16 +165,19 @@ def normaNO2(df, yearCalendar, tipoNorma, concType=None):
     lstDFs, lstUfId, lstProcId = [], df['UfId'].unique(), df['ProcesoId'].unique()
     NO2 = pd.DataFrame(columns = df.columns)
 
-    for ufid in lstUfId:
-        for procId in lstProcId:
-            tmpdf = preprocessing(df, ufid, procId, 'NO2')
-            # print("c1", fn.cAnual(tmpdf, 'N02'))
-            # print("c2", fn.cAnual(tmpdf, 'N02'))
-            # print("c3", fn.cAnual(tmpdf, 'N02'))
+    dfTuple = df[['UfId', 'ProcesoId']]
+    dfTuple = dfTuple.drop_duplicates()
+
+    listOfTuples = [tuple(x) for x in dfTuple.to_numpy()]
+
+    for tupla in listOfTuples:
+        ufid   = tupla[0]
+        procId = tupla[1]
+
+        tmpdf = preprocessing(df, ufid, procId, 'NO2')
+        if tmpdf.shape[0] > 0:
             if tipoNorma == 'normaTrianual':
                 tmpdf = normaTrianual(tmpdf, yearCalendar, concType)
-                # print("tmpdf")
-                # print(tmpdf)
             if tipoNorma == 'emergenciaAmbiental':
                 tmpdf = emergenciaAmbiental(tmpdf, yearCalendar)
             lstDFs.append(tmpdf)
@@ -184,6 +185,7 @@ def normaNO2(df, yearCalendar, tipoNorma, concType=None):
     NO2 = pd.concat(lstDFs)
 
     return NO2
+
 
 def normaNO2_trianual_horario(df, yearCalendar):
     return normaNO2(df, yearCalendar, 'normaTrianual', 'L1h')

@@ -39,9 +39,10 @@ def concatDF(df, nameCol):
 
 def byYearCalendar(df, yearCalendar):
     df['year'] = pd.DatetimeIndex(df['fecha']).year
-    df         = df[df['year'] == yearCalendar]
+    df         = df[df['year'] == int(yearCalendar)]
     df         = df.drop(['year'], axis = 1)
     df         = df.reset_index(drop = True)
+
 
     return df
 
@@ -158,6 +159,7 @@ def percentil(df, nPerc):
     for index in range(0, df.shape[0]):
         tmpdf = df.loc[0:index]
         tmpPerc = tmpdf['valor'].tolist()
+        tmpPerc = [float(x) for x in tmpPerc] 
         valPerc = round(np.percentile(tmpPerc, nPerc), 3)
         df.loc[index, 'perc'] = valPerc
 

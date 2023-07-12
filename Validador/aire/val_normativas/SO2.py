@@ -37,11 +37,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-# import promedios_por_hora as proms
-# import preprocessing as proms
 import aire.val_normativas.functions_no2_so2 as fn
-
-# dataframe = proms.dataframe   # importar dataframe
 
 # processing
 # ACÁ VA CONVERSIÓN ppb to ug/m3
@@ -49,12 +45,9 @@ def preprocessing(df, ufid, procId, param):
     df['fecha'] = pd.to_datetime(df['fecha'])
     df = df[(df['UfId'] == ufid) & (df['ProcesoId'] == procId) & (df['parametro'] == param)]
 
-    
     # rehacer esta conversión
     # df['valor']  = df['valor'] * 2.62   # conversión ppb to ug/m3
     df = df.reset_index(drop = True)
-
-    # print(df)
 
     return df
 
@@ -198,27 +191,30 @@ def normaSO2(df, yearCalendar, tipoNorma, concType=None, perc=99):
     tipoNorma: 'normaTrianual', 'normaAnual', 'emergenciaAmbiental', 'cuentaAhorro'
     concType: 'Lyear', 'L24h', 'L1h'
     """
-    lstDFs, lstUfId, lstProcId = [], df['UfId'].unique(), df['ProcesoId'].unique()
-    SO2 = pd.DataFrame(columns = df.columns)
+    lstDFs = []
+    SO2    = pd.DataFrame(columns = df.columns)
+    
+    dfTuple = df[['UfId', 'ProcesoId']]
+    dfTuple = dfTuple.drop_duplicates()
 
-    for ufid in lstUfId:
-        for procId in lstProcId:
-            tmpdf = preprocessing(df, ufid, procId, 'SO2')
+    listOfTuples = [tuple(x) for x in dfTuple.to_numpy()]
+
+    for tupla in listOfTuples:
+        ufid   = tupla[0]
+        procId = tupla[1]
+
+        tmpdf = preprocessing(df, ufid, procId, 'SO2')
+        if tmpdf.shape[0] > 0:
             if tipoNorma == 'normaTrianual':
                 tmpdf = normaTrianual(tmpdf, yearCalendar, concType)
-                # print("tmpdf")
-                # print(tmpdf)
-            elif tipoNorma == 'normaAnual':
-                tmpdf = normaAnual(df, yearCalendar, concType)
-            elif tipoNorma == 'emergenciaAmbiental':
+            if tipoNorma == 'emergenciaAmbiental':
                 tmpdf = emergenciaAmbiental(tmpdf, yearCalendar)
-            elif tipoNorma == 'cuentaAhorro':
-                tmpdf = cuentaAhorro(tmpdf, yearCalendar, concType, perc)
             lstDFs.append(tmpdf)
     
     SO2 = pd.concat(lstDFs)
 
     return SO2
+
 
 def normaSO2_trianual_agno(df, yearCalendar):
     return normaSO2(df, yearCalendar, 'normaTrianual', 'Lyear')
@@ -247,12 +243,7 @@ def normaSO2_cuenta_ahorro_diario(df, yearCalendar):
 def normaSO2_cuenta_ahorro_horario(df, yearCalendar):
     return normaSO2(df, yearCalendar, 'cuentaAhorro', 'L1h')
 
-# norma_trianual  = main(dataframe, 2022, 'normaTrianual', concType='Lyear')
-# norma_anual     = main(dataframe, 2022, 'normaAnual', concType='Lyear')
-# emerg_ambiental = main(dataframe, 2022, 'normaAnual', concType='Lyear')
-# cuenta_ahorro   = main(dataframe, 2022, 'cuentaAhorro', concType='L1h')
 
-# print(norma_anual)
 
 
 
