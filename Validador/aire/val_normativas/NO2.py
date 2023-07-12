@@ -162,8 +162,8 @@ def normaNO2(df, yearCalendar, tipoNorma, concType=None):
     tipoNorma: 'normaTrianual', 'emergenciaAmbiental'
     concType: 'Lyear', 'L1h'
     """
-    lstDFs, lstUfId, lstProcId = [], df['UfId'].unique(), df['ProcesoId'].unique()
-    NO2 = pd.DataFrame(columns = df.columns)
+    lstDFs = []
+    NO2    = pd.DataFrame(columns = df.columns)
 
     dfTuple = df[['UfId', 'ProcesoId']]
     dfTuple = dfTuple.drop_duplicates()

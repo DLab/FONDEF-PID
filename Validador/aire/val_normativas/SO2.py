@@ -92,11 +92,9 @@ def normaTrianual(df, yearCalendar, concType):
     concType: 'Lyear', 'L24h', 'L1h'
     """
     concDF = pd.DataFrame(columns = df.columns)
-    perc = 99
-
-    y1, y2, y3 = yearCalendar - 2, yearCalendar - 1, yearCalendar
-    limite     = limites('norma', concType)
-    value      = None
+    perc   = 99
+    limite = limites('norma', concType)
+    value  = None
 
     dfYear1, dfYear2, dfYear3 = fn.byPeriod(df, yearCalendar)
 
@@ -126,13 +124,7 @@ def normaTrianual(df, yearCalendar, concType):
     concDF = concDF.assign(year = yearCalendar)
     concDF = concDF.drop(['fecha'], axis = 1)
 
-    # CREAR DF CON TODOS LaS horas DEL AÑO Y RELLENAR
-
-
     concDF['superaLimite'] = np.where(concDF['valor'] >= limite, 1, 0)
-
-    # print("concDF")
-    # print(concDF)
 
     return concDF
 
@@ -204,12 +196,15 @@ def normaSO2(df, yearCalendar, tipoNorma, concType=None, perc=99):
         procId = tupla[1]
 
         tmpdf = preprocessing(df, ufid, procId, 'SO2')
-        if tmpdf.shape[0] > 0:
-            if tipoNorma == 'normaTrianual':
-                tmpdf = normaTrianual(tmpdf, yearCalendar, concType)
-            if tipoNorma == 'emergenciaAmbiental':
-                tmpdf = emergenciaAmbiental(tmpdf, yearCalendar)
-            lstDFs.append(tmpdf)
+        if tipoNorma == 'normaTrianual':
+            tmpdf = normaTrianual(tmpdf, yearCalendar, concType)
+        elif tipoNorma == 'normaAnual':
+            tmpdf = normaAnual(tmpdf, yearCalendar, concType)
+        elif tipoNorma == 'emergenciaAmbiental':
+            tmpdf = emergenciaAmbiental(tmpdf, yearCalendar)
+        elif tipoNorma == 'cuentaAhorro':
+            tmpdf = cuentaAhorro(tmpdf, yearCalendar, concType, perc)
+        lstDFs.append(tmpdf)
     
     SO2 = pd.concat(lstDFs)
 
