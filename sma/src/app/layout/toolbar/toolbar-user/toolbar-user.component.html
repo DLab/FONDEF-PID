@@ -1,0 +1,24 @@
+<div class="toolbar-user" (furyClickOutside)="onClickOutside()" fxFlex="grow">
+  <button class="button" mat-button (click)="toggleDropdown()" [class.open]="isOpen" fxFlex="grow">
+    <span fxLayout="row" fxLayoutAlign="start center">
+      <span class="name" fxHide fxShow.gt-sm>{{userName}}</span> 
+      <mat-icon class="icon" fxHide fxShow.gt-sm>keyboard_arrow_down</mat-icon>
+    </span>
+  </button>
+
+  <div class="dropdown" [class.open]="isOpen">
+    <div class="content">
+      <div class="list">
+        <div class="list-item" matRipple (click)="changePassword()">
+          <mat-icon class="list-item-icon">account_circle</mat-icon>
+          <span>{{app.screen.Cambio_de_Clave}}</span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="list-item" matRipple [routerLink]="['/']">
+          <mat-icon class="list-item-icon">exit_to_app</mat-icon>
+          <span>{{app.screen.Salir}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

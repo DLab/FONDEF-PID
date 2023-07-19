@@ -1,0 +1,32 @@
+@use 'sass:math';
+@import "var";
+
+:host {
+  display: block;
+}
+
+.title {
+  font: var(--font-title);
+  font-weight: 400;
+}
+
+.crumb, .link {
+  text-decoration: none;
+  transition: color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+  font: var(--font-body-1);
+}
+
+.link {
+  cursor: pointer;
+}
+
+.chevron {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+  margin-left: math.div($spacing, 4);
+  margin-right: math.div($spacing, 4);
+  user-select: none;
+  cursor: default;
+}

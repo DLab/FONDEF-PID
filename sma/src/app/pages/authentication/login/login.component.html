@@ -1,0 +1,35 @@
+<div class="page background-pattern" fxLayout="column" fxLayoutAlign="center center">
+  <div [@fadeInUp] class="card border-radius elevation">
+    <div class="header padding background-primary fury-default" fxLayout="row" fxLayoutAlign="space-between">
+      <div class="title fury-page-layout-header">{{title}}</div>
+      <darta-language></darta-language>
+    </div>
+    <div class="padding" fxLayout="column" fxLayoutGap="16px" [formGroup]="form" (ngSubmit)="send()">
+      <div fxFlex="auto" fxLayout="column">
+        <mat-form-field fxFlex="grow">
+          <mat-label>{{screen.Usuario}}</mat-label>
+          <input matInput required formControlName="id">
+          <mat-error *ngIf="form.get('id').hasError('required')">{{screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="grow">
+          <mat-label>{{screen.Password}}</mat-label>
+          <input matInput [type]="passwordModel.inputType" formControlName="password" required>
+          <button type="button" mat-icon-button matSuffix (click)="passwordModel.toggleVisibility()" [matTooltip]="screen.Intercambiar_visibilidad">
+            <mat-icon *ngIf="passwordModel.visible">visibility</mat-icon>
+            <mat-icon *ngIf="!passwordModel.visible">visibility_off</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password').hasError('required')">{{screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field> 
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="false">
+        <a class="caption" [routerLink]="['/forgot-password']">Forgot Password?</a>
+      </div>
+      <button type="button" color="primary" mat-raised-button (click)="send()" [disabled]="form.invalid" [ngClass]="{'app-color': !form.invalid}" >
+        {{screen.Aceptar}}
+      </button>
+    </div>
+  </div>
+</div>

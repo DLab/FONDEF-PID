@@ -1,0 +1,12 @@
+<div class="page" fxLayout="column">
+
+   <fury-breadcrumbs class="breadcrumbs" 
+          *ngIf="app.selectedMenuItem != null"
+          [crumbs]="app.selectedMenuItem.lang_crumbs" 
+          current="{{app.screen[app.selectedMenuItem.name]}}" >
+   </fury-breadcrumbs>
+   
+   <fury-scrollbar class="scrollbar" fxFlex="auto">
+      <div #container></div>
+   </fury-scrollbar>
+</div>

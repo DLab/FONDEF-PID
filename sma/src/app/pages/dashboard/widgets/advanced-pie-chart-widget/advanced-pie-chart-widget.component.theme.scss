@@ -1,0 +1,16 @@
+fury-advanced-pie-chart-widget {
+  .legend {
+    color: $theme-secondary-text;
+  }
+
+  .legend-item {
+
+    &:hover {
+      color: $theme-text;
+    }
+  }
+
+  .fade-out-overlay {
+    background: linear-gradient(to right, rgba(red($theme-card), green($theme-card), blue($theme-card), 0.1) 0%, rgba(red($theme-card), green($theme-card), blue($theme-card), 1) 100%);
+  }
+}

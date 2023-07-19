@@ -1,0 +1,44 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div>{{app.screen.Additional_Data}}</div>
+  <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content >
+  <form [formGroup]="form" class="person">
+    <div *ngFor="let item of items; let i = index">
+      <div *ngIf="item.additionalData.length > 0">
+        <h4 class="heading_a">{{item.name}}</h4>
+        <div *ngFor="let additionalData of item.additionalData; let i = index"  fxLayout="row" fxLayoutGap.gt-sm="15px" >  
+
+          <mat-form-field fxFlex="100" *ngIf="additionalData.type == 'number'">
+            <mat-label>{{app.screen[additionalData.name]}}</mat-label>
+            <input [numberFormat]="additionalData.decimals" matInput formControlName="{{additionalData.name}}" required>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="100" *ngIf="additionalData.type == 'parametro'">
+            <mat-label>{{app.screen[additionalData.name]}}</mat-label>
+            <input matInput [matAutocomplete]="tipoDato" formControlName="{{additionalData.name}}" required>
+            <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterTipoDato.displayItem">
+              <mat-option *ngFor="let item of filterTipoDato.filteredItems| async" [value]="item">
+                <span>{{ item.descripcion }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <button *ngIf="form.get(additionalData.name).value != null" type="button" mat-icon-button (click)="form.get(additionalData.name).reset()" matSuffix>
+              <mat-icon>close</mat-icon>
+            </button>
+            <button *ngIf="form.get(additionalData.name).value == null" type="button" mat-icon-button matSuffix>
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button  mat-button [disabled]="!isFormValid()" (click)="accept()">{{app.screen.Aceptar}}</button>
+</mat-dialog-actions>

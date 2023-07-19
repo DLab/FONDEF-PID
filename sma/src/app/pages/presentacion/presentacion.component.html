@@ -1,0 +1,22 @@
+<fury-page-layout class="presentacion">
+    <fury-breadcrumbs current="{{app.selectedMenuItem.name}}" *ngIf="false"></fury-breadcrumbs>
+
+    <fury-page-layout-content class="padding-0">
+        <mat-tab-group>
+          <mat-tab label="{{app.screen.Presentacion}}">
+            <div class="padding">
+                <div class="md-card">
+                    <div class="md-card-content welcome" >
+                          <p><img style="float: left; margin-right: 16px; margin-bottom: 16px;"
+                              src="{{logo}}" alt="" /></p>
+                    </div>
+                </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="{{app.screen.Dashboard}}" *ngIf="hasDashBoard">
+            
+          </mat-tab>
+        </mat-tab-group>
+      </fury-page-layout-content>
+    
+</fury-page-layout>

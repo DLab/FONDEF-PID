@@ -1,0 +1,22 @@
+@import "var";
+
+.content {
+  max-width: 100%;
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.footer {
+  .section {
+
+    .value {
+      font: var(--font-title);
+    }
+
+    .label {
+      font: var(--font-body-2);
+      text-transform: uppercase;
+    }
+  }
+}

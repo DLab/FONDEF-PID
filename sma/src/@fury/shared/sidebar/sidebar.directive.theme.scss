@@ -1,0 +1,39 @@
+@import '@angular/flex-layout/mq';
+
+.fury-sidebar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  top: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: $sidebar-width;
+  z-index: 1000;
+  transition-property: transform, visibility;
+  transition-duration: $swift-ease-in-duration;
+  transition-timing-function: $swift-ease-in-duration;
+  background: $sidebar-background;
+  box-shadow: $sidebar-box-shadow;
+  visibility: hidden;
+
+  @include layout-bp(xs) {
+    max-width: 80vw;
+  }
+
+  &.position-left {
+    left: 0;
+    transform: translateX(-100%);
+  }
+
+  &.position-right {
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  &.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+}

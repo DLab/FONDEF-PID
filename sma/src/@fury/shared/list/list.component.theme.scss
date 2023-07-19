@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+
+fury-list {
+  @include mat.elevation($elevation);
+  border-radius: $border-radius;
+  overflow: auto;
+  display: flex;
+
+  .fury-list-table {
+    flex: 1 1 auto;
+  }
+
+  .fury-list-header {
+    background: $theme-card;
+    border-bottom: 1px solid $theme-divider;
+
+    .fury-filter-input {
+      background: $theme-card;
+      color: currentColor;
+
+      ::placeholder {
+        color: currentColor;
+      }
+    }
+
+    .fury-filter-input-icon, .fury-column-filter {
+      color: $theme-icon;
+    }
+
+    .fury-list-name {
+      border-right: 1px solid $theme-divider;
+    }
+  }
+
+  .mat-header-row, .paginator {
+    background: $theme-app-bar;
+  }
+
+  .mat-row:hover {
+    background: $theme-background-hover;
+  }
+
+  .mat-cell.actions-cell, .mat-header-cell.actions-cell {
+    button {
+      color: $theme-icon;
+    }
+  }
+
+  .mat-cell.image-cell, .mat-header-cell.image-cell {
+    img {
+      background: $theme-app-bar;
+    }
+  }
+}

@@ -1,0 +1,120 @@
+@import "@angular/material/theming";
+@import "./var-helpers";
+
+// Utilities
+@import "../partials/utilities";
+// Cards
+@import "../partials/cards";
+// Tabs
+@import "../partials/tabs";
+// Quill
+@import "../partials/plugins/quill";
+// Angular Calendar
+@import "../partials/plugins/angular-calendar";
+
+// Sidebar
+$sidebar-width: 330px !default;
+$sidebar-background: $theme-background !default;
+$sidebar-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .40) !default;
+@import "../../shared/sidebar/sidebar.directive.theme";
+
+// Sidenav
+$sidenav-background: #283144 !default;
+$sidenav-color: white !default;
+$sidenav-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .40) !default;
+$sidenav-toolbar-background: darken($sidenav-background, 3.5) !default;
+$sidenav-logo-color: white !default;
+$sidenav-secondary-text: $light-secondary-text !default;
+$sidenav-collapsed-hover-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .40) !default;
+
+@import "../../../app/layout/sidenav/sidenav.component.theme";
+@import "var";
+
+// Sidenav Item
+$sidenav-item-color: $sidenav-color !default;
+$sidenav-item-color-hover: white !default;
+$sidenav-item-color-active: $theme-color-primary-contrast !default;
+
+$sidenav-item-background-hover: darken($sidenav-background, 2.5) !default;
+$sidenav-item-background-active: var(--primary-bgcolor) !default;
+$sidenav-item-text-icon-color: rgba(white, 0.5) !default;
+
+$sidenav-item-typography-font-family: var(--font-family) !default;
+$sidenav-item-typography-font-size: 14px !default;
+$sidenav-item-typography-font-weight: 400 !default;
+
+$sidenav-item-subheading-color: $light-secondary-text !default;
+$sidenav-item-subheading-typography-font-family: var(--font-family) !default;
+
+$sidenav-item-dropdown-level1: darken($sidenav-background, 3.5) !default;
+$sidenav-item-dropdown-level2: darken($sidenav-background, 5) !default;
+$sidenav-item-dropdown-level3: darken($sidenav-background, 7.5) !default;
+$sidenav-item-dropdown-level4: darken($sidenav-background, 10) !default;
+
+@import "../../../app/layout/sidenav/sidenav-item/sidenav-item.component.theme";
+
+// Toolbar
+$toolbar-background: $theme-card !default;
+$toolbar-color: $theme-text !default;
+$toolbar-elevation: 1 !default;
+$toolbar-logo-color: $theme-text !default;
+
+$toolbar-button-separator-color: rgba(0, 0, 0, 0.08) !default;
+
+$toolbar-user-dropdown-elevation: $elevation !default;
+$toolbar-notification-elevation: $elevation !default;
+
+$toolbar-search-background: $theme-app-bar !default;
+$toolbar-search-dropdown-elevation: $elevation !default;
+
+@import "../../../app/layout/toolbar/toolbar.component.theme";
+
+// Navigation
+@import "../../../app/layout/navigation/navigation.component.theme";
+
+// Card
+@import "../../shared/card/card.component.theme";
+
+// Footer
+$footer-background: $theme-app-bar !default;
+$footer-border-top: 1px solid $theme-divider !default;
+$footer-elevation: 0 !default;
+@import "../../../app/layout/footer/footer.component.theme";
+
+// Title
+@import "../../shared/title/title.directive.theme";
+
+// Page
+@import "../../shared/page/page.directive.theme";
+
+// Page Layout
+@import "../../shared/page-layout/page-layout.directive.theme";
+
+// Backdrop
+@import "../../shared/backdrop/backdrop.directive.theme";
+
+// Breadcrumbs
+@import "../../shared/breadcrumbs/breadcrumbs.component.theme";
+
+// List
+@import "../../shared/list/list.component.theme";
+
+// Widgets
+
+// Advanced Pie Chart Widget
+@import "../../../app/pages/dashboard/widgets/advanced-pie-chart-widget/advanced-pie-chart-widget.component.theme";
+
+// Recent Sales Widget
+@import "../../../app/pages/dashboard/widgets/recent-sales-widget/recent-sales-widget.component.theme";
+
+// Market Widget
+@import "../../../app/pages/dashboard/widgets/market-widget/market-widget.component.theme";
+
+// Sales Summary Widget
+@import "../../../app/pages/dashboard/widgets/sales-summary-widget/sales-summary-widget.component.theme";
+
+// Audience Overview Widget
+@import "../../../app/pages/dashboard/widgets/audience-overview-widget/audience-overview-widget.component.theme";
+
+// Donut Chart Widget
+@import "../../../app/pages/dashboard/widgets/donut-chart-widget/donut-chart-widget.component.theme";

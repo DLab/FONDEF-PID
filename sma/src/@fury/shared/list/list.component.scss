@@ -1,0 +1,87 @@
+@import "var";
+
+.fury-list-table {
+  display: flex;
+  flex-direction: column;
+
+  .fury-list-header {
+    padding-left: $spacing;
+    padding-right: $spacing;
+    height: $card-header-height;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+
+    @include media-xs {
+      height: auto;
+      padding-top: $spacing;
+      padding-bottom: $spacing;
+    }
+
+    .fury-list-name {
+      font-size: 20px;
+      line-height: 32px;
+      font-weight: 500;
+      padding-right: $spacing;
+
+      @include media-xs {
+        border-right: none;
+      }
+    }
+
+    .fury-filter-input {
+      font-size: 16px;
+      line-height: 1.125;
+      border: none;
+      height: 32px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .fury-filter-input-icon {
+      width: 1.2em;
+      vertical-align: bottom;
+      height: 22px;
+      font-size: 22px;
+      margin-right: $padding-xs;
+    }
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .mat-header-row .mat-header-cell .mat-sort-header-button {
+    text-transform: uppercase;
+  }
+
+  .mat-cell.image-cell, .mat-header-cell.image-cell {
+    flex: 0;
+    width: 35px + $spacing;
+
+    img {
+      border-radius: 50%;
+      height: 35px;
+      width: 35px;
+      margin-right: $spacing;
+      vertical-align: middle;
+    }
+  }
+
+  .mat-cell, .mat-header-cell {
+    white-space: nowrap;
+    padding-left: $padding-sm;
+    padding-right: $padding-sm;
+  }
+
+  .mat-cell.actions-cell, .mat-header-cell.actions-cell {
+    flex: 0;
+    width: 40px;
+    overflow: visible;
+  }
+
+  .paginator {
+    display: block;
+  }
+}

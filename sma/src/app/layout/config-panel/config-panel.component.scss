@@ -1,0 +1,68 @@
+@use '@angular/material' as mat;
+@import "var";
+
+.config-panel {
+  padding: $padding-md $padding;
+}
+
+.heading {
+  margin-bottom: $padding;
+}
+
+.section {
+  padding-bottom: $padding-md;
+  margin-bottom: $padding-md;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.section-content {
+  margin-left: $padding-sm;
+
+  .subheading {
+    margin-top: $padding;
+  }
+}
+
+.subheading {
+  font: var(--font-caption);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.style {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  border-radius: $border-radius;
+  padding: $padding-xs;
+  transition: background $swift-ease-out-duration $swift-ease-out-timing-function
+}
+
+.color {
+  height: 36px;
+  width: 36px;
+  text-align: center;
+  margin-right: $padding-md;
+  border-radius: 50%;
+  @include mat.elevation($elevation);
+
+  mat-icon {
+    line-height: 36px;
+  }
+}
+
+mat-slide-toggle + mat-slide-toggle,
+mat-slide-toggle + mat-checkbox,
+mat-checkbox + mat-slide-toggle,
+mat-checkbox + mat-checkbox {
+  display: block;
+  margin-top: $padding-sm;
+}
+
+.style-name {
+  font: var(--font-body-2);
+}

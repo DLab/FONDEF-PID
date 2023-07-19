@@ -1,0 +1,178 @@
+{
+    "/service/restServices/uploadFile": {
+      "target": "http://localhost:8080/sma",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/service/restServices/exportToExcel": {
+      "target": "http://localhost:8080/sma",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/service/restServices/consultarMultiplesParametros": {
+      "target": "http://localhost:8080/sma",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    },
+    "/service/restServices/obtieneCondicionesIniciales": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/setCurrentUser": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/changePassword": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/getCurrentUser": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/getScreen": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+
+
+      "/service/restServices/consultarUsuarios": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/eliminarUsuario": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/guardarUsuario": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultarRoles": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/obtenerAccionesxFuncionRol": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/eliminarRol": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/guardarRol": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+
+      "/service/restServices/waitForProcess": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultaDetalleRol": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/validaArchivo": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/getAnaliticaDeDatos": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/getPrediccionIA": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultaRegulados": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultaEstaciones": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultaReguladosYEstaciones": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultarTiposDeArchivo": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/consultaDetalleTiposDeArchivo": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/guardarTiposDeArchivo": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/eliminarTiposDeArchivo": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      },
+      "/service/restServices/getEstaciones": {
+        "target": "http://localhost:8080/sma",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+      }
+      
+      
+      
+      
+  }
+

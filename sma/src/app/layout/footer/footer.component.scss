@@ -1,0 +1,26 @@
+@import "var";
+
+:host {
+  bottom: 0;
+  display: block;
+}
+
+.footer {
+  height: $footer-height;
+  position: relative;
+  z-index: $footer-z-index;
+  padding-left: $spacing;
+  padding-right: $spacing;
+
+  .name {
+    letter-spacing: 0;
+  }
+
+  .action {
+    .icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+}

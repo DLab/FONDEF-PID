@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@import '@angular/flex-layout/mq';
+@import '~normalize.css/normalize.css';
+@import "~highlight.js/styles/androidstudio.css";
+@import "~simplebar/dist/simplebar.css";
+
+@import "./var";
+@import "./theme";
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core($config);
+
+@import "./partials/scrollbars";
+@import "./partials/misc";
+@import "./partials/typography";
+@import "../shared/page-layout/page-layout.directive";

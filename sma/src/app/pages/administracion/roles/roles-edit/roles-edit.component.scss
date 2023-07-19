@@ -1,0 +1,27 @@
+darta-roles-edit{
+    .layout-table{
+        width: 1200px;
+        min-width: 1200px;
+        max-width: 1200px;
+
+        height: 576px;
+        min-height: 576px;
+        max-height: 576px;
+    }
+    table{
+        width: 100%;
+    }
+    .header-cell{
+        text-align: center;
+        background-color: rgb(245,245,245);
+        text-transform: uppercase;
+    }
+    .id-cell{
+        padding-right: 8px;
+    }
+
+    .scrollbar-table{
+        height: 450px;
+        overflow-y: auto;        
+    }
+}

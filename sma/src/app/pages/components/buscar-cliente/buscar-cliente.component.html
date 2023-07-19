@@ -1,0 +1,28 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div>{{gl.screen.Cliente}}</div>
+  <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="contrato-content">
+  <form [formGroup]="form">
+    <div class="person">
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+        <mat-form-field fxFlex class="field-1-4">
+          <mat-label>{{gl.screen.Id_Cliente}}</mat-label>
+          <input rutFormat type="text" formControlName="idCliente" (blur)="idClienteChange()" matInput required> 
+        </mat-form-field>
+
+        <mat-form-field fxFlex class="field-1-4">
+          <mat-label>{{gl.screen.Descripcion}}</mat-label>
+          <input type="text" formControlName="descripcionCliente"  matInput >
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button  mat-button [disabled]="!isFormValid()" (click)="accept()">{{gl.screen.Aceptar}}</button>
+</mat-dialog-actions>
+

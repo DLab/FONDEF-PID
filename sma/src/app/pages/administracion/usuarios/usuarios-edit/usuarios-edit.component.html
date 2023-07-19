@@ -1,0 +1,62 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div>{{gl.screen.Usuario}}</div>
+  <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content>
+    <div class="person">
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+
+        <mat-form-field fxFlex class="field-1-2">
+          <mat-label>{{gl.screen.Id}}</mat-label>
+          <input type="text" formControlName="id"  maxlength="20" matInput required>
+        </mat-form-field>
+
+        <mat-form-field fxFlex class="field-1-2">
+          <mat-label>{{gl.screen.Nombre}}</mat-label>
+          <input type="text" formControlName="nombre"  maxlength="140" matInput required>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+      
+      <mat-form-field fxFlex="grow">
+        <mat-label>{{gl.screen.Password}}</mat-label>
+        <input matInput [type]="inputType" formControlName="password" required>
+        <button type="button" mat-icon-button matSuffix (click)="toggleVisibility()" [matTooltip]="gl.screen.Intercambiar_visibilidad">
+          <mat-icon *ngIf="visible">visibility</mat-icon>
+          <mat-icon *ngIf="!visible">visibility_off</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+      </mat-form-field> 
+
+      <mat-form-field fxFlex="grow" class="field-1-2">
+        <mat-label>{{gl.screen.Rol_Asignado}}</mat-label>
+        <input matInput [matAutocomplete]="rol" formControlName="idRol" required>
+        <mat-autocomplete #rol="matAutocomplete" [displayWith]="filterRoles.displayItem">
+          <mat-option *ngFor="let item of filterRoles.filteredItems| async" [value]="item">
+            <span>{{ item.descripcion }}</span>
+          </mat-option>
+        </mat-autocomplete>
+        <button *ngIf="form.get('idRol').value && !form.get('idRol').disabled" type="button" mat-icon-button (click)="form.get('idRol').reset()" matSuffix>
+          <mat-icon>close</mat-icon>
+        </button>
+        <button *ngIf="!form.get('idRol').value" type="button" mat-icon-button matSuffix>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('idRol').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+      </mat-form-field>        
+
+
+  </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" *ngIf="item.editable">
+    <button  mat-button [disabled]="!form.valid">{{gl.screen.Guardar}}</button>
+  </mat-dialog-actions>
+</form>

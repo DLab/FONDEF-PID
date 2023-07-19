@@ -1,0 +1,44 @@
+<fury-card fxFlex="auto">
+  <div class="header" fxLayout="column" fxLayout.gt-xs="row">
+    <div (click)="setActiveOptions(property)" *ngFor="let property of options" [class.active]="isActive(property)"
+         class="property" fxLayout="row" fxLayout.gt-xs="column"
+         fxLayoutAlign="start center" fxLayoutAlign.gt-xs="start stretch" fxLayoutGap="8px"
+         fxLayoutGap.gt-xs="0">
+      <div class="label" fxFlex="grow">{{ property.label }}</div>
+      <div class="value" fxFlex="grow">{{ property.sum }}</div>
+      <div [class.success]="property.gain >= 0" [class.warn]="property.gain < 0" class="gain" fxFlex="grow">
+        <mat-icon *ngIf="property.gain >= 0" class="icon">trending_up</mat-icon>
+        <mat-icon *ngIf="property.gain < 0" class="icon">trending_down</mat-icon>
+        {{ property.gain }}%
+      </div>
+      <div class="compared" fxFlex="grow">vs last 7 days</div>
+    </div>
+  </div>
+
+  <fury-card-content class="card-content">
+    <canvas *ngIf="activeOptions?.data"
+            [datasets]="activeOptions.data.datasets"
+            [labels]="activeOptions.data.labels"
+            [legend]="false"
+            [options]="chartOptions"
+            baseChart
+            chartType="line">
+    </canvas>
+  </fury-card-content>
+
+  <fury-card-actions class="actions" fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-form-field appearance="standard" class="select">
+      <mat-select [formControl]="timeframe">
+        <mat-option value="last7">Last 7 Days</mat-option>
+        <mat-option value="last14">Last 14 Days</mat-option>
+        <mat-option value="lastMonth">Last Month</mat-option>
+        <mat-divider></mat-divider>
+        <mat-option value="custom">Custom</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button color="primary" mat-button type="button">
+      AUDIENCE OVERVIEW
+    </button>
+  </fury-card-actions>
+</fury-card>

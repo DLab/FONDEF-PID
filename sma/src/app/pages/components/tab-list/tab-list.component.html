@@ -1,0 +1,7 @@
+<mat-tab-group  fxFlex>
+  <mat-tab *ngFor="let item of items" label="{{app.screen[item.name]}}">
+    <darta-tab-item-list 
+        (itemSelected)="selectedItem($event)"
+        [itemList]="item"></darta-tab-item-list>
+  </mat-tab>
+</mat-tab-group>

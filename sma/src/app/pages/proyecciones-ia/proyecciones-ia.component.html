@@ -1,0 +1,15 @@
+<div class="page" fxLayout="column">
+
+  <fury-breadcrumbs class="breadcrumbs" 
+         *ngIf="app.selectedMenuItem != null"
+         [crumbs]="app.selectedMenuItem.lang_crumbs" 
+         current="{{app.screen[app.selectedMenuItem.name]}}" >
+  </fury-breadcrumbs>
+
+  <app-filtros-por-estacion 
+            [filterBaseDatoFn]="filterBaseDatosFn" 
+            [filterTipoDatoFn]="filterTipoDatoFn"
+            (search)="search($event)"></app-filtros-por-estacion>
+
+  <div #graph echarts [options]="optionsGraph" [ngClass]="chartClassName"  ></div>
+</div>

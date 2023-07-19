@@ -1,0 +1,21 @@
+@import "var";
+
+.quick-info-widget {
+  background: white;
+  padding: $spacing;
+  border-radius: $border-radius;
+
+  .value {
+    font: var(--font-display-1);
+  }
+
+  .label {
+    font: var(--font-body-1);
+  }
+
+  .icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+  }
+}

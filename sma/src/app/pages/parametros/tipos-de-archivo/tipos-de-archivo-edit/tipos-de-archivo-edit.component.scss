@@ -1,0 +1,26 @@
+app-tipos-de-archivo-edit{
+    .dialog-content{
+        min-width: 1300px;
+        max-width: 1300px;
+        width: 1300px;
+
+        min-height: 730px;
+        max-height: 730px;
+        height: 730px;
+    }
+
+    .mat-table.cdk-table{
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    .mat-mini-fab.mat-primary {
+    background-color: #1976d2 !important;
+    }
+    i.fa{
+        padding-right: 5px;
+        cursor: pointer;
+    }
+    fury-list{
+        margin-top: 15px;
+    }
+}

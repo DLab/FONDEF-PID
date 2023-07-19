@@ -1,0 +1,45 @@
+
+fury-audience-overview-widget {
+
+  .label {
+    color: $theme-secondary-text;
+  }
+
+  .property {
+
+    .compared {
+      color: $theme-secondary-text;
+    }
+
+    &:hover {
+      background: $theme-background-hover;
+    }
+
+    &.active {
+      border-color: #4285f4;
+
+      .label {
+        color: $theme-text;
+        font-weight: 500;
+      }
+
+      .value {
+        font-weight: 400;
+      }
+
+      .compared {
+        visibility: visible;
+      }
+    }
+  }
+
+  .gain {
+    &.success {
+      color: $color-success;
+    }
+
+    &.warn {
+      color: $theme-color-warn;
+    }
+  }
+}

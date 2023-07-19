@@ -1,0 +1,106 @@
+<div class="config-panel">
+  <fury-title class="heading">
+    <mat-icon>settings</mat-icon>
+    <span>Configuration</span>
+  </fury-title>
+
+  <div class="section">
+    <h5 class="subheading">THEME STYLE</h5>
+
+    <div class="styles">
+      <div (click)="setActiveTheme('fury-default')" class="style" matRipple>
+        <div class="color default">
+          <mat-icon *ngIf="(activeTheme$ | async) === 'fury-default'">check</mat-icon>
+        </div>
+        <div class="style-name">Default</div>
+      </div>
+
+      <div (click)="setActiveTheme('fury-light')" class="style" matRipple>
+        <div class="color light">
+          <mat-icon *ngIf="(activeTheme$ | async) === 'fury-light'">check</mat-icon>
+        </div>
+        <div class="style-name">Light</div>
+      </div>
+
+      <div (click)="setActiveTheme('fury-dark')" class="style" matRipple>
+        <div class="color dark">
+          <mat-icon *ngIf="(activeTheme$ | async) === 'fury-dark'">check</mat-icon>
+        </div>
+        <div class="style-name">Dark</div>
+      </div>
+
+      <div (click)="setActiveTheme('fury-flat')" class="style" matRipple>
+        <div class="color flat">
+          <mat-icon *ngIf="(activeTheme$ | async) === 'fury-flat'">check</mat-icon>
+        </div>
+        <div class="style-name">Flat</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h5 class="subheading">TOOLBAR</h5>
+
+    <div class="section-content">
+      <mat-slide-toggle (change)="toolbarVisibleChange($event)" [checked]="toolbarVisible$ | async">Visible
+      </mat-slide-toggle>
+
+      <h5 class="subheading">POSITION</h5>
+
+      <mat-radio-group (change)="toolbarPositionChange($event)"
+                       [value]="toolbarPosition$ | async"
+                       fxLayout="column"
+                       fxLayoutGap="12px">
+        <mat-radio-button value="above-fixed">Above Fixed</mat-radio-button>
+        <mat-radio-button value="fixed">Fixed</mat-radio-button>
+        <mat-radio-button value="static">Static</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
+  <div class="section">
+    <h5 class="subheading">NAVIGATION</h5>
+
+    <div class="section-content">
+      <mat-slide-toggle (change)="sidenavOpenChange($event)" [checked]="sidenavOpen$ | async">Open
+      </mat-slide-toggle>
+
+      <h5 class="subheading">POSITION</h5>
+
+      <mat-radio-group (change)="navigationChange($event)"
+                       [value]="navigation$ | async"
+                       fxLayout="column"
+                       fxLayoutGap="12px">
+        <mat-radio-button value="top">Top</mat-radio-button>
+        <mat-radio-button value="side">Side</mat-radio-button>
+      </mat-radio-group>
+
+      <h5 class="subheading">OPTIONS</h5>
+
+      <mat-checkbox (change)="sidenavCollapsedChange($event)" [checked]="sidenavCollapsed$ | async">Collapsed
+      </mat-checkbox>
+      <mat-checkbox (change)="sidenavUserChange($event)" [checked]="sidenavUserVisible$ | async">Show User Panel
+      </mat-checkbox>
+    </div>
+  </div>
+
+  <div class="section">
+    <h5 class="subheading">FOOTER</h5>
+
+    <div class="section-content">
+      <mat-slide-toggle (change)="footerVisibleChange($event)" [checked]="footerVisible$ | async">Visible
+      </mat-slide-toggle>
+
+      <h5 class="subheading">POSITION</h5>
+
+      <mat-radio-group (change)="footerPositionChange($event)"
+                       [value]="footerPosition$ | async"
+                       fxLayout="column"
+                       fxLayoutGap="12px">
+        <mat-radio-button value="above-fixed">Above Fixed</mat-radio-button>
+        <mat-radio-button value="fixed">Fixed</mat-radio-button>
+        <mat-radio-button value="static">Static</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+</div>

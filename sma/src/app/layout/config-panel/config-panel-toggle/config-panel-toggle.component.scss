@@ -1,0 +1,8 @@
+@import "var";
+
+.config-panel-toggle {
+  position: fixed;
+  bottom: $spacing + $footer-height;
+  right: $spacing;
+  z-index: 100;
+}

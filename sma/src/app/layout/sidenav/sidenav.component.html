@@ -1,0 +1,21 @@
+<div class="sidenav" fxLayout="column">
+  <div class="sidenav-toolbar" fxLayout="row" fxLayoutAlign="start center">
+    <div [routerLink]="['/presentacion']" class="sidenav-toolbar-logo" >
+        <span class="name" fxHide fxShow.gt-sm>{{title}}</span> 
+    </div>
+
+    <span fxFlex><!-- fill space --></span>
+
+    <div fxFlexAlign="center" fxHide fxShow.gt-md>
+      <button (click)="toggleCollapsed()" class="sidenav-toolbar-collapse-toggle" mat-icon-button>
+        <mat-icon *ngIf="!collapsed" class="sidenav-toolbar-collapse-icon">radio_button_checked</mat-icon>
+        <mat-icon *ngIf="collapsed" class="sidenav-toolbar-collapse-icon">radio_button_unchecked</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <fury-scrollbar class="sidenav-items" fxFlex="auto">
+    <fury-sidenav-item *ngFor="let item of items$ | async" [item]="item" [level]="0"></fury-sidenav-item>
+  </fury-scrollbar>
+
+</div>

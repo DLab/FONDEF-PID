@@ -1,0 +1,204 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "darta": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "prefix": "darta",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "tsConfig": "src/tsconfig.app.json",
+            "polyfills": "src/polyfills.ts",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles",
+                "node_modules"
+              ]
+            },
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/_redirects",
+              "src/.htaccess",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/leaflet/dist/images",
+                "output": "assets/"
+              }              
+            ],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/@ng-select/ng-select/themes/material.theme.css"
+            ],
+            "scripts": ["./node_modules/jquery/dist/jquery.min.js"],
+            "baseHref": "/",
+            "allowedCommonJsDependencies": [
+              "simplebar",
+              "highlight.js",
+              "faker",
+              "showdown",
+              "core-js/modules/es.string.match",
+              "core-js/modules/es.array.for-each",
+              "core-js/modules/es.string.replace",
+              "core-js/modules/es.regexp.exec",
+              "core-js/modules/es.function.name",
+              "core-js/modules/es.string.name",
+              "core-js/modules/es.array.reduce",
+              "core-js/modules/web.dom-collections.iterator",
+              "core-js/modules/es.string.iterator",
+              "core-js/modules/es.weak-map",
+              "core-js/modules/es.parse-int",
+              "core-js/modules/es.object.to-string",
+              "core-js/modules/es.object.assign",
+              "core-js/modules/es.array.iterator",
+              "core-js/modules/es.array.filter",
+              "core-js/modules/web.dom-collections.for-each",
+              "dom-set",
+              "dom-plane",
+              "angular-calendar/date-adapters/date-fns",
+              "calendar-utils/date-adapters/date-fns",
+              "@mattlewis92/dom-autoscroller",
+              "angular-calendar/date-adapters/moment",
+              "ngx-quill",
+              "lodash",
+              "chart.js",
+              "@angular-material-components/datetime-picker"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "25kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "analyze": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true,
+              "statsJson": true
+            }
+          },
+          "defaultConfiguration": ""
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "darta:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "darta:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "darta:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "scripts": ["./node_modules/jquery/dist/jquery.js"],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico",
+              "src/manifest.json",
+              "src/manifest.json"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "darta-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./e2e/protractor.conf.js",
+            "devServerTarget": "darta:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

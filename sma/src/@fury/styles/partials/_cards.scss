@@ -1,0 +1,54 @@
+@use '@angular/material' as mat;
+.fury-preview-card {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  border-radius: $border-radius;
+  @include mat.elevation(2);
+
+  .preview {
+    padding: $spacing;
+    background: $theme-app-bar;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      margin-bottom: $spacing;
+      font: var(--font-title);
+    }
+
+    .preview-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 200px;
+    }
+  }
+
+  .content {
+    background: $theme-card;
+    @include mat.elevation(8);
+
+    .header {
+      padding: $spacing $spacing 0;
+    }
+
+    .title {
+      font: var(--font-headline);
+    }
+
+    .tag {
+      color: $theme-secondary-text;
+      font: var(--font-body-1);
+    }
+
+    .tabs {
+      margin-top: $spacing;
+      border-top: 1px solid $theme-divider;
+    }
+
+    .tab-content {
+      padding: $spacing;
+    }
+  }
+}

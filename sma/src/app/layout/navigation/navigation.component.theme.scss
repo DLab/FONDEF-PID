@@ -1,0 +1,27 @@
+@use '@angular/material' as mat;
+fury-navigation {
+  display: block;
+  background: $sidenav-background;
+  color: $sidenav-color;
+  @include mat.elevation($toolbar-elevation);
+
+  .navigation-item-container {
+    .navigation-item {
+      color: $sidenav-color;
+
+      &.active {
+        &.active {
+          background: $sidenav-item-background-active;
+          color: $sidenav-item-color-active;
+        }
+      }
+    }
+
+    &:hover, &:focus {
+      .navigation-item {
+        color: $sidenav-item-color-hover;
+        background: $sidenav-item-background-hover;
+      }
+    }
+  }
+}

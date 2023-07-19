@@ -1,0 +1,63 @@
+darta-presentacion{
+    .darta-container-title{
+        display: table;
+    }
+    .darta-title{
+        color: #286aad;
+        font-size: 54px;
+        font-weight: bold;
+        display: inline-flex;
+    }
+    .darta-header{
+        color: #286aad;
+        font-size: 20px;
+        display: table-cell;
+        text-align: left;
+        padding-left: 21px;
+        padding-top: 5px;
+        padding-bottom: 9px;
+    }
+    .darta-text{
+        color: #747474;
+        font-size: 14px;
+        text-transform: uppercase;
+        display: table;
+        padding-top: 10px;
+        padding-bottom: 10px;    
+    }
+    .darta-copyright{
+        color: #747474;
+        font-size: 18px;
+        font-style: italic;
+        display: table;
+    }
+    .darta-copyright span{
+        color: #286aad;
+        font-size: 15px;
+        font-weight: bold;
+        padding-left: 5px;
+    }
+
+    .darta-container{
+        text-align: left;
+        padding-left: 63px;
+        padding-top: 24px;
+    }
+
+    .darta-register{
+        font-size: 35px;
+    }
+    mat-tab-header{
+        background-color:rgb(0,0,0,0);
+
+        .mat-tab-label-content{
+            color: black;
+        }
+        .mat-tab-label-active .mat-tab-label-content{
+            color: black !important;
+        }         
+        .mat-ink-bar{
+            background-color:#ffb91c !important;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+.fury-card {
+  background: $theme-card;
+  color: $theme-text;
+
+  @include mat.elevation($elevation);
+
+  .fury-card-header-subheading {
+    color: $theme-secondary-text;
+  }
+
+  .fury-card-actions {
+    border-top: 1px solid $theme-divider;
+  }
+}

@@ -1,0 +1,39 @@
+fury-inbox {
+  .drawer-content > .header {
+    background: $theme-color-accent url('/assets/img/backgrounds/inbox.png');
+  }
+
+  fury-inbox-navigation {
+
+    .mat-list-item {
+      &.active {
+        color: $theme-color-primary;
+        background: $theme-background-hover;
+      }
+
+      &:hover {
+        background: $theme-background-hover;
+      }
+    }
+  }
+
+  fury-inbox-mail {
+
+    .vertical-divider {
+      background: $theme-divider;
+    }
+  }
+
+  fury-inbox-mail-list {
+
+    .mail {
+      &:hover {
+        background: $theme-background-hover;
+      }
+    }
+
+    .picture {
+      background: $theme-app-bar;
+    }
+  }
+}

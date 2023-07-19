@@ -1,0 +1,11 @@
+<div  *ngIf="visible" class="acction-cell">
+  <i  aria-hidden="true" title="{{gl.screen.Agregar}}" class="fa fa-plus" (click)="_add(row_data)" *ngIf="hasCommand('Agregar', row_data)"></i>
+  <div class="action-cell-command">
+    <i  aria-hidden="true" title="{{gl.screen.Copia_el_registro}}" class="fa fa-copy" (click)="_copy(row_data)" *ngIf="hasCommand('Copiar', row_data)"></i>
+    <i  aria-hidden="true" title="{{gl.screen.Visualiza_el_registro}}" class="fa fa-eye" (click)="_view(row_data)" *ngIf="hasCommand('Visualizar', row_data)"></i>
+    <i  aria-hidden="true" title="{{gl.screen.Editar_registro}}" class="fa fa-pencil" (click)="_edit(row_data)" *ngIf="hasCommand('Editar', row_data)"></i>
+    <i  aria-hidden="true" title="{{gl.screen.Desactiva_el_registro}}" class="fa fa-ban" (click)="_desactivar(row_data)" *ngIf="hasCommand('Desactivar', row_data)"></i>
+    <i  aria-hidden="true" title="{{gl.screen.Borra_el_registro}}" class="fa fa-trash" (click)="_delete(row_data)" *ngIf="hasCommand('Eliminar', row_data)"></i>
+    <i  aria-hidden="true" title="{{gl.screen.Ejecuta_el_registro}}" class="fa fa-play-circle" (click)="_ejecutar(row_data)" *ngIf="hasCommand('Procesar', row_data)"></i>
+  </div>
+</div>

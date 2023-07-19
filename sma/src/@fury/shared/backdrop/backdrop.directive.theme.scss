@@ -1,0 +1,22 @@
+.fury-backdrop {
+  z-index: 800 !important;
+  background-color: transparent;
+  transition-property: background-color, visibility;
+  transition-duration: $backdrop-animation-duration;
+  transition-timing-function: $backdrop-animation-timing-function;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  visibility: hidden;
+
+  &.visible {
+    visibility: visible;
+    background-color: rgba(0, 0, 0, .6);
+  }
+
+  &.invisible {
+    background-color: transparent;
+  }
+}

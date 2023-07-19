@@ -1,0 +1,42 @@
+@use 'sass:math';
+@import "var";
+
+:host {
+  top: 0;
+  z-index: $toolbar-z-index;
+}
+ 
+.toolbar {
+  padding-right: 0;
+  height: $toolbar-height;
+  padding-left: $spacing;
+  max-width: 100%;
+  background: var(--primary-background) !important;
+
+  .toolbar-button {
+    border-left-width: 1px;
+    border-left-style: solid;
+    display: flex;
+  }
+  .toolbar-button.button {
+    color:white;
+  }
+  .fullscreen{
+    color: white;
+  }
+  .toolbar-logo {
+    cursor: pointer;
+    outline: none;
+    margin-bottom: -5px;
+    margin-left: $spacing;
+    margin-right: $spacing;
+  
+    svg {
+      height: 35px;
+    }
+  }
+
+  @include media-xs {
+    padding-left: math.div($spacing, 3);
+  }
+}

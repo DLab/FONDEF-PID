@@ -1,0 +1,15 @@
+app-tipos-de-validaciones-edit{
+    .mat-tab-body-content, .mat-tab-body, .mat-tab-body-wrapper, .mat-dialog-content{
+        overflow: visible !important;
+    }
+    ng-select{
+        width: 100% !important;
+    }
+    .mat-dialog-content{
+        height: 60%;
+    }
+}
+
+.mat-dialog-container{
+    overflow: visible;
+}

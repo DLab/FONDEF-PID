@@ -1,0 +1,173 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div>{{app.screen.TipoArchivo}}</div>
+  <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+  <mat-dialog-content class="dialog-content">
+    <div fxLayout="column" fxLayoutGap="8px">
+      <form [formGroup]="form">
+        <div class="person">
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+
+            <mat-form-field fxFlex="40">
+              <mat-label>{{app.screen.Codigo}}</mat-label>
+              <input codigo type="text" formControlName="codigo" maxlength="16" matInput required>
+            </mat-form-field>
+
+            <mat-form-field fxFlex="40">
+              <mat-label>{{gl.screen.BaseDato}}</mat-label>
+              <input matInput [matAutocomplete]="baseDatos" formControlName="codigoBaseDatos">
+              <mat-autocomplete #baseDatos="matAutocomplete" [displayWith]="filterBaseDatos.displayItem">
+                <mat-option *ngFor="let item of filterBaseDatos.filteredItems| async" [value]="item">
+                  <span>{{ item.descripcion }}</span>
+                </mat-option>
+              </mat-autocomplete>
+              <button *ngIf="form.get('codigoBaseDatos').value && !form.get('codigoBaseDatos').disabled" type="button" mat-icon-button (click)="form.get('codigoBaseDatos').reset()" matSuffix>
+                <mat-icon>close</mat-icon>
+              </button>
+              <button *ngIf="!form.get('codigoBaseDatos').value && !form.get('codigoBaseDatos').disabled" type="button" mat-icon-button matSuffix>
+                <mat-icon>arrow_drop_down</mat-icon>
+              </button>
+              <mat-error *ngIf="form.get('codigoBaseDatos').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+            </mat-form-field>
+
+          </div>
+
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+            <mat-form-field fxFlex>
+              <mat-label>{{gl.screen.Descripcion}}</mat-label>
+              <input type="text" formControlName="descripcion" matInput required>
+            </mat-form-field>
+          </div>
+      
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+            <mat-form-field fxFlex>
+              <mat-label>{{gl.screen.Observaciones}}</mat-label>
+              <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" formControlName="observaciones" matInput ></textarea>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+            <mat-form-field fxFlex>
+              <mat-label>{{gl.screen.Usuario}}</mat-label>
+              <input type="text" formControlName="usuario" matInput>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <mat-label>{{gl.screen.Fecha}}</mat-label>
+              <input type="text" formControlName="ultModificacion" matInput>
+            </mat-form-field>
+          </div>
+      
+        </div>
+      </form>
+      <mat-expansion-panel expanded="false" (opened)="filterOpenState = true" (closed)="filterOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="title" [style.padding-top]="filterOpenState ? '0px': '7px'">
+            {{app.screen.Plantilla}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <darta-upload-file 
+          showDeleteFile="false"
+          additionalData="platillaTipoArchivo"
+          (fileUploaded)="fileUploaded($event)" 
+          [fileType]="fileType"></darta-upload-file>
+      </mat-expansion-panel>
+      <mat-tab-group  fxFlex>
+        <mat-tab label="{{app.screen.HojasDeDatos}}">
+          <fury-list name="" [columns]="columns" >
+            <div class="actions">
+              <button class="create"
+                (click)="addItem()"
+                *ngIf="item.editable"
+                type="button"
+                mat-mini-fab color="accent"
+                [matTooltip]="app.screen.Agregar">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <table [dataSource]="dataSource" mat-table>
+
+              <ng-container *ngFor="let column of columns">
+                <ng-container *ngIf="column.isModelProperty" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef mat-header-cell > {{ column.name }}</th>
+                  <td *matCellDef="let row" mat-cell [style.text-align]="column.type == 'CHECKED' ? 'center' : 'left'">
+                    <span *ngIf="!column.type || column.type != 'CHECKED'">{{ row[column.property] }}</span>
+                    <mat-icon *ngIf="column.type && column.type == 'CHECKED' && row[column.property]">check</mat-icon>
+                  </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="accion">
+                <th *matHeaderCellDef class="actions-cell" mat-header-cell>{{ app.screen.Accion }}</th>
+                <td *matCellDef="let row" class="actions-cell" mat-cell>
+                  <div  class="acction-cell">
+                    <i  aria-hidden="true" title="{{gl.screen.Visualiza_el_registro}}" class="fa fa-eye" (click)="editItem(row, false, false)" *ngIf="!item.editable"></i>
+                    <i  aria-hidden="true" title="{{gl.screen.Editar_registro}}" class="fa fa-pencil" (click)="editItem(row, false, true)" *ngIf="item.editable"></i>
+                    <i  aria-hidden="true" title="{{gl.screen.Borra_el_registro}}" class="fa fa-trash" (click)="deleteItem(row)" *ngIf="item.editable"></i>
+                  </div>
+                </td>
+              </ng-container>
+          
+              <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: visibleColumns;"
+                  class="clickable route-animations-elements"
+                  mat-row></tr>
+            </table>
+
+            <mat-paginator class="paginator" [pageSize]="10"></mat-paginator>
+          </fury-list>
+        </mat-tab>
+        <mat-tab label="{{app.screen.ValidacionesNormativas}}">
+          <fury-list name="" [columns]="colsValidacionesNormativas">
+            <div class="actions">
+              <button class="create"
+                (click)="addItemValidacion(true)"
+                *ngIf="item.editable"
+                type="button"
+                mat-mini-fab color="accent"
+                [matTooltip]="app.screen.Agregar">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <table [dataSource]="dsValidacionesNormativas" mat-table>
+  
+              <ng-container *ngFor="let column of colsValidacionesNormativas">
+                <ng-container *ngIf="column.isModelProperty" [matColumnDef]="column.property">
+                  <th *matHeaderCellDef mat-header-cell > {{ column.name }}</th>
+                  <td *matCellDef="let row" mat-cell [style.text-align]="column.type == 'CHECKED' ? 'center' : 'left'">
+                    <span *ngIf="!column.type || column.type != 'CHECKED'">{{ row[column.property] }}</span>
+                    <mat-icon *ngIf="column.type && column.type == 'CHECKED' && row[column.property]">check</mat-icon>
+                  </td>
+                </ng-container>
+              </ng-container>
+  
+              <ng-container matColumnDef="accion">
+                <th *matHeaderCellDef class="actions-cell" mat-header-cell>{{ app.screen.Accion }}</th>
+                <td *matCellDef="let row" class="actions-cell" mat-cell>
+                  <div  class="acction-cell">
+                    <i  aria-hidden="true" title="{{gl.screen.Visualiza_el_registro}}" class="fa fa-eye" (click)="editItemValidacion(row, false, false, true)" *ngIf="!item.editable"></i>
+                    <i  aria-hidden="true" title="{{gl.screen.Editar_registro}}" class="fa fa-pencil" (click)="editItemValidacion(row, false, true, true)" *ngIf="item.editable"></i>
+                    <i  aria-hidden="true" title="{{gl.screen.Borra_el_registro}}" class="fa fa-trash" (click)="deleteItemValidacion(row)" *ngIf="item.editable"></i>
+                  </div>
+                </td>
+              </ng-container>
+          
+              <tr *matHeaderRowDef="visibleColumnsNormativas" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: visibleColumnsNormativas;"
+                  class="clickable route-animations-elements"
+                  mat-row></tr>
+            </table>
+  
+            <mat-paginator class="pagNormativas" [pageSize]="10"></mat-paginator>
+          </fury-list>
+        </mat-tab>      
+      </mat-tab-group>        
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" *ngIf="item.editable">
+    <button  mat-button [disabled]="!form.valid" (click)="save()">{{gl.screen.Guardar}}</button>
+  </mat-dialog-actions>
+    

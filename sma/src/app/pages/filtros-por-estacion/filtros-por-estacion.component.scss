@@ -1,0 +1,11 @@
+app-filtros-por-estacion{
+    ng-select{
+        padding-left: 0px;
+    }
+    .mat-dialog-content{
+        width: 100%;
+    }
+    .mat-expansion-panel, .mat-dialog-content{
+        overflow: visible !important;
+    }    
+}

@@ -1,0 +1,60 @@
+<div class="page" fxLayout="column">
+
+  <fury-breadcrumbs class="breadcrumbs" 
+         *ngIf="app.selectedMenuItem != null"
+         [crumbs]="app.selectedMenuItem.lang_crumbs" 
+         current="{{app.screen[app.selectedMenuItem.name]}}" >
+  </fury-breadcrumbs>
+  
+  <div>
+    <div #filterContainer></div>
+  </div>
+
+  <darta-upload-file (fileUploaded)="fileUploaded($event)" 
+          (delete)="deleteFile($event)"
+          [additionalData]="additionalData" 
+          [fileType]="fileType"></darta-upload-file>
+
+  <fury-list name="{{app.screen[title]}}" [columns]="columns" (filterChange)="onFilterChange($event)" class="dropdown-visible">
+    <div class="actions" >
+      <button class="download-btn" 
+          (click)="download()" 
+          *ngIf="hasExport"
+          type="button" 
+          mat-mini-fab color="accent" 
+          [disabled]="!enabledExport"
+          [matTooltip]="app.screen.Haga_click_para_bajar_los_datos_a_un_archivo">
+      
+          <mat-icon>cloud_download</mat-icon>
+      </button>
+
+      <button class="create" 
+              (click)="loadCargaMasiva()" 
+              type="button" 
+              [disabled]="!enabledLoadCargaMasiva()"
+              mat-mini-fab color="accent" 
+              [matTooltip]="app.screen.Haga_click_para_procesar">
+        <mat-icon>play_circle_outline</mat-icon>
+      </button>
+    </div>
+        
+    <table [dataSource]="dataSource" mat-table matSort>
+  
+      <ng-container *ngFor="let column of columns">
+        <ng-container *ngIf="column.isModelProperty" [matColumnDef]="column.property">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ app.screen[column.name] }}</th>
+          <td *matCellDef="let row" mat-cell>
+            {{ row[column.property] }}
+          </td>
+        </ng-container>
+      </ng-container>
+  
+      <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: visibleColumns;"
+          class="clickable route-animations-elements"
+          mat-row></tr>
+  
+    </table> 
+    <mat-paginator class="paginator" [pageSize]="pageSize"></mat-paginator>
+  </fury-list>      
+</div>

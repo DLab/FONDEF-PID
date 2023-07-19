@@ -1,0 +1,100 @@
+fury-sidenav {
+  color: $sidenav-color;
+
+  .sidenav {
+    background: $sidenav-background;
+    transition-property: width, box-shadow;
+    transition-duration: $swift-ease-out-duration;
+    transition-timing-function: $swift-ease-out-timing-function;
+    box-shadow: $sidenav-box-shadow;
+  }
+
+  .sidenav-toolbar {
+    background: $sidenav-toolbar-background;
+
+    .sidenav-toolbar-logo,
+    .sidenav-toolbar-icon {
+      fill: $sidenav-logo-color;
+    }
+  }
+
+  .sidenav-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    place-content: center flex-start;
+    background: $sidenav-toolbar-background;
+    padding-top: $padding-xs;
+    padding-bottom: $padding-md;
+
+    .sidenav-user-name {
+      margin: $padding-sm 0 0;
+    }
+
+    .sidenav-user-email {
+      font: var(--font-caption);
+      color: $sidenav-secondary-text;
+    }
+
+    .sidenav-user-icons a {
+      color: $sidenav-color;
+    }
+
+    .sidenav-user-name,
+    .sidenav-user-email,
+    .sidenav-user-icons {
+      white-space: nowrap;
+    }
+  }
+
+  &.collapsed {
+    width: $sidenav-collapsed-width;
+
+    .sidenav {
+      width: $sidenav-collapsed-width;
+    }
+
+    .sidenav-toolbar-logo,
+    .sidenav-toolbar-collapse-toggle,
+    .sidenav-user-email,
+    .sidenav-user-name,
+    .sidenav-user-icons,
+    .sidenav-item > .subheading,
+    .sidenav-item > .sidenav-item-link > .name,
+    .sidenav-item > .sidenav-item-link > .badge,
+    .sidenav-item > .sidenav-item-link > .expand-indicator {
+      transition: opacity $swift-ease-out-duration $swift-ease-out-timing-function;
+      opacity: 0;
+    }
+
+    .sidenav-user-image {
+      transform: scale(0.70);
+      transition: transform $swift-ease-out-duration $swift-ease-out-timing-function;
+    }
+
+    &.expanded {
+      width: $sidenav-collapsed-width;
+
+      .sidenav {
+        width: $sidenav-width;
+        box-shadow: $sidenav-collapsed-hover-box-shadow;
+      }
+
+      .sidenav-user-image {
+        transform: scale(1);
+      }
+
+      .sidenav-toolbar-logo,
+      .sidenav-toolbar-collapse-toggle,
+      .sidenav-user-email,
+      .sidenav-user-name,
+      .sidenav-user-icons,
+      .sidenav-item > .subheading,
+      .sidenav-item > .sidenav-item-link > .name,
+      .sidenav-item > .sidenav-item-link > .badge,
+      .sidenav-item > .sidenav-item-link > .expand-indicator {
+        opacity: 1;
+      }
+    }
+  }
+}

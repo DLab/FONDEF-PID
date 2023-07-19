@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2020",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "datetime-picker": ["node_modules/@angular-material-components/datetime-picker"] // This mapping is relative to "baseUrl"
+    },
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  },
+  "include": [
+    "node_modules/@angular-material-components/datetime-picker/*", "src/*", "node_modules/jquery/dist/*"
+  ],
+
+}

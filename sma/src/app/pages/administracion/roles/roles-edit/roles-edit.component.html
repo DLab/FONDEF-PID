@@ -1,0 +1,73 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center" >
+  <div>{{gl.screen.Rol}}</div>
+  <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+  <mat-dialog-content>
+    <div fxLayout="column" fxLayoutGap="8px">
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="person">
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+
+            <mat-form-field fxFlex class="field-1-2">
+              <mat-label>{{gl.screen.Id}}</mat-label>
+              <input type="text" formControlName="id"  maxlength="20" matInput>
+            </mat-form-field>
+
+            <mat-form-field fxFlex class="field-1-2">
+              <mat-label>{{gl.screen.Descripcion}}</mat-label>
+              <input type="text" formControlName="descripcion"  maxlength="140" matInput required>
+            </mat-form-field>
+
+          </div>
+        </div>
+      </form>
+      <mat-tab-group  fxFlex>
+        <mat-tab label="{{gl.screen.Funciones}}">
+
+          <fury-list #listcontainer name="{{gl.screen.Funciones}}" [columns]="columns" (filterChange)="onFilterChange($event)" class="layout-table" hideHeader="true">
+            <table [dataSource]="dataSource" mat-table matSort>
+
+              <ng-container matColumnDef="id">
+                <th *matHeaderCellDef class="header-cell" mat-header-cell >{{ gl.screen.Funciones }}</th>
+                <td *matCellDef="let row" mat-cell>
+                  <mat-checkbox color="accent"
+                    inderterminate="false"
+                    class="id-cell"
+                    [disabled]="!item.editable"
+                    [(ngModel)]="row.selected"
+                    (change)="changeFunction(row)">{{row.descripcion}}</mat-checkbox>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="acciones">
+                <th *matHeaderCellDef class="header-cell" mat-header-cell >{{ gl.screen.Acciones }}</th>
+                <td *matCellDef="let row"  mat-cell>
+                  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+                    <div *ngFor="let y of row.acciones" style="width: 80px">
+                      <mat-checkbox color="accent"
+                        inderterminate="false"
+                        [disabled]="!item.editable || !row.selected || y.idAccion == 1 || row.id == 28 || row.id == 29 || (row.id == 30 && y.idAccion == 9) || row.id == 32 || row.id == 33"
+                        [(ngModel)]=y.selected>{{y.descripcion}}</mat-checkbox>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr *matHeaderRowDef="visibleColumns; sticky: true" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: visibleColumns;"
+                  class="clickable route-animations-elements"
+                  mat-row></tr>
+
+            </table>
+          </fury-list>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" *ngIf="item.editable">
+    <button  mat-button [disabled]="!form.valid" (click)="save()">{{gl.screen.Guardar}}</button>
+  </mat-dialog-actions>

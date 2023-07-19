@@ -1,0 +1,37 @@
+darta-exp-calculo{
+    .cdk-column-operador{
+        width: 80px !important;
+    }
+    .cdk-column-abrir{
+        width: 70px !important;
+    }
+    .cdk-column-cerrar{
+        width: 70px !important;
+    }
+    .cdk-column-valor{
+        width: 260px !important;
+        max-width: 260px !important;
+    }
+    .mat-header-cell.cdk-column-valor{
+        text-align: center !important;    
+    }
+    .cdk-column-accion{
+        width: 70px !important;
+    }
+    fury-list {
+        overflow:visible !important;
+    }
+    .cdk-column-operador .ng-value-container{
+        margin-left: 8px;
+        margin-top: 7px;
+    }
+    .cdk-column-operador .ng-value-label{
+        font-size: 19px;
+    }
+
+    .cdk-column-valor .ng-dropdown-panel{
+        width: 350px !important;
+        left: auto !important;
+        right: 0px !important;
+    }
+}

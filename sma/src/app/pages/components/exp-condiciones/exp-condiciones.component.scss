@@ -1,0 +1,49 @@
+darta-exp-condiciones{
+
+    .cdk-column-operador, .cdk-column-conector{
+        width: 80px !important;
+    }
+    .cdk-column-abrir{
+        width: 70px !important;
+    }
+    .cdk-column-cerrar{
+        width: 70px !important;
+    }
+    .cdk-column-valor{
+        width: 260px !important;
+        max-width: 260px !important;
+    }
+    .mat-header-cell.cdk-column-valor{
+        text-align: center !important;    
+    }
+
+    .cdk-column-concepto{
+        width: 160px !important;
+    }
+    .cdk-column-accion{
+        width: 70px !important;
+    }
+    fury-list {
+        overflow:visible !important;
+    }
+    .cdk-column-operador .ng-value-container, .cdk-column-conector .ng-value-container{
+        margin-left: 8px;
+    }
+    .cdk-column-operador .ng-value-label, .cdk-column-conector .ng-value-label{
+        font-size: 15px;
+    }
+    .cdk-column-operador .ng-value, .cdk-column-conector .ng-value{
+        padding-right: 4px;
+        padding-top: 4px;
+    }
+    .cdk-column-valor .ng-dropdown-panel{
+        width: 250px;
+        left: auto !important;
+        right: 0px !important;
+    }
+    .cdk-column-concepto .ng-dropdown-panel{
+        width: 345px !important;
+        left: auto !important;
+        right: 0px !important;
+    }
+}

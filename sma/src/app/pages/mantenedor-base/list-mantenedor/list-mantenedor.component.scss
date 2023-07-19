@@ -1,0 +1,18 @@
+darta-list-mantenedor{
+  .download-btn .mat-icon{
+        padding-bottom: 3px;
+  }
+  .download-btn, .activate, .delete{
+      margin-right: 9px;
+  }
+  .mat-table.cdk-table{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .search-btn{
+    margin-left: 5px;
+  }
+  .mat-mini-fab.mat-primary {
+    background-color: #1976d2 !important;
+  }
+}

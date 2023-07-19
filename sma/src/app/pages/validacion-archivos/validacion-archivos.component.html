@@ -1,0 +1,28 @@
+<fury-page-layout-content>
+  <form [formGroup]="form" >
+    <mat-dialog-content>
+      <div class="person">
+
+        <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" class="row-class">
+
+          <mat-form-field fxFlex="30">
+            <mat-label>{{app.screen.TipoArchivo}}</mat-label>
+            <input matInput [matAutocomplete]="tipoArchivo" formControlName="tipoArchivo" required>
+            <mat-autocomplete #tipoArchivo="matAutocomplete" [displayWith]="filterTipoArchivo.displayItem" >
+              <mat-option *ngFor="let item of filterTipoArchivo.filteredItems| async" [value]="item">
+                <span>{{ item.descripcion }}</span>
+              </mat-option>
+            </mat-autocomplete>
+            <button *ngIf="form.get('tipoArchivo').value != null" type="button" mat-icon-button (click)="form.get('tipoArchivo').reset()" matSuffix>
+              <mat-icon>close</mat-icon>
+            </button>
+            <button *ngIf="form.get('tipoArchivo').value == null" type="button" mat-icon-button matSuffix>
+              <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </mat-dialog-content>
+  </form>
+</fury-page-layout-content>

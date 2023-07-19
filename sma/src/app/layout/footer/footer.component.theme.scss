@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+fury-footer {
+  .footer {
+    background: $footer-background;
+    color: $theme-text;
+    border-top: $footer-border-top;
+    @include mat.elevation($footer-elevation);
+  }
+}

@@ -1,0 +1,22 @@
+darta-language{
+
+    .select-language{
+        height: 26px;
+        top:-13px;
+        width: 35px;
+    }
+    .ng-select.select-language {
+        border:0px;
+        min-height: 0px;
+        border-radius: 0;
+    }
+    .ng-dropdown-panel{
+        margin-top: 27px;
+        left: auto !important;
+        right: 0 !important;
+    }
+    .ng-select.ng-select-focused  .ng-select-container .ng-arrow-wrapper .ng-arrow{
+        color: rgb(0, 0, 0, 0.54) !important;
+    }
+
+}

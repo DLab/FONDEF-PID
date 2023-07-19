@@ -1,0 +1,51 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div>{{gl.screen.Cambio_de_Clave}}</div>
+  <button type="button" mat-icon-button tabindex="-1" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="form" >
+  <mat-dialog-content>
+
+    <div class="padding" fxLayout="column" fxLayoutGap="16px" [formGroup]="form" >
+      <div fxFlex="auto" fxLayout="column">
+
+        <mat-form-field fxFlex="grow">
+          <mat-label>{{gl.screen.Clave_Actual}}</mat-label>
+          <input matInput [type]="passwordModel.inputType" formControlName="password" required>
+          <button type="button" mat-icon-button matSuffix (click)="passwordModel.toggleVisibility()" [matTooltip]="gl.screen.Intercambiar_visibilidad">
+            <mat-icon *ngIf="passwordModel.visible">visibility</mat-icon>
+            <mat-icon *ngIf="!passwordModel.visible">visibility_off</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="grow">
+          <mat-label>{{gl.screen.Clave_Nueva}}</mat-label>
+          <input matInput [type]="newPasswordModel.inputType" formControlName="newPassword" required>
+          <button type="button" mat-icon-button matSuffix (click)="newPasswordModel.toggleVisibility()" [matTooltip]="gl.screen.Intercambiar_visibilidad">
+            <mat-icon *ngIf="newPasswordModel.visible">visibility</mat-icon>
+            <mat-icon *ngIf="!newPasswordModel.visible">visibility_off</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('newPassword').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="grow">
+          <mat-label>{{gl.screen.Confirme_Clave_Nueva}}</mat-label>
+          <input matInput [type]="rePasswordModel.inputType" formControlName="reNewPassword" required>
+          <button type="button" mat-icon-button matSuffix (click)="rePasswordModel.toggleVisibility()" [matTooltip]="gl.screen.Intercambiar_visibilidad">
+            <mat-icon *ngIf="rePasswordModel.visible">visibility</mat-icon>
+            <mat-icon *ngIf="!rePasswordModel.visible">visibility_off</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('reNewPassword').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" >
+    <button  mat-button [disabled]="!form.valid" (click)="save()">{{gl.screen.Aceptar}}</button>
+  </mat-dialog-actions>
+</form>

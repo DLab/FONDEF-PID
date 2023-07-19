@@ -1,0 +1,12 @@
+@use 'sass:math';
+@import "var";
+
+.market-widget {
+  padding: $spacing*2 $spacing;
+  border: 3px dashed #888;
+
+  .title {
+    font-size: 22px;
+    margin-bottom: math.div($spacing, 2);
+  }
+}

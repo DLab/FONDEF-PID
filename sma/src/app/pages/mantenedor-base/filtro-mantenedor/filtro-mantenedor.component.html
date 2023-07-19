@@ -1,0 +1,20 @@
+<mat-expansion-panel expanded="true" (opened)="filterOpenState = true" (closed)="filterOpenState = false" >
+  <mat-expansion-panel-header>
+    <mat-panel-title class="title" [style.padding-top]="filterOpenState ? '0px': '7px'">
+      {{app.screen.Filtros}}
+    </mat-panel-title>
+    <button (click)="search();$event.stopPropagation()" type="button" mat-icon-button color="primary" *ngIf="!filterOpenState">
+      <mat-icon>rotate_right</mat-icon>
+    </button>        
+  </mat-expansion-panel-header>
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="16px" fxLayoutAlign="start end">
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+      <div #filtros></div>
+    </div>
+    <div class="actions">
+      <button class="create" (click)="search()" type="button" mat-mini-fab color="primary" [disabled]="!isValid()">
+        <mat-icon>rotate_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-expansion-panel>

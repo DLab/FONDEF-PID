@@ -1,0 +1,122 @@
+<div class="menu" fxHide fxLayout="row" fxShow.gt-sm>
+  <div *ngFor="let item of sidenavItems$ | async; let index = index;">
+    <ng-container *ngIf="index < showMoreButtonAfterIndex && item.type !== 'subheading'">
+      <fury-navigation-item *ngIf="!item.subItems || item.subItems.length === 0"
+                            [currentlyOpen]="currentlyOpen$ | async"
+                            (handleClick)="handleClick($event)"
+                            [item]="item"></fury-navigation-item>
+
+      <fury-navigation-item *ngIf="item.subItems && item.subItems.length > 0"
+                            [currentlyOpen]="currentlyOpen$ | async"
+                            [item]="item"
+                            [matMenuTriggerData]="{ item: item }"
+                            [matMenuTriggerFor]="dropdown"></fury-navigation-item>
+    </ng-container>
+
+    <div *ngIf="index == showMoreButtonAfterIndex"
+         class="more-button-container"
+         fxLayout="row"
+         fxLayoutAlign="start center">
+      <button [matMenuTriggerFor]="moreMenu" class="more-button" mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<mat-menu #dropdown="matMenu" [overlapTrigger]="false">
+  <ng-template let-item="item" matMenuContent>
+    <ng-container *ngFor="let subItem of item.subItems">
+      <button (click)="handleClick(subItem)" *ngIf="!subItem.subItems || subItem.subItems.length === 0" mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+
+      <button *ngIf="subItem.subItems && subItem.subItems.length > 0"
+              [matMenuTriggerData]="{ item: subItem }"
+              [matMenuTriggerFor]="dropdownLevel2"
+              mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+    </ng-container>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #dropdownLevel2="matMenu" [overlapTrigger]="false">
+  <ng-template let-item="item" matMenuContent>
+    <ng-container *ngFor="let subItem of item.subItems">
+      <button (click)="handleClick(subItem)" *ngIf="!subItem.subItems || subItem.subItems.length === 0" mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+
+      <button *ngIf="subItem.subItems && subItem.subItems.length > 0"
+              [matMenuTriggerData]="{ item: subItem }"
+              [matMenuTriggerFor]="dropdownLevel3"
+              mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+    </ng-container>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #dropdownLevel3="matMenu" [overlapTrigger]="false">
+  <ng-template let-item="item" matMenuContent>
+    <ng-container *ngFor="let subItem of item.subItems">
+      <button (click)="handleClick(subItem)" *ngIf="!subItem.subItems || subItem.subItems.length === 0" mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+
+      <button *ngIf="subItem.subItems && subItem.subItems.length > 0"
+              [matMenuTriggerData]="{ item: subItem }"
+              [matMenuTriggerFor]="dropdownLevel4"
+              mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+    </ng-container>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #dropdownLevel4="matMenu" [overlapTrigger]="false">
+  <ng-template let-item="item" matMenuContent>
+    <ng-container *ngFor="let subItem of item.subItems">
+      <button (click)="handleClick(subItem)" *ngIf="!subItem.subItems || subItem.subItems.length === 0" mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+
+      <button *ngIf="subItem.subItems && subItem.subItems.length > 0"
+              [matMenuTriggerData]="{ item: subItem }"
+              [matMenuTriggerFor]="dropdownLevel5"
+              mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+    </ng-container>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #dropdownLevel5="matMenu" [overlapTrigger]="false">
+  <ng-template let-item="item" matMenuContent>
+    <ng-container *ngFor="let subItem of item.subItems">
+      <button (click)="handleClick(subItem)" *ngIf="!subItem.subItems || subItem.subItems.length === 0" mat-menu-item>
+        <span>{{ subItem.name }}</span>
+      </button>
+    </ng-container>
+  </ng-template>
+</mat-menu>
+
+<mat-menu #moreMenu="matMenu" [overlapTrigger]="false">
+  <ng-container *ngFor="let item of sidenavItems$ | async; let index = index;">
+    <ng-container *ngIf="index >= showMoreButtonAfterIndex">
+      <ng-container *ngFor="let subItem of item.subItems">
+        <button (click)="handleClick(subItem)" *ngIf="!subItem.subItems || subItem.subItems.length === 0" mat-menu-item>
+          <span>{{ subItem.name }}</span>
+        </button>
+
+        <button *ngIf="subItem.subItems && subItem.subItems.length > 0"
+                [matMenuTriggerData]="{ item: subItem }"
+                [matMenuTriggerFor]="dropdown"
+                mat-menu-item>
+          <span>{{ subItem.name }}</span>
+        </button>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</mat-menu>

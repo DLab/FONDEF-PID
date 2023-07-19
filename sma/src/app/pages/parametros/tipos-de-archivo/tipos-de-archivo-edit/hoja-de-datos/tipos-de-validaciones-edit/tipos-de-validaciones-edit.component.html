@@ -1,0 +1,182 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div>{{app.screen.Validacion}}</div>
+  <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <div class="person">
+    <form [formGroup]="form">
+
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px">
+        <mat-form-field fxFlex="30">
+          <mat-label>{{gl.screen.TipoValidacion}}</mat-label>
+          <input matInput [matAutocomplete]="tipoValidacion" formControlName="tipoValidacion" required>
+          <mat-autocomplete #tipoValidacion="matAutocomplete" [displayWith]="filterTipoValidacion.displayItem" (optionSelected)="changeTipoValidacion()">
+            <mat-option *ngFor="let item of filterTipoValidacion.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('tipoValidacion').value && !form.get('tipoValidacion').disabled" type="button" mat-icon-button (click)="form.get('tipoValidacion').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('tipoValidacion').value && !form.get('tipoValidacion').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('tipoValidacion').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30" *ngIf="!esNormativo">
+          <mat-label>{{gl.screen.TipoError}}</mat-label>
+          <input matInput [matAutocomplete]="tipoError" formControlName="tipoError" required>
+          <mat-autocomplete #tipoError="matAutocomplete" [displayWith]="filterTipoErrores.displayItem" >
+            <mat-option *ngFor="let item of filterTipoErrores.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('tipoError').value && !form.get('tipoError').disabled" type="button" mat-icon-button (click)="form.get('tipoError').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('tipoError').value && !form.get('tipoError').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('tipoError').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" *ngIf="tipoValidacionSelected == 'TIPO_PARAMETRO'">
+        <mat-form-field fxFlex="23">
+          <mat-label>{{gl.screen.CampoParamId}}</mat-label>
+          <input matInput [matAutocomplete]="paramId" formControlName="paramId" required>
+          <mat-autocomplete #paramId="matAutocomplete" [displayWith]="filterParamId.displayItem" >
+            <mat-option *ngFor="let item of filterParamId.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('paramId').value && !form.get('paramId').disabled" type="button" mat-icon-button (click)="form.get('paramId').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('paramId').value && !form.get('paramId').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('paramId').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="23">
+          <mat-label>{{gl.screen.CampoParamName}}</mat-label>
+          <input matInput [matAutocomplete]="paramName" formControlName="paramName" required>
+          <mat-autocomplete #paramName="matAutocomplete" [displayWith]="filterParamName.displayItem" >
+            <mat-option *ngFor="let item of filterParamName.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('paramName').value && !form.get('paramName').disabled" type="button" mat-icon-button (click)="form.get('paramName').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('paramName').value && !form.get('paramName').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('paramName').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="23">
+          <mat-label>{{gl.screen.CampoParamValue}}</mat-label>
+          <input matInput [matAutocomplete]="paramValue" formControlName="paramValue" required>
+          <mat-autocomplete #paramValue="matAutocomplete" [displayWith]="filterParamValue.displayItem" >
+            <mat-option *ngFor="let item of filterParamValue.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('paramValue').value && !form.get('paramValue').disabled" type="button" mat-icon-button (click)="form.get('paramValue').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('paramValue').value && !form.get('paramValue').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('paramValue').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="23">
+          <mat-label>{{gl.screen.CampoParamUnidadMedida}}</mat-label>
+          <input matInput [matAutocomplete]="paramUMedida" formControlName="paramUMedida" required>
+          <mat-autocomplete #paramUMedida="matAutocomplete" [displayWith]="filterParamUMedida.displayItem" >
+            <mat-option *ngFor="let item of filterParamUMedida.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('paramUMedida').value && !form.get('paramUMedida').disabled" type="button" mat-icon-button (click)="form.get('paramUMedida').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('paramUMedida').value && !form.get('paramUMedida').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('paramUMedida').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" *ngIf="tipoValidacionSelected == 'TIPO_COORDENADA'">
+        <mat-form-field fxFlex="30">
+          <mat-label>{{gl.screen.CampoLatitud}}</mat-label>
+          <input matInput [matAutocomplete]="latitud" formControlName="latitud" required>
+          <mat-autocomplete #latitud="matAutocomplete" [displayWith]="filterLatitud.displayItem" >
+            <mat-option *ngFor="let item of filterLatitud.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('latitud').value && !form.get('latitud').disabled" type="button" mat-icon-button (click)="form.get('latitud').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('latitud').value && !form.get('latitud').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('latitud').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field fxFlex="30">
+          <mat-label>{{gl.screen.CampoLongitud}}</mat-label>
+          <input matInput [matAutocomplete]="longitud" formControlName="longitud" required>
+          <mat-autocomplete #longitud="matAutocomplete" [displayWith]="filterLongitud.displayItem" >
+            <mat-option *ngFor="let item of filterLongitud.filteredItems| async" [value]="item">
+              <span>{{ item.descripcion }}</span>
+            </mat-option>
+          </mat-autocomplete>
+          <button *ngIf="form.get('longitud').value && !form.get('longitud').disabled" type="button" mat-icon-button (click)="form.get('longitud').reset()" matSuffix>
+            <mat-icon>close</mat-icon>
+          </button>
+          <button *ngIf="!form.get('longitud').value && !form.get('longitud').disabled" type="button" mat-icon-button matSuffix>
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('longitud').hasError('required')">{{gl.screen.Este_valor_es_requerido}}</mat-error>
+        </mat-form-field>
+      </div>
+
+    </form>
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" *ngIf="!esNormativo && tipoValidacionSelected !== 'TIPO_PARAMETRO' && tipoValidacionSelected !== 'TIPO_COORDENADA'">
+      <ng-select [items]="fields"
+        required
+        bindLabel="descripcion"
+        bindValue="codigo"
+        [closeOnSelect]="false"
+        [multiple]="true"
+        [disabled]="!this.item.editable"
+        [clearable]="true"
+        [searchable]="true"
+        [selectableGroup]="true"
+        [selectableGroupAsModel]="false"
+        [(ngModel)]="additionalData"
+        ngDefaultControl>
+        <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+          <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{item.descripcion}}
+        </ng-template>
+      </ng-select>
+    </div>
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" *ngIf="item.editable">
+  <button  mat-button [disabled]="!isFormValid()" (click)="save()">{{gl.screen.Guardar}}</button>
+</mat-dialog-actions>
+
+

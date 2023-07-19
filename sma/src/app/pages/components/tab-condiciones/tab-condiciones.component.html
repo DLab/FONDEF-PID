@@ -1,0 +1,107 @@
+<fury-list name="{{gl.screen.Condiciones}}" [columns]="columns" hideHeader="true">
+
+  <table [dataSource]="dataSource" mat-table >
+
+    <ng-container matColumnDef="concepto">
+      <th *matHeaderCellDef class="actions-cell" mat-header-cell >{{gl.screen['Concepto']}}</th>
+      <td *matCellDef="let row" class="actions-cell" mat-cell>
+
+        <div>{{row['concepto'].descripcion}}</div>
+
+      </td>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="valor">
+      <th *matHeaderCellDef class="actions-cell" mat-header-cell >{{gl.screen['Valor']}}</th>
+      <td *matCellDef="let row" class="actions-cell" mat-cell>
+
+        <input [numberFormat]="row.concepto.decimales" [negativos]="true" focusFormat type="text" [(ngModel)]="row.valor" matInput [disabled]="!editable" required
+          *ngIf="(row.concepto.codigoTipoDato == 'N' || row.concepto.codigoTipoDato == 'I') && row.concepto.expresadoEnCliente !== 'CODLIMITE' && (!row.concepto.codigo.startsWith('VALFIN') || row.desvalor == undefined || !row.desvalor.startsWith('LIMITE'))" >
+
+        <input type="text" [(ngModel)]="row.valor" matInput [disabled]="!editable" *ngIf="row.concepto.codigoTipoDato == 'T'" required>
+        
+        <input rutFormat type="text" [(ngModel)]="row.valor" matInput [disabled]="!editable"  *ngIf="row.concepto.codigoTipoDato == 'R'" required>
+
+        <input [dateFormat]="'DD/MM/yyyy'" focusFormat type="text" [(ngModel)]="row.valor" matInput [disabled]="!editable"  *ngIf="row.concepto.codigoTipoDato == 'F'" required>
+          
+
+        <ng-select [items]="codigosControlLimites" 
+          bindLabel="descripcion" 
+          bindValue="id" 
+          dropdownPosition="top"
+          required
+          *ngIf="(row.concepto.codigo.startsWith('VALFIN') && (row.desvalor != undefined && row.desvalor.startsWith('LIMITE'))) || row.concepto.expresadoEnCliente === 'CODLIMITE'"
+          [disabled]="!this.editable"
+          [clearable]="true"
+          [searchable]="false"
+          [(ngModel)]="row.valor"
+          ngDefaultControl></ng-select>
+
+          <ng-select [items]="productos" 
+          bindLabel="descripcion" 
+          bindValue="codigo" 
+          dropdownPosition="top"
+          required
+          *ngIf="row.concepto.codigoTipoDato == 'C' && row.concepto.codigo === 'PRD'"
+          [disabled]="!this.editable"
+          [clearable]="true"
+          [searchable]="false"
+          [(ngModel)]="row.valor"
+          ngDefaultControl></ng-select>
+
+          <ng-select [items]="canales" 
+          bindLabel="descripcion" 
+          bindValue="codigo" 
+          dropdownPosition="top"
+          required
+          *ngIf="row.concepto.codigoTipoDato == 'C' && row.concepto.codigo === 'CNL'"
+          [disabled]="!this.editable"
+          [clearable]="true"
+          [searchable]="false"
+          [(ngModel)]="row.valor"
+          ngDefaultControl></ng-select>
+
+          <ng-select [items]="tablas[row.concepto.codigoTabla]" 
+          bindLabel="descripcion" 
+          bindValue="codigo" 
+          dropdownPosition="top"
+          required
+          *ngIf="row.concepto.codigoTipoDato == 'C' && row.concepto.codigo !== 'CNL' && row.concepto.codigo !== 'PRD'"
+          [disabled]="!this.editable"
+          [clearable]="true"
+          [searchable]="false"
+          [(ngModel)]="row.valor"
+          ngDefaultControl></ng-select>
+
+          <ng-select [items]="opcionesBooleanas" 
+          bindLabel="descripcion" 
+          bindValue="codigo" 
+          dropdownPosition="top"
+          required
+          *ngIf="row.concepto.codigoTipoDato == 'B'"
+          [disabled]="!this.editable"
+          [clearable]="true"
+          [searchable]="false"
+          [(ngModel)]="row.valor"
+          ngDefaultControl></ng-select>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="accion">
+      <th *matHeaderCellDef class="actions-cell" mat-header-cell ></th>
+      <td *matCellDef="let row" class="actions-cell" mat-cell>
+        <button mat-icon-button (click)="deleteRow(row)" *ngIf="editable"><mat-icon>clear</mat-icon></button>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: visibleColumns;"
+        class="clickable route-animations-elements"
+        mat-row></tr>
+
+  </table>
+
+</fury-list> 

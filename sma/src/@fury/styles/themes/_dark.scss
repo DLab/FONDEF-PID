@@ -1,0 +1,18 @@
+@import "./var-helpers";
+
+$sidenav-background: $theme-app-bar !default;
+$sidenav-color: $theme-text !default;
+$sidenav-toolbar-background: $theme-app-bar !default;
+$sidenav-logo-color: $theme-text !default;
+
+$sidenav-item-color: $sidenav-color !default;
+$sidenav-item-color-hover: $theme-text !default;
+$sidenav-item-background-hover: $theme-background-hover !default;
+$sidenav-item-text-icon-color: $theme-hint-text !default;
+
+$sidenav-item-subheading-color: $theme-secondary-text !default;
+
+$toolbar-background: $theme-app-bar !default;
+$toolbar-search-background: $theme-card !default;
+
+@import "./default";

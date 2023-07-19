@@ -1,0 +1,113 @@
+@import "@angular/material/core/style/variables";
+@import "@angular/material/core/theming/palette";
+
+/**
+  General
+ */
+
+$page-load-background: #13293d;
+$elevation: 2;
+
+$color-success: #7cb342;
+
+$spacing: 24px;
+$border-radius: 8px;
+
+$padding-xl: 48px;
+$padding-lg: 32px;
+$padding: 24px;
+$padding-md: 16px;
+$padding-sm: 12px;
+$padding-xs: 8px;
+$padding-xxs: 4px;
+$padding-0: 0px;
+
+$paddings: (
+  '-0': $padding-0,
+  -xxs: $padding-xxs,
+  -xs: $padding-xs,
+  -sm: $padding-sm,
+  -md: $padding-md,
+  '': $padding,
+  -lg: $padding-lg,
+  -xl: $padding-xl,
+);
+
+$icon-sizes: (
+  -xs: 14px,
+  -sm: 18px,
+  -md: 20px,
+  '': 24px,
+  -lg: 28px,
+  -xl: 32px
+);
+
+/**
+  Card
+ */
+$card-header-height: 64px;
+
+/**
+  Toolbar
+ */
+$toolbar-height: 48px;
+$toolbar-z-index: 500;
+$toolbar-button-width: 64px;
+
+/**
+  Footer
+ */
+$footer-height: 56px;
+$footer-z-index: 100;
+
+// Sidenav
+$sidenav-width: 280px;
+$sidenav-collapsed-width: 74px;
+$sidenav-toolbar-height: $toolbar-height;
+
+// Sidenav Item
+
+$sidenav-item-icon-size: 26px;
+
+$sidenav-item-height: 44px;
+$sidenav-item-padding-left: 24px;
+$sidenav-item-padding-right: 16px;
+$sidenav-item-margin-right: 8px;
+$sidenav-item-padding-left-level1: $sidenav-item-padding-left;
+$sidenav-item-padding-left-level2: $sidenav-item-padding-left-level1 + 8px;
+$sidenav-item-padding-left-level3: $sidenav-item-padding-left-level2 + 8px;
+$sidenav-item-padding-left-level4: $sidenav-item-padding-left-level3 + 8px;
+
+// Sidenav width can be changed in src/@fury/animations/sidenav.animation.ts
+$sidenav-z-index: 700;
+
+$blink-scrollbar-width: 12px;
+
+// Page Layout
+$page-layout-height: 200px;
+$page-layout-toolbar-height: $toolbar-height;
+
+/**
+  Mixins
+ */
+$media-xs: 'screen and (max-width: 599px)';
+@mixin media-xs {
+  @media #{$media-xs} {
+    @content;
+  }
+}
+
+$media-sm: 'screen and (min-width: 599px) and (max-width: 959px)';
+@mixin media-sm {
+  @media #{$media-sm} {
+    @content;
+  }
+}
+
+/**
+  Inbox
+ */
+$inbox-header-height: 64px;
+$inbox-searchbar-height: 54px;
+$inbox-star-color: #ffc107;
+$inbox-mail-list-item-height: 54px;

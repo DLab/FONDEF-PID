@@ -1,0 +1,52 @@
+@use 'sass:math';
+@import "var";
+
+:host {
+  height: 100%;
+}
+
+.header {
+
+  .property {
+    padding: $spacing;
+    cursor: pointer;
+    border-top: 4px solid transparent;
+
+    .label {
+      font: var(--font-body-1);
+      padding-bottom: math.div($spacing, 4);
+    }
+
+    .value {
+      font: var(--font-headline);
+    }
+
+    .gain {
+      font: var(--font-caption);
+
+      .icon {
+        font-size: 13px;
+        height: 13px;
+        width: 13px;
+        vertical-align: middle;
+      }
+    }
+
+    .compared {
+      font: var(--font-caption);
+      visibility: hidden;
+    }
+  }
+}
+
+.card-content {
+  height: 248px;
+}
+
+.actions {
+  .select {
+    margin-top: -24px;
+    margin-bottom: -1.34375em;
+    font-size: 14px;
+  }
+}

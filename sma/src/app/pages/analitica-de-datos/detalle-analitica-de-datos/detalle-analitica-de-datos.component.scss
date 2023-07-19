@@ -1,0 +1,65 @@
+app-detalle-analitica-de-datos {
+    
+    .title{
+        font-size: 23px !important;
+        padding-bottom: 20px;
+        width: 1320px;
+    }
+    .subtitle{
+        font-size: 16px !important;
+        color:#666;
+    }
+    .person{
+        width: 100% !important;
+    }   
+    ng-select{
+        width: 95%;
+    } 
+    .detalle-bi-content{
+        width: 1300px;
+        height: 1200px;
+        max-height: 1200px;
+    }
+    .detalle-dashboard-bi-content{
+        width: 100%;
+        height: 100%;
+    }
+    .totales-header-text .mat-card-header-text{
+        width: 100%;
+    }
+    .mat-dialog-title{
+        margin-bottom: -10px;
+    }
+    i.fa{
+        padding-left: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .crumbs .link{
+        font-size: 14px;
+        color: rgba($color: #000000, $alpha: 0.608);
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .crumbs .crumb.current .link{
+        color: rgba($color: #000000, $alpha: 0.87) !important;
+        font-weight: 400;
+        cursor: auto;
+        text-decoration: none;
+    }
+    .crumb.link.agrupacion{
+        text-decoration: none;
+        cursor: auto;
+    }
+    .demo-chart{
+        height: 400px !important;
+    }
+    .long-demo-chart{
+        height: 700px !important;
+        padding-top: 20px;
+    }
+    .person{
+        width: 100% !important;
+    }
+
+}

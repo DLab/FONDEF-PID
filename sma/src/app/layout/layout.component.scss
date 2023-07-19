@@ -1,0 +1,23 @@
+@import "var";
+
+.container {
+  height: 100%;
+  position: relative;
+}
+
+.content-container {
+  overflow: hidden;
+}
+
+.content {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &.scroll-disabled {
+    overflow: hidden;
+
+    .content-inner {
+      min-height: 0;
+    }
+  }
+}

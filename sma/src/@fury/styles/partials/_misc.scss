@@ -1,0 +1,135 @@
+@use 'sass:math';
+
+html, body {
+  min-height: 100%;
+  height: 100%;
+  font: var(--font-body-1);
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+.fury-scrollblock {
+  position: fixed;
+  width: 100%;
+}
+
+.fury-collapsable-sidenav {
+  overflow: visible !important;
+  border-right: none !important;
+
+  .mat-drawer-inner-container {
+    overflow: visible !important;
+  }
+}
+
+.fury-flex-form-field {
+  .mat-form-field-infix {
+    width: 0;
+  }
+}
+
+.mat-menu-panel.fury-inbox-mail-label-list-menu {
+  max-height: 350px;
+  padding-top: math.div($spacing, 3);
+
+  .fury-inbox-mail-label-list-menu-subheading {
+    font: var(--font-caption);
+    color: yellow; // TODO: $theme-secondary-text
+    font-weight: 500;
+    padding-left: math.div($spacing, 2);
+    padding-right: math.div($spacing, 2);
+    margin-bottom: math.div($spacing, 3);
+  }
+
+  .mat-checkbox {
+    margin-right: math.div($spacing, 2);
+  }
+
+  .fury-inbox-mail-label-list-create {
+    padding-left: math.div($spacing, 2);
+    padding-right: math.div($spacing, 2);
+  }
+
+  .fury-inbox-mail-label-list-color, .fury-inbox-mail-label-list-name {
+
+    .mat-form-field-infix {
+      width: auto;
+    }
+  }
+}
+
+.fury-inbox-mail-label-list-color-select {
+  .fury-inbox-mail-label-list-color-select-indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: math.div($spacing, 2);
+    vertical-align: middle;
+  }
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+pre {
+  margin: 0;
+}
+
+code {
+  white-space: pre;
+}
+
+p {
+  line-height: 1.5;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.avatar {
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.quickpanel .mat-tab-body-content,
+.quickpanel .mat-tab-body-wrapper,
+.quickpanel mat-tab-body,
+.quickpanel mat-tab-group {
+  height: 100%;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging > *:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

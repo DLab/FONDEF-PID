@@ -1,0 +1,19 @@
+<div class="toolbar" fxLayout="row" fxLayoutAlign="space-between" >
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <fury-toolbar-sidenav-mobile-toggle (openSidenav)="openSidenav.emit()"></fury-toolbar-sidenav-mobile-toggle>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="right center" fxLayoutGap="20px">
+
+    <fury-toolbar-fullscreen-toggle class="toolbar-button fullscreen"></fury-toolbar-fullscreen-toggle>
+
+    <darta-language></darta-language>
+
+    <fury-toolbar-user class="toolbar-button"></fury-toolbar-user>
+
+    <fury-toolbar-quickpanel-toggle (openQuickPanel)="openQuickPanel.emit()" 
+                                    *ngIf="false"
+                                    class="toolbar-button button"></fury-toolbar-quickpanel-toggle>
+  </div>
+</div>
+

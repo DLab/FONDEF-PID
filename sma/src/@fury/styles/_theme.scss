@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+@import "./mixins";
+
+$config: mat.define-typography-config(
+  $font-family: var(--font-family),
+  $display-4: mat.define-typography-level(112px, 112px, 300, $letter-spacing: -0.05em),
+  $display-3: mat.define-typography-level(56px, 56px, 400, $letter-spacing: -0.02em),
+  $display-2: mat.define-typography-level(45px, 48px, 400, $letter-spacing: -0.005em),
+  $display-1: mat.define-typography-level(34px, 40px, 400),
+  $headline: mat.define-typography-level(24px, 32px, 400),
+  $title: mat.define-typography-level(18px, 26px, 500),
+  $subheading-2: mat.define-typography-level(16px, 28px, 400),
+  $subheading-1: mat.define-typography-level(15px, 24px, 400),
+  $body-2: mat.define-typography-level(14px, 24px, 500),
+  $body-1: mat.define-typography-level(14px, 20px, 400),
+  $caption: mat.define-typography-level(12px, 20px, 400),
+  $button: mat.define-typography-level(14px, 14px, 500),
+  $input: mat.define-typography-level(14px, 1.125, 400)
+);
+
+:root {
+  --font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+  // Typography
+  --font-weight-medium: 500;
+  --font-caption: #{mat.font-weight($config, caption) #{mat.font-size($config, caption)}/#{mat.line-height($config, caption)} mat.font-family($config, caption)};
+  --font-body-1: #{mat.font-weight($config, body-1) #{mat.font-size($config, body-1)}/#{mat.line-height($config, body-1)} mat.font-family($config, body-1)};
+  --font-body-2: #{mat.font-weight($config, body-2) #{mat.font-size($config, body-2)}/#{mat.line-height($config, body-2)} mat.font-family($config, body-2)};
+  --font-subheading-1: #{mat.font-weight($config, subheading-1) #{mat.font-size($config, subheading-1)}/#{mat.line-height($config, subheading-1)} mat.font-family($config, subheading-1)};
+  --font-subheading-2: #{mat.font-weight($config, subheading-2) #{mat.font-size($config, subheading-2)}/#{mat.line-height($config, subheading-2)} mat.font-family($config, subheading-2)};
+  --font-headline: #{mat.font-weight($config, headline) #{mat.font-size($config, headline)}/#{mat.line-height($config, headline)} mat.font-family($config, headline)};
+  --font-title: #{mat.font-weight($config, title) #{mat.font-size($config, title)}/#{mat.line-height($config, title)} mat.font-family($config, title)};
+  --font-display-1: #{mat.font-weight($config, display-1) #{mat.font-size($config, display-1)}/#{mat.line-height($config, display-1)} mat.font-family($config, display-1)};
+  --font-display-2: #{mat.font-weight($config, display-2) #{mat.font-size($config, display-2)}/#{mat.line-height($config, display-2)} mat.font-family($config, display-2)};
+  --font-display-3: #{mat.font-weight($config, display-3) #{mat.font-size($config, display-3)}/#{mat.line-height($config, display-3)} mat.font-family($config, display-3)};
+  --font-display-4: #{mat.font-weight($config, display-4) #{mat.font-size($config, display-4)}/#{mat.line-height($config, display-4)} mat.font-family($config, display-4)};
+}

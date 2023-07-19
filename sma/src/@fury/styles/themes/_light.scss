@@ -1,0 +1,24 @@
+@import "./var-helpers";
+
+$elevation: 0;
+
+$toolbar-background: $theme-background !default;
+$toolbar-elevation: 0 !default;
+$toolbar-button-separator-color: transparent !default;
+
+$sidenav-background: $theme-card !default;
+$sidenav-color: $theme-text !default;
+$sidenav-box-shadow: 0 !default;
+$sidenav-toolbar-background: $theme-card !default;
+$sidenav-logo-color: $theme-text !default;
+$sidenav-secondary-text: $theme-secondary-text !default;
+
+$sidenav-item-color-hover: $theme-text !default;
+$sidenav-item-background-hover: $theme-background-hover !default;
+$sidenav-item-text-icon-color: $theme-hint-text !default;
+$sidenav-item-subheading-color: $dark-secondary-text !default;
+
+$footer-background: $theme-card !default;
+$footer-border-top: none !default;
+
+@import "./default";

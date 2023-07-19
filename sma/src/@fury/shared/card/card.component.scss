@@ -1,0 +1,79 @@
+@use 'sass:math';
+@import "var";
+
+.fury-card {
+  border-radius: $border-radius;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 100%;
+}
+
+.fury-card > .mat-tab-group {
+  .mat-tab-label {
+    height: $card-header-height;
+  }
+}
+
+.fury-card-header {
+  padding: $spacing;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  white-space: nowrap;
+  overflow: hidden;
+
+  .fury-card-header-heading-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .fury-card-header-heading {
+      white-space: nowrap;
+      font: var(--font-subheading-2);
+
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: center;
+    }
+
+    .fury-card-header-subheading {
+      white-space: nowrap;
+      font-size: 13px;
+      font: var(--font-body-1);
+    }
+  }
+
+  .fury-card-header-actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: $spacing;
+  }
+}
+
+.fury-card-content {
+  padding: 0 $spacing $spacing;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fury-card-actions {
+  padding: math.div($spacing, 3) math.div($spacing, 1.5);
+  display: flex;
+  flex-direction: row;
+
+  button + button {
+    margin-left: math.div($spacing, 3);
+  }
+
+  &.fury-card-actions-align-end {
+    justify-content: flex-end;
+  }
+}

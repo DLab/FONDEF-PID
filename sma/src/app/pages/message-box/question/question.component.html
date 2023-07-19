@@ -1,0 +1,12 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <div class="title" [innerHTML]="message"></div>
+</div>
+
+<mat-dialog-actions align="end" *ngIf="isQuestion">
+  <button mat-button (click)="close('NO')">{{gl.screen.No}}</button>
+  <button mat-button color="primary" (click)="close('SI')">{{gl.screen.Si}}</button>
+</mat-dialog-actions>
+
+<mat-dialog-actions align="end" *ngIf="!isQuestion">
+  <button mat-button color="primary" (click)="close('SI')">OK</button>
+</mat-dialog-actions>

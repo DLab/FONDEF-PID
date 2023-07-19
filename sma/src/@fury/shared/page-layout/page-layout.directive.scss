@@ -1,0 +1,42 @@
+.fury-page-layout {
+  display: block;
+}
+
+.fury-page-layout-simple {
+
+  .fury-page-layout-content {
+    padding-top: $padding;
+    padding-bottom: $padding;
+  }
+}
+
+.fury-page-layout-card {
+  padding-bottom: $padding;
+
+  .fury-page-layout-header {
+    margin-bottom: -$page-layout-toolbar-height;
+    padding-bottom: $page-layout-toolbar-height;
+  }
+
+}
+
+.fury-page-layout-header {
+  height: $page-layout-height - $page-layout-toolbar-height;
+  padding-left: $padding;
+  padding-right: $padding;
+  display: flex;
+  flex-direction: row;
+  place-content: center flex-start;
+  align-items: center;
+}
+
+.fury-page-layout-content {
+  display: block;
+  padding-left: $padding;
+  padding-right: $padding;
+
+  @include layout-bp(lt-md) {
+    padding-left: $padding-md;
+    padding-right: $padding-md;
+  }
+}

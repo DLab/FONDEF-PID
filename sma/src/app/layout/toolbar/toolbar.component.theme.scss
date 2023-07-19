@@ -1,0 +1,158 @@
+@use '@angular/material' as mat;
+@import '../../../../node_modules/@angular/material/theming';
+
+fury-toolbar {
+  // position: map-get($toolbar, position); // TODO IMPLEMENT
+
+  &.no-box-shadow {
+    .toolbar {
+      box-shadow: none !important;
+    }
+  }
+
+  .toolbar {
+    background: $toolbar-background;
+    color: $toolbar-color;
+    @include mat.elevation($toolbar-elevation);
+
+    .toolbar-button {
+      border-left-color: $toolbar-button-separator-color;
+    }
+
+    .toolbar-logo {
+      fill: $toolbar-logo-color;
+    }
+  }
+}
+
+fury-toolbar-user {
+  .toolbar-user {
+    .button.open {
+      background: $theme-background-hover;
+    }
+  }
+
+  .dropdown {
+    background: $theme-card;
+    @include mat.elevation($toolbar-user-dropdown-elevation);
+
+    .list {
+      .list-item {
+        &:hover {
+          background: $theme-background-hover;
+        }
+      }
+    }
+
+    .list-item-icon {
+      color: $theme-icon;
+    }
+  }
+}
+
+fury-toolbar-notifications {
+  .dropdown {
+    background: $theme-card;
+    @include mat.elevation($toolbar-notification-elevation);
+
+    .dropdown-header {
+      border-color: $theme-divider;
+    }
+
+    .notification {
+      color: $theme-text;
+
+      .icon {
+        color: $theme-icon;
+        background: $theme-app-bar;
+        border: 1px solid $theme-divider;
+      }
+
+      .time {
+        color: $theme-secondary-text;
+      }
+
+      &.primary {
+        .icon {
+          background: $theme-color-primary;
+          color: $theme-color-primary-contrast;
+        }
+      }
+
+      &.accent {
+        .icon {
+          background: $theme-color-accent;
+          color: $theme-color-accent-contrast;
+        }
+      }
+
+      &.warn {
+        .icon {
+          background: $theme-color-warn;
+          color: $theme-color-warn-contrast;
+        }
+      }
+
+      &.read {
+        color: $theme-hint-text;
+
+        .time {
+          color: inherit;
+        }
+      }
+    }
+
+    .dropdown-footer {
+      color: $theme-secondary-text;
+      border-top-color: $theme-divider
+    }
+  }
+}
+
+fury-toolbar-search-bar {
+  .search-wrapper {
+
+    .search-icon {
+      color: $theme-secondary-text;
+    }
+
+    .search-input {
+      background: $toolbar-search-background;
+      color: $theme-secondary-text;
+    }
+
+    &:hover {
+      .search-input {
+        background: $theme-status-bar;
+      }
+    }
+
+    &.focus {
+      .search-icon {
+        color: $theme-text;
+      }
+
+      .search-input {
+        background: $theme-status-bar;
+        color: $theme-text;
+      }
+    }
+
+    .search-dropdown {
+      background: $theme-card;
+      color: $theme-text;
+
+      @include mat.elevation($toolbar-search-dropdown-elevation);
+
+      .content {
+        .heading {
+          color: $theme-secondary-text;
+        }
+
+        .items .item:hover {
+          background: $theme-background-hover;
+        }
+      }
+    }
+  }
+}

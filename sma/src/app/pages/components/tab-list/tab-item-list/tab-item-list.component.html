@@ -1,0 +1,22 @@
+<div class="page" fxLayout="column" fxLayoutGap="8px">
+  <div fxLayout="row" fxLayoutAlign="start center" fxFlex class="input-search">
+    <mat-icon class="fury-filter-input-icon">search</mat-icon>
+    <input fxFlex class="fury-filter-input" #filter placeholder="{{app.screen.Buscar}}&hellip;">
+  </div>        
+  <mat-divider></mat-divider>        
+  <fury-scrollbar class="overflow-container" fxFlex="auto" >
+    <div *ngFor="let item of filterList" class="sidenav-item">
+      <a [routerLink]=""
+        (click)="selectedItem(item)"
+        class="sidenav-item-link"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        matRipple>
+          <ng-container>
+              <mat-icon class="icon">add_box</mat-icon>
+              <span class="name">{{item.descripcion}}</span>
+          </ng-container>
+      </a>            
+    </div>
+  </fury-scrollbar>
+</div>

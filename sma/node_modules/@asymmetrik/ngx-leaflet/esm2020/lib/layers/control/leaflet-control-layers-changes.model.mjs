@@ -1,0 +1,11 @@
+export class LeafletControlLayersChanges {
+    constructor() {
+        this.layersRemoved = 0;
+        this.layersChanged = 0;
+        this.layersAdded = 0;
+    }
+    changed() {
+        return !(this.layersRemoved === 0 && this.layersChanged === 0 && this.layersAdded === 0);
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibGVhZmxldC1jb250cm9sLWxheWVycy1jaGFuZ2VzLm1vZGVsLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvbmd4LWxlYWZsZXQvc3JjL2xpYi9sYXllcnMvY29udHJvbC9sZWFmbGV0LWNvbnRyb2wtbGF5ZXJzLWNoYW5nZXMubW9kZWwudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsTUFBTSxPQUFPLDJCQUEyQjtJQUF4QztRQUNDLGtCQUFhLEdBQVcsQ0FBQyxDQUFDO1FBQzFCLGtCQUFhLEdBQVcsQ0FBQyxDQUFDO1FBQzFCLGdCQUFXLEdBQVcsQ0FBQyxDQUFDO0lBS3pCLENBQUM7SUFIQSxPQUFPO1FBQ04sT0FBTyxDQUFDLENBQUMsSUFBSSxDQUFDLGFBQWEsS0FBSyxDQUFDLElBQUksSUFBSSxDQUFDLGFBQWEsS0FBSyxDQUFDLElBQUksSUFBSSxDQUFDLFdBQVcsS0FBSyxDQUFDLENBQUMsQ0FBQztJQUMxRixDQUFDO0NBQ0QiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY2xhc3MgTGVhZmxldENvbnRyb2xMYXllcnNDaGFuZ2VzIHtcblx0bGF5ZXJzUmVtb3ZlZDogbnVtYmVyID0gMDtcblx0bGF5ZXJzQ2hhbmdlZDogbnVtYmVyID0gMDtcblx0bGF5ZXJzQWRkZWQ6IG51bWJlciA9IDA7XG5cblx0Y2hhbmdlZCgpOiBib29sZWFuIHtcblx0XHRyZXR1cm4gISh0aGlzLmxheWVyc1JlbW92ZWQgPT09IDAgJiYgdGhpcy5sYXllcnNDaGFuZ2VkID09PSAwICYmIHRoaXMubGF5ZXJzQWRkZWQgPT09IDApO1xuXHR9XG59XG4iXX0=

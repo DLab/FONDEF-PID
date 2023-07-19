@@ -1,0 +1,14 @@
+fury-breadcrumbs {
+  padding-left: 10px;
+  .crumb, .link {
+    color: $theme-secondary-text;
+
+    &:hover {
+      color: $theme-text;
+    }
+  }
+
+  .crumb.current, .crumb.current .link {
+    color: $theme-text;
+  }
+}

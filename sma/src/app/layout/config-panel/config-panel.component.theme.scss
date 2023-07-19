@@ -1,0 +1,39 @@
+fury-config-panel {
+
+  .section {
+    border-bottom: 1px solid $theme-divider;
+  }
+
+  .subheading {
+    color: $theme-secondary-text;
+  }
+
+  .style {
+    &:hover {
+      background: $theme-background-hover;
+    }
+  }
+
+  .color {
+
+    &.default {
+      background: $sidenav-background;
+      color: $sidenav-color;
+    }
+
+    &.light {
+      background: white;
+      color: #000;
+    }
+
+    &.dark {
+      background: #303030;
+      color: white;
+    }
+
+    &.flat {
+      background: #f5f5f5;
+      color: #000;
+    }
+  }
+}

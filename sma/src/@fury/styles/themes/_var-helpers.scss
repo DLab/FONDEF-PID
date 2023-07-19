@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+$config: mat.get-color-config($theme);
+
+$theme-foreground-map: map-get($config, foreground);
+$theme-background-map: map-get($config, background);
+$theme-primary-map: map-get($config, primary);
+$theme-accent-map: map-get($config, accent);
+$theme-warn-map: map-get($config, warn);
+
+$theme-text: mat.get-color-from-palette($theme-foreground-map, text);
+$theme-hint-text: mat.get-color-from-palette($theme-foreground-map, hint-text);
+$theme-secondary-text: mat.get-color-from-palette($theme-foreground-map, secondary-text);
+$theme-divider: mat.get-color-from-palette($theme-foreground-map, divider);
+$theme-icon: mat.get-color-from-palette($theme-foreground-map, icon);
+$theme-elevation: mat.get-color-from-palette($theme-foreground-map, elevation);
+
+$theme-background: mat.get-color-from-palette($theme-background-map, background);
+$theme-app-bar: mat.get-color-from-palette($theme-background-map, app-bar);
+$theme-status-bar: mat.get-color-from-palette($theme-background-map, status-bar);
+$theme-background-hover: mat.get-color-from-palette($theme-background-map, hover);
+
+$theme-card: mat.get-color-from-palette($theme-background-map, card);
+
+$theme-color-primary-palette: map-get($config, primary);
+$theme-color-accent-palette: map-get($config, accent);
+$theme-color-warn-palette: map-get($config, warn);
+
+$theme-color-primary: var(--primary-background);
+$theme-color-accent: mat.get-color-from-palette($theme-color-accent-palette);
+$theme-color-warn: mat.get-color-from-palette($theme-color-warn-palette);
+
+$theme-color-primary-contrast: mat.get-contrast-color-from-palette($theme-color-primary-palette, $theme-primary-hue);
+$theme-color-accent-contrast: mat.get-contrast-color-from-palette($theme-color-accent-palette, $theme-accent-hue);
+$theme-color-warn-contrast: mat.get-contrast-color-from-palette($theme-color-warn-palette, $theme-warn-hue);

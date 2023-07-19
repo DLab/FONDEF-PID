@@ -1,0 +1,22 @@
+.fury-page-layout {
+
+}
+
+.fury-page-layout-header {
+  background: transparent;
+  color: $theme-color-primary-contrast;
+
+  fury-breadcrumbs {
+    .crumb, .link {
+      color: $light-secondary-text;
+
+      &:hover {
+        color: $light-primary-text;
+      }
+    }
+
+    .crumb.current, .crumb.current .link {
+      color: $light-primary-text;
+    }
+  }
+}

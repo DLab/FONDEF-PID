@@ -1,0 +1,79 @@
+<fury-list name="{{title}}" [columns]="columns" (filterChange)="onFilterChange($event)">
+
+  <div class="actions">
+    <button class="download-btn"
+            (click)="download()"
+            *ngIf="hasExport"
+            type="button"
+            mat-mini-fab color="accent"
+            [disabled]="!hasRecods"
+            [matTooltip]="app.screen.Haga_click_para_bajar_los_datos_a_un_archivo">
+      <mat-icon>cloud_download</mat-icon>
+    </button>
+    <button class="create"
+            (click)="addItem()"
+            *ngIf="hasAddNewItem"
+            type="button"
+            mat-mini-fab color="accent"
+            [matTooltip]="app.screen.Agregar">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button class="activate"
+            (click)="masiveActivate()"
+            *ngIf="hasActivate"
+            type="button"
+            [disabled]="!searchResult"
+            mat-mini-fab color="primary"
+            [matTooltip]="app.screen['Activar']">
+      <mat-icon>check</mat-icon>
+    </button>
+    <button class="delete"
+            (click)="masiveDelete()"
+            *ngIf="hasEliminate"
+            type="button"
+            [disabled]="!searchResult"
+            mat-mini-fab color="warn"
+            [matTooltip]="app.screen['Eliminar']">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button class="create" (click)="searchWithoutParameters()" type="button" mat-mini-fab color="primary" *ngIf="!hasFilter" class="search-btn">
+      <mat-icon>rotate_right</mat-icon>
+    </button>
+
+  </div>
+
+  <table [dataSource]="dataSource" mat-table matSort>
+
+    <ng-container *ngFor="let column of columns">
+      <ng-container *ngIf="column.isModelProperty" [matColumnDef]="column.property">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.name }}</th>
+        <td *matCellDef="let row" mat-cell [style.text-align]="column.type == 'CHECKED' ? 'center' : 'left'">
+          <span *ngIf="!column.type || column.type != 'CHECKED'">{{ row[column.property] }}</span>
+          <mat-icon *ngIf="column.type && column.type == 'CHECKED' && row[column.property]">check</mat-icon>
+        </td>
+      </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="accion" *ngIf="hasAccion">
+      <th *matHeaderCellDef class="actions-cell" mat-header-cell>{{ app.screen.Accion }}</th>
+      <td *matCellDef="let row" class="actions-cell" mat-cell>
+        <darta-action-cell [row_data]="row"
+                  [edit]="editInvoker"
+                  [view]="viewInvoker"
+                  [delete]="deleteInvoker"
+                  [desactivar]="desactivarInvoker"
+                  [copy]="copyInvoker"
+                  [add]="addInvoker"></darta-action-cell>
+      </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: visibleColumns;"
+        class="clickable route-animations-elements"
+        mat-row></tr>
+
+  </table>
+
+  <mat-paginator class="paginator" [pageSize]="pageSize"></mat-paginator>
+
+</fury-list>

@@ -1,0 +1,36 @@
+fury-sales-summary-widget {
+
+  .gain {
+    &.increase {
+      color: $color-success;
+    }
+
+    &.decrease {
+      color: $theme-color-warn;
+    }
+  }
+
+  .label {
+    color: $theme-secondary-text;
+  }
+
+  .indicator {
+
+    &.success {
+      color: $color-success;
+    }
+
+    &.primary {
+      color: $theme-color-primary;
+    }
+
+    &.accent {
+      color: $theme-color-accent;
+    }
+
+    &.warn {
+      color: $theme-color-warn;
+    }
+  }
+
+}

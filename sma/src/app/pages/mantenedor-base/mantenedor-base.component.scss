@@ -1,0 +1,19 @@
+darta-mantenedor-base{
+    .page {
+        height: 100%;
+    }
+        
+    .scrollbar {
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .breadcrumbs .crumbs{
+        padding-bottom: 10px;
+    }
+
+    .scrollbar .mat-expansion-panel{
+        margin-bottom: 15px;
+    }
+}

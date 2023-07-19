@@ -1,0 +1,12 @@
+fury-donut-chart-widget {
+
+  .section {
+    &:first-child {
+      border-right: 1px solid $theme-divider;
+    }
+
+    .label {
+      color: $theme-secondary-text;
+    }
+  }
+}

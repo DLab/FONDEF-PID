@@ -1,0 +1,207 @@
+<mat-expansion-panel expanded="true" (opened)="filterOpenState = true" (closed)="filterOpenState = false" >
+  <mat-expansion-panel-header>
+    <mat-panel-title class="title" [style.padding-top]="filterOpenState ? '0px': '7px'">
+      {{app.screen.Filtros}}
+    </mat-panel-title>
+    <button (click)="search();$event.stopPropagation()" type="button" mat-icon-button color="primary" *ngIf="!filterOpenState">
+      <mat-icon>rotate_right</mat-icon>
+    </button>        
+  </mat-expansion-panel-header>
+
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="16px" fxLayoutAlign="start end" [style.width]="'100%'">
+    <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" [style.width]="'100%'">
+      <mat-dialog-content>
+        <div class="person">
+          <form [formGroup]="form" class="person">
+
+              <div fxLayout="row" fxLayoutGap.gt-sm="15px" >        
+              <mat-form-field fxFlex="23.5">
+                <mat-label>{{app.screen.BaseDato}}</mat-label>
+                <input matInput [matAutocomplete]="baseDato" formControlName="baseDato" required>
+                <mat-autocomplete #baseDato="matAutocomplete" [displayWith]="filterBaseDato.displayItem" (optionSelected)="changeBaseDato()">
+                  <mat-option *ngFor="let item of filterBaseDato.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('baseDato').value != null" type="button" mat-icon-button (click)="form.get('baseDato').reset()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('baseDato').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field fxFlex="23.5">
+                <mat-label>{{app.screen.Tipo_Dato}}</mat-label>
+                <input matInput [matAutocomplete]="tipoDato" formControlName="tipoDato" required>
+                <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterTipoDato.displayItem">
+                  <mat-option *ngFor="let item of filterTipoDato.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('tipoDato').value != null" type="button" mat-icon-button (click)="form.get('tipoDato').reset()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('tipoDato').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>
+  
+              <mat-form-field fxFlex="23.2">
+                <mat-label>{{app.screen.Fuente_de_datos}}</mat-label>
+                <input matInput [matAutocomplete]="fuente" formControlName="fuente" required>
+                <mat-autocomplete #fuente="matAutocomplete" [displayWith]="filterFuenteDato.displayItem">
+                  <mat-option *ngFor="let item of filterFuenteDato.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('fuente').value != null" type="button" mat-icon-button (click)="form.get('fuente').reset()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('fuente').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>
+
+            </div>
+
+            <div fxLayout="row" fxLayoutGap.gt-sm="15px" >        
+
+              <mat-form-field fxFlex="23.5">
+                <mat-label>{{app.screen.Region}}</mat-label>
+                <input matInput [matAutocomplete]="region" formControlName="region" required>
+                <mat-autocomplete #region="matAutocomplete" [displayWith]="filterRegiones.displayItem" (optionSelected)="changeRegiones()">
+                  <mat-option *ngFor="let item of filterRegiones.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('region').value != null" type="button" mat-icon-button (click)="clearRegion()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('region').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <mat-form-field fxFlex="23.5">
+                <mat-label>{{app.screen.Comuna}}</mat-label>
+                <input matInput [matAutocomplete]="comuna" formControlName="comuna" required>
+                <mat-autocomplete #comuna="matAutocomplete" [displayWith]="filterComunas.displayItem" (optionSelected)="changeComunas()">
+                  <mat-option *ngFor="let item of filterComunas.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('comuna').value != null" type="button" mat-icon-button (click)="clearComuna()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('comuna').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>   
+              
+              <mat-form-field fxFlex="23">
+                <mat-label>{{app.screen.Fecha_Inicio}}</mat-label>
+                <input matInput [ngxMatDatetimePicker]="inicio" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="inicio" >
+                <mat-datepicker-toggle matSuffix [for]="inicio"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #inicio
+                    [showSpinners]="true"
+                    [showSeconds]="true"
+                    [stepMinute]="5"
+                    [touchUi]="true">
+                    <ng-template>
+                      <!-- <mat-icon>star</mat-icon> -->
+                      <span>{{app.screen.Aceptar}}</span>
+                    </ng-template>
+                </ngx-mat-datetime-picker>
+              </mat-form-field>
+  
+              <mat-form-field fxFlex="23">
+                <mat-label>{{app.screen.Fecha_Termino}}</mat-label>
+                <input matInput [ngxMatDatetimePicker]="termino" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="termino" >
+                <mat-datepicker-toggle matSuffix [for]="termino"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #termino
+                    [showSpinners]="true"
+                    [showSeconds]="true"
+                    [stepMinute]="5"
+                    [touchUi]="true">
+                    <ng-template>
+                      <!-- <mat-icon>star</mat-icon> -->
+                      <span>{{app.screen.Aceptar}}</span>
+                    </ng-template>
+                </ngx-mat-datetime-picker>
+              </mat-form-field>              
+              
+            </div>
+
+            <div fxLayout="row" fxLayoutGap.gt-sm="15px" >
+
+              <mat-form-field fxFlex="48">
+                <mat-label>{{app.screen.Regulado}}</mat-label>
+                <input matInput [matAutocomplete]="regulado" formControlName="regulado" required>
+                <mat-autocomplete #regulado="matAutocomplete" [displayWith]="filterRegulado.displayItem" (optionSelected)="changeRegulado()">
+                  <mat-option *ngFor="let item of filterRegulado.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('regulado').value != null" type="button" mat-icon-button (click)="clearRegulado()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('regulado').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field fxFlex="48">
+                <mat-label>{{app.screen.Estacion}}</mat-label>
+                <input matInput [matAutocomplete]="estacion" formControlName="estacion" required>
+                <mat-autocomplete #estacion="matAutocomplete" [displayWith]="filterEstacion.displayItem" (optionSelected)="changeEstacion()">
+                  <mat-option *ngFor="let item of filterEstacion.filteredItems| async" [value]="item">
+                    <span>{{ item.descripcion }}</span>
+                  </mat-option>
+                </mat-autocomplete>
+                <button *ngIf="form.get('estacion').value != null" type="button" mat-icon-button (click)="form.get('estacion').reset()" matSuffix>
+                  <mat-icon>close</mat-icon>
+                </button>
+                <button *ngIf="form.get('estacion').value == null" type="button" mat-icon-button matSuffix>
+                  <mat-icon>arrow_drop_down</mat-icon>
+                </button>
+              </mat-form-field>
+              
+            </div>   
+          </form>
+          <div fxLayout="row" fxLayoutGap.gt-sm="15px" >
+            <div fxFlex="96">
+              <ng-select [items]="analiticas"
+              placeholder="{{app.screen.Analitica}}s*"
+              bindLabel="descripcion"
+              bindValue="codigo"
+              required
+              groupBy="codigoPadre"
+              [closeOnSelect]="false"
+              [multiple]="true"
+              [clearable]="true"
+              [searchable]="true"
+              [selectableGroup]="true"
+              [selectableGroupAsModel]="false"
+              [(ngModel)]="analitica"
+              ngDefaultControl>
+              <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{app.screen[item.codigoPadre] | uppercase}}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{app.screen[item.codigo]}}
+              </ng-template>
+            </ng-select>
+            </div>
+          </div>          
+        </div>
+      </mat-dialog-content>          
+    </div>
+
+    <div class="actions">
+      <button class="create" (click)="searchItem()" type="button" mat-mini-fab color="primary" [disabled]="!isValid()">
+        <mat-icon>rotate_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-expansion-panel>

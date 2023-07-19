@@ -1,0 +1,23 @@
+<fury-list [hideHeader]="true" class="list" fxFlex="grow" fxLayout="column">
+  <table [dataSource]="dataSource" class="table" mat-table matSort>
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Model Properties Column -->
+    <ng-container *ngFor="let column of columns">
+      <ng-container *ngIf="column.isModelProperty" [matColumnDef]="column.property">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> {{ column.name }}</th>
+        <td *matCellDef="let row" mat-cell>{{ row[column.property] }}</td>
+      </ng-container>
+    </ng-container>
+
+
+    <tr *matHeaderRowDef="visibleColumns" mat-header-row></tr>
+    <!--suppress UnnecessaryLabelJS -->
+    <tr *matRowDef="let row; columns: visibleColumns;" mat-row></tr>
+  </table>
+
+  <mat-paginator [pageSize]="pageSize" class="paginator"></mat-paginator>
+
+</fury-list>

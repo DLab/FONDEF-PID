@@ -1,0 +1,145 @@
+@use 'sass:math';
+@import "var";
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+darta-tab-item-list{
+  :host {
+    display: block;
+  }
+  .page{
+    height: 100%;
+  }
+  .overflow-container {
+      height: 400px;
+      overflow-x: hidden;
+      width: 100%;
+  }
+  .input-search{
+      margin-bottom: 3px !important;
+      max-height: 40px;
+  }
+  .mat-divider{
+      padding-bottom: 7px;
+  }
+  .fury-filter-input {
+      font-size: 15px;
+      line-height: 1.125;
+      border: none;
+      height: 32px;
+      background-color: #fafafa;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .fury-filter-input-icon {
+      width: 1.2em;
+      vertical-align: bottom;
+      height: 22px;
+      font-size: 22px;
+      margin-right: $padding-xs;
+    }
+
+  .mat-tab-body-wrapper{
+      padding-top: 6px;
+  }
+
+  .sidenav-item {
+    transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+  }
+
+  .subheading {
+    font: var(--font-caption);
+    margin-left: $sidenav-item-padding-left + 2px;
+    margin-top: $spacing;
+    margin-bottom: 8px;
+    font-weight: 500;
+    transition: 300ms cubic-bezier(.25, .8, .25, 1);
+    white-space: nowrap;
+
+    &.first-subheading {
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+  }
+
+  .sidenav-item-link {
+    height: 25px;
+    padding-left: 4px;
+    padding-right: 4px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    white-space: nowrap;
+    text-decoration: none;
+    border-top-right-radius: math.div($sidenav-item-height, 2);
+    border-bottom-right-radius: math.div($sidenav-item-height, 2);
+    margin-right: $sidenav-item-margin-right;
+    transition: background-color $swift-ease-out-duration $swift-ease-out-timing-function;
+
+    .icon {
+      width: 20px;
+      height: $sidenav-item-icon-size;
+      font-size: 19px;
+      line-height: $sidenav-item-icon-size;
+      color: #727272;
+    }
+
+    .text-icon {
+      width: $sidenav-item-icon-size;
+      height: $sidenav-item-icon-size;
+      line-height: $sidenav-item-icon-size;
+      text-align: center;
+    }
+
+    .name {
+      padding-left: 2px;
+    }
+
+    .badge {
+      padding: math.div($spacing, 12) math.div($spacing, 3);
+      font-size: 12px;
+      border-radius: 12px;
+
+      & + .expand-indicator {
+        margin-left: 8px;
+      }
+    }
+
+    .expand-indicator {
+      transition: transform .25s cubic-bezier(.35, 0, .25, 1);
+
+      &.rotate {
+        transform: rotate(-180deg);
+      }
+    }
+
+    .name, .badge, .expand-indicator {
+      will-change: opacity;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    overflow: hidden;
+  }
+}

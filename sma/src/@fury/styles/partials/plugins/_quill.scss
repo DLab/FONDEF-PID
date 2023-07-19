@@ -1,0 +1,19 @@
+.ql-toolbar {
+  color: $theme-text;
+}
+
+.ql-stroke {
+  stroke: $theme-text;
+}
+
+.ql-fill {
+  fill: $theme-text;
+}
+
+.ql-editor.ql-blank::before {
+  color: $theme-text;
+}
+
+.ql-toolbar.ql-snow .ql-picker .ql-picker-label, .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  color: $theme-text;
+}

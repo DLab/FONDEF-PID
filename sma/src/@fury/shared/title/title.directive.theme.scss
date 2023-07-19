@@ -1,0 +1,14 @@
+.fury-title {
+  font: var(--font-title);
+  color: $theme-text;
+  display: block;
+
+  mat-icon {
+    margin-right: $padding-sm;
+    vertical-align: text-bottom;
+  }
+
+  span {
+    display: inline-block;
+  }
+}

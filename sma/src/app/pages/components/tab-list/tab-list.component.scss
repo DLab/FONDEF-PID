@@ -1,0 +1,9 @@
+darta-tab-list{
+  height: 100%;
+  mat-tab-group{
+    width: 310px;
+  }
+  mat-tab-group .mat-tab-body-wrapper{
+    height: 100%;
+  }
+}

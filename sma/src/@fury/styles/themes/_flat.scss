@@ -1,0 +1,23 @@
+@import "./var-helpers";
+
+$sidenav-background: $theme-background !default;
+$sidenav-color: $theme-text !default;
+$sidenav-box-shadow: 0 !default;
+$sidenav-toolbar-background: $theme-background !default;
+$sidenav-logo-color: $theme-text !default;
+$sidenav-secondary-text: $theme-secondary-text !default;
+$sidenav-collapsed-hover-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .40) !default;
+
+$sidenav-item-color-hover: $theme-text !default;
+$sidenav-item-background-hover: $theme-background-hover !default;
+$sidenav-item-text-icon-color: $theme-hint-text !default;
+$sidenav-item-subheading-color: $dark-secondary-text !default;
+
+$toolbar-background: $theme-background !default;
+$toolbar-elevation: 0 !default;
+$toolbar-button-separator-color: transparent !default;
+
+$footer-background: $theme-background !default;
+$footer-border-top: none !default;
+
+@import "./default";
