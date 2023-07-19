@@ -97,7 +97,7 @@ def valida_normativas_aire_trianual(agno):
             df = normaNO2_trianual_agno(df, agno)
             print('normaNO2_trianual_agno\n', df)
 
-            df = normaNO2_trianual_horario(df, agno)
+            df = normaNO2_trianual_horario(df2, agno)
             print('normaNO2_trianual_horario\n', df)
 
         df = getDataFrame(conn, fechaInicial, fechaFinal, 'SO2')

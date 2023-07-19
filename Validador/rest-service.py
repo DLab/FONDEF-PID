@@ -23,13 +23,14 @@ def analitica():
     print(data)
     with getConnect() as conn:
         cur = conn.cursor()        
-        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", [data['inicio'], data['termino'], data['tipoDato'], data['regulado'], data['estacion'], data['fuente']])
+        params = [data['inicio'], data['termino'], data['tipoDato'], data['regulado'], data['estacion'], data['fuente']]
+        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", params)
         df = DataFrame(cur.fetchall())
         cur.close()      
         if (len(df) > 0):
             df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
             df["fecha"] = pd.to_datetime(df["fecha"]) 
-            return generaAnalitica(data['analitica'], df)
+            return generaAnalitica(params, data['analitica'], data['additionalData'], df)
         else:
             return {'ERROR': 'NODATA'}
 
