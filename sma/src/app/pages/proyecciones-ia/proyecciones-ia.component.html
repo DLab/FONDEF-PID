@@ -1,15 +1,21 @@
 <div class="page" fxLayout="column">
 
   <fury-breadcrumbs class="breadcrumbs" 
-         *ngIf="app.selectedMenuItem != null"
+         *ngIf="app.selectedMenuItem != null && !isPopup"
          [crumbs]="app.selectedMenuItem.lang_crumbs" 
          current="{{app.screen[app.selectedMenuItem.name]}}" >
-  </fury-breadcrumbs>
+  </fury-breadcrumbs >
 
-  <app-filtros-por-estacion 
+  <app-filtros-por-estacion-popup *ngIf="isPopup" [esProyeccion]="true"
+      [title]="app.screen.Proyecciones_IA" [subTitle]="subTitle"
+      [analiticas]="analiticas" [hsAnaliticas]="hsAnaliticas"
+      [inicio]="inicio" [termino]="termino"      
+      (search)="searchItem($event)"></app-filtros-por-estacion-popup>
+
+  <app-filtros-por-estacion [esProyeccion]="true"
             [filterBaseDatoFn]="filterBaseDatosFn" 
-            [filterTipoDatoFn]="filterTipoDatoFn"
-            (search)="search($event)"></app-filtros-por-estacion>
+            [filterTipoDatoFn]="filterTipoDatoFn"            
+            (search)="search($event)" *ngIf="!isPopup"></app-filtros-por-estacion>
 
   <div #graph echarts [options]="optionsGraph" [ngClass]="chartClassName"  ></div>
 </div>

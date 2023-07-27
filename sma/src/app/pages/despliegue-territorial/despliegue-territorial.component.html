@@ -6,7 +6,7 @@
            current="{{app.screen[app.selectedMenuItem.name]}}" >
     </fury-breadcrumbs>
   
-    <mat-expansion-panel expanded="true" (opened)="filterOpenState = true" (closed)="filterOpenState = false" >
+    <mat-expansion-panel [expanded]="filterOpenState" (opened)="filterOpenState = true" (closed)="filterOpenState = false" >
         <mat-expansion-panel-header>
           <mat-panel-title class="title" [style.padding-top]="filterOpenState ? '0px': '7px'">
             {{app.screen.Filtros}}
@@ -17,98 +17,123 @@
         </mat-expansion-panel-header>
       
         <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="16px" fxLayoutAlign="start end" [style.width]="'100%'">
-          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" [style.width]="'100%'">
-            <form [formGroup]="form" class="person">
+          <div fxLayout="column" class="header-filter" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" >
               <mat-dialog-content>
                 <div class="person">
-                  <div fxLayout="row" fxLayoutGap.gt-sm="24px" >        
-    
-                    <mat-form-field fxFlex="20">
-                      <mat-label>{{app.screen.BaseDato}}</mat-label>
-                      <input matInput [matAutocomplete]="baseDato" formControlName="baseDato" required>
-                      <mat-autocomplete #baseDato="matAutocomplete" [displayWith]="filterBaseDato.displayItem" (optionSelected)="changeBaseDato()">
-                        <mat-option *ngFor="let item of filterBaseDato.filteredItems| async" [value]="item">
-                          <span>{{ item.descripcion }}</span>
-                        </mat-option>
-                      </mat-autocomplete>
-                      <button *ngIf="form.get('baseDato').value != null" type="button" mat-icon-button (click)="form.get('baseDato').reset()" matSuffix>
-                        <mat-icon>close</mat-icon>
-                      </button>
-                      <button *ngIf="form.get('baseDato').value == null" type="button" mat-icon-button matSuffix>
-                        <mat-icon>arrow_drop_down</mat-icon>
-                      </button>
-                    </mat-form-field>
-     
-                    <mat-form-field fxFlex="20">
-                      <mat-label>{{app.screen.Tipo_Dato}}</mat-label>
-                      <input matInput [matAutocomplete]="tipoDato" formControlName="tipoDato" required>
-                      <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterTipoDato.displayItem">
-                        <mat-option *ngFor="let item of filterTipoDato.filteredItems| async" [value]="item">
-                          <span>{{ item.descripcion }}</span>
-                        </mat-option>
-                      </mat-autocomplete>
-                      <button *ngIf="form.get('tipoDato').value != null" type="button" mat-icon-button (click)="form.get('tipoDato').reset()" matSuffix>
-                        <mat-icon>close</mat-icon>
-                      </button>
-                      <button *ngIf="form.get('tipoDato').value == null" type="button" mat-icon-button matSuffix>
-                        <mat-icon>arrow_drop_down</mat-icon>
-                      </button>
-                    </mat-form-field>
-                    
-                    <mat-form-field fxFlex="20">
-                      <mat-label>{{app.screen.Fuente_de_datos}}</mat-label>
-                      <input matInput [matAutocomplete]="fuente" formControlName="fuente" required>
-                      <mat-autocomplete #fuente="matAutocomplete" [displayWith]="filterFuenteDato.displayItem">
-                        <mat-option *ngFor="let item of filterFuenteDato.filteredItems| async" [value]="item">
-                          <span>{{ item.descripcion }}</span>
-                        </mat-option>
-                      </mat-autocomplete>
-                      <button *ngIf="form.get('fuente').value != null" type="button" mat-icon-button (click)="form.get('fuente').reset()" matSuffix>
-                        <mat-icon>close</mat-icon>
-                      </button>
-                      <button *ngIf="form.get('fuente').value == null" type="button" mat-icon-button matSuffix>
-                        <mat-icon>arrow_drop_down</mat-icon>
-                      </button>
-                    </mat-form-field>
+                  <form [formGroup]="form" class="person">
+
+                    <div fxLayout="row" fxLayoutGap.gt-sm="24px" >            
+                      <mat-form-field fxFlex="20">
+                        <mat-label>{{app.screen.BaseDato}}</mat-label>
+                        <input matInput [matAutocomplete]="baseDato" formControlName="baseDato" required>
+                        <mat-autocomplete #baseDato="matAutocomplete" [displayWith]="filterBaseDato.displayItem" (optionSelected)="changeBaseDato()">
+                          <mat-option *ngFor="let item of filterBaseDato.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('baseDato').value != null" type="button" mat-icon-button (click)="form.get('baseDato').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('baseDato').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
       
-                    <mat-form-field fxFlex="20">
-                      <mat-label>{{app.screen.Fecha_Inicio}}</mat-label>
-                      <input matInput [ngxMatDatetimePicker]="inicio" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="inicio" >
-                      <mat-datepicker-toggle matSuffix [for]="inicio"></mat-datepicker-toggle>
-                      <ngx-mat-datetime-picker #inicio
-                          [showSpinners]="true"
-                          [showSeconds]="true"
-                          [stepMinute]="5"
-                          [touchUi]="true">
-                          <ng-template>
-                            <!-- <mat-icon>star</mat-icon> -->
-                            <span>{{app.screen.Aceptar}}</span>
+                      <mat-form-field fxFlex="20">
+                        <mat-label>{{app.screen.Parametro}}</mat-label>
+                        <input matInput [matAutocomplete]="tipoDato" formControlName="tipoDato" required>
+                        <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterParametro.displayItem">
+                          <mat-option *ngFor="let item of filterParametro.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('tipoDato').value != null" type="button" mat-icon-button (click)="form.get('tipoDato').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('tipoDato').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+                      
+                      <mat-form-field fxFlex="20">
+                        <mat-label>{{app.screen.Fuente_de_datos}}</mat-label>
+                        <input matInput [matAutocomplete]="fuente" formControlName="fuente" required>
+                        <mat-autocomplete #fuente="matAutocomplete" [displayWith]="filterFuenteDato.displayItem">
+                          <mat-option *ngFor="let item of filterFuenteDato.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('fuente').value != null" type="button" mat-icon-button (click)="form.get('fuente').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('fuente').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+
+                      <mat-form-field fxFlex="20">
+                        <mat-label>{{app.screen.Fecha_Inicio}}</mat-label>
+                        <input matInput [ngxMatDatetimePicker]="inicio" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="inicio" >
+                        <mat-datepicker-toggle matSuffix [for]="inicio"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #inicio
+                            [showSpinners]="true"
+                            [showSeconds]="true"
+                            [stepMinute]="5"
+                            [touchUi]="true">
+                            <ng-template>
+                              <!-- <mat-icon>star</mat-icon> -->
+                              <span>{{app.screen.Aceptar}}</span>
+                            </ng-template>
+                        </ngx-mat-datetime-picker>
+                      </mat-form-field>
+          
+                      <mat-form-field fxFlex="20">
+                        <mat-label>{{app.screen.Fecha_Termino}}</mat-label>
+                        <input matInput [ngxMatDatetimePicker]="termino" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="termino" >
+                        <mat-datepicker-toggle matSuffix [for]="termino"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #termino
+                            [showSpinners]="true"
+                            [showSeconds]="true"
+                            [stepMinute]="5"
+                            [touchUi]="true">
+                            <ng-template>
+                              <!-- <mat-icon>star</mat-icon> -->
+                              <span>{{app.screen.Aceptar}}</span>
+                            </ng-template>
+                        </ngx-mat-datetime-picker>
+                      </mat-form-field>                       
+                    </div>
+                  </form>
+
+                  <div fxLayout="row" fxLayoutGap.gt-sm="24px" >        
+      
+                    <div fxFlex="40">
+                      <ng-select [items]="tiposOperaciones"
+                          placeholder="{{app.screen.Tipo_Operacion}}"
+                          bindLabel="descripcion"
+                          bindValue="codigo"
+                          required
+                          groupBy="clasificacion"
+                          [closeOnSelect]="false"
+                          [multiple]="false"
+                          [clearable]="true"
+                          [searchable]="true"
+                          [selectableGroup]="true"
+                          [selectableGroupAsModel]="false"
+                          [(ngModel)]="tipoOperacion"
+                          ngDefaultControl>
+                          <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" disabled [ngModel]="item$.selected"/> {{app.screen[item.clasificacion] | uppercase}}
                           </ng-template>
-                      </ngx-mat-datetime-picker>
-                    </mat-form-field>
-        
-                    <mat-form-field fxFlex="20">
-                      <mat-label>{{app.screen.Fecha_Termino}}</mat-label>
-                      <input matInput [ngxMatDatetimePicker]="termino" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="termino" >
-                      <mat-datepicker-toggle matSuffix [for]="termino"></mat-datepicker-toggle>
-                      <ngx-mat-datetime-picker #termino
-                          [showSpinners]="true"
-                          [showSeconds]="true"
-                          [stepMinute]="5"
-                          [touchUi]="true">
-                          <ng-template>
-                            <!-- <mat-icon>star</mat-icon> -->
-                            <span>{{app.screen.Aceptar}}</span>
+                          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{app.screen[item.codigo]}}
                           </ng-template>
-                      </ngx-mat-datetime-picker>
-                    </mat-form-field>   
-                                        
+                      </ng-select>
+                    </div>
+
                   </div>
-    
-        
                 </div>
               </mat-dialog-content>
-            </form>
           </div>
           <div class="actions">
             <button class="create" (click)="search()" type="button" mat-mini-fab color="primary" [disabled]="!isValid()">
@@ -117,12 +142,26 @@
           </div>
         </div>
       </mat-expansion-panel>
-    
+    <ngx-slider [(value)]="minValue" 
+      [(highValue)]="maxValue" 
+      (userChange)="filterChange()"
+      [options]="optionsSlider" *ngIf="layers.length > 0 && tipoOperacion"></ngx-slider>
     <div style="height: 760px;"
        leaflet 
       [leafletOptions]="options"
       [leafletLayers]="layers">
-    </div>
-    
+    </div>    
 
 </div>
+
+<div style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu">
+</div>
+<mat-menu #contextMenu="matMenu">
+	<ng-template matMenuContent let-item="item">
+		<button mat-menu-item (click)="openAnaliticaDeDatos(item)" >{{app.screen.Analitica_de_Datos}}</button>
+		<button mat-menu-item (click)="openProyeccionesIA(item)" >{{app.screen.Proyecciones_IA}}</button>    
+	</ng-template>
+</mat-menu>

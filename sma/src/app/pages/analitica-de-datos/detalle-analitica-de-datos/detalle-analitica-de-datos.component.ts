@@ -21,16 +21,18 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
 
   PALETA:string[] = ['#980909', '#a0a339', '#ef07f6', '#2af607', '#433131', '#0228f3', '#f05d10'];
   app:any = global;
-  isPopup:Boolean;
+  isPopup:boolean;
   hsArray:any;
   subTitle:string;
   form: FormGroup;
+  analiticas:any[];
+  hsAnaliticas:any;
+  inicio:Date;
+  termino:Date;
+
 
   chartClassName:string;
   optionsGraph:any[] = [];
-  analiticas:any[];
-  hsAnaliticas:any;
-  analitica:any[] = [];
   xAxis:any[] = [];
   usedColors:string[];
   listener:any;
@@ -47,26 +49,22 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
     this.isPopup  = data != undefined;
     if (this.isPopup){
       this.subTitle = data.data.regulado + '-' + data.data.estacion + ' ( ' + data.searchData.tipoDato.descripcion + ' - ' + data.searchData.fuente.descripcion + ' )';
+      this.inicio = this.data.searchData.inicio;
+      this.termino = this.data.searchData.termino;
+      this.hsArray = this.data.hsArray;
+      this.analiticas = this.hsArray['ANALITICAS'];
+      this.hsAnaliticas = {};
+      this.analiticas.forEach(e=>{
+        this.hsAnaliticas[e.codigo] = e;
+        e.descripcion = this.app.screen[e.codigo]
+      });
+  
     }
   }
 
   ngOnInit() {
     this.chartClassName = 'long-demo-chart';
     this.optionsGraph = [this.newOptionGraph([], [], this.app.screen.Analitica_de_Datos, '', 'Fechas', 'Valores')];
-    if (this.data){
-      this.form = this.fb.group({
-        inicio: [{value: this.data.searchData.inicio, disabled: false}]
-      , termino: [{value: this.data.searchData.termino, disabled: false}]
-      });    
-
-      this.hsArray = this.data.hsArray;
-      this.hsAnaliticas = {};
-      this.analiticas = this.hsArray['ANALITICAS'].filter(e=> e.codigoBaseDato == this.data.baseDato.codigo);    
-      this.analiticas.forEach(e=>{
-        this.hsAnaliticas[e.codigo] = e;
-        e.descripcion = this.app.screen[e.codigo]
-      });
-    }
     global.load.addListener('loadok', this.listener = ()=>{
       this.changeLanguage();
     });
@@ -86,22 +84,6 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
 
   }
 
-  getAnaliticas():any[]{
-    var result:any[] = [];
-    this.analitica.forEach(e=>{
-      result.push(this.hsAnaliticas[e]);
-    });
-    
-    return result;
-  }
-  isValid(){
-    return this.analitica.length > 0;
-  }
-  searchItem(){
-    let data:any = this.data.searchData;
-    data.analitica = this.getAnaliticas();
-    this.search(data);
-  }
   openNewGraph(item:any){
     let newItem:any = clone(item);
     item.selected = false;
@@ -196,6 +178,14 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
       }
     });
   }  
+  searchItem(item:any){
+    let data:any = this.data.searchData;
+    for(let e in item){
+      data[e] = item[e]
+    }
+    this.search(data);
+  }
+
   search(data:any):void{
       let additionalData:any[] = [];
       let show:boolean = false;
@@ -222,13 +212,13 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
         this.showAdditionalData(data, additionalData);
       }
       else{
-        data['additionalData'] = additionalData;
+        data['additionalData'] = [[]];
         this._search(data);
       }
   }
   _search(data:any):void{
       this.baseService.getAnaliticaDeDatos(data, function(){console.log('error')}).subscribe((result:any)=>{
-        //console.log(result)
+        console.log(result)
         let series = [];
         if (result.ERROR){
           this.optionsGraph = [this.newOptionGraph([], [], this.app.screen.Analitica_de_Datos, '', 'Fechas', 'Valores')];
@@ -247,23 +237,49 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
             if (e.analitica){              
               let jsonGui:any = JSON.parse(this.hsAnaliticas[e.analitica]['parametrosGui'])['display'];
               let index:number = 0;
+              let markLine:any[] = [];
+              let markPoint:any;
               jsonGui.forEach((serie:any) => {
-                serie['data'] = e.data[index++];
-                serie['code'] = serie['name'];
-                serie['name'] = this.app.screen[serie['code']];
-                if (serie.renderItem){
-                  if (serie.renderItem == 'renderStem')
-                  serie.renderItem = renderStem;
+                if (serie.type == 'markLine'){
+                  serie['yAxis'] = e.data[index++]
+                  markLine.push(serie);
                 }
-                serie['selected'] = true;
-                if (!serie['itemStyle']){
-                  serie['itemStyle'] = {};
+                else if (serie.type == 'markPoint'){
+                  let points:any[] = e.data[index++];
+                  markPoint = serie;
+                  serie['data'] = [];
+                  points.forEach(e=>{
+                    serie['data'].push({xAxis:e[0], yAxis:e[1], value: e[1]});
+                  })
                 }
-                if (!serie['itemStyle']['color']){
-                  serie['itemStyle']['color'] = this.getRandomColor()
+                else{
+                  serie['data'] = e.data[index++];
+                  serie['code'] = serie['name'];
+                  serie['name'] = this.app.screen[serie['code']];
+                  if (serie.renderItem){
+                    if (serie.renderItem == 'renderStem')
+                    serie.renderItem = renderStem;
+                  }
+                  serie['selected'] = true;
+                  if (!serie['itemStyle']){
+                    serie['itemStyle'] = {};
+                  }
+                  if (!serie['itemStyle']['color']){
+                    serie['itemStyle']['color'] = this.getRandomColor()
+                  }
+                  if (markLine.length > 0){
+                    serie['markLine'] = {label:{show:true}
+                      , data: markLine
+                    }  
+                    markLine = [];
+                  }
+                  if (markPoint){
+                    serie['markPoint'] = markPoint;
+                    markPoint = null;
+                  }
+                  this.usedColors.push(serie['itemStyle']['color']);
+                  series.push(serie);    
                 }
-                this.usedColors.push(serie['itemStyle']['color']);
-                series.push(serie);  
               });
             }
             else{

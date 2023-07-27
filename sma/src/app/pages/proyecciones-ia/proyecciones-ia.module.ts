@@ -7,6 +7,7 @@ import { ProyeccionesIaComponent } from './proyecciones-ia.component';
 import { ProyeccionesIaRoutingModule } from './proyecciones-ia-routing.module';
 import { FurySharedModule } from 'src/@fury/fury-shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FiltrosPorEstacionPopupModule } from '../filtros-por-estacion-popup/filtros-por-estacion-popup.module';
 
 @NgModule({
   imports: [
@@ -14,12 +15,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     FurySharedModule,
     FiltrosPorEstacionModule,
+    FiltrosPorEstacionPopupModule,
     ProyeccionesIaRoutingModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
     })
 
   ],
+  exports:[ProyeccionesIaComponent],
   declarations: [ProyeccionesIaComponent]
 })
 export class ProyeccionesIaModule { }

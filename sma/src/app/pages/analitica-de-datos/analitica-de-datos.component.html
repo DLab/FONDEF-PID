@@ -6,7 +6,7 @@
          current="{{app.screen[app.selectedMenuItem.name]}}" >
   </fury-breadcrumbs>
 
-  <app-filtros-por-estacion #filtros (search)="search($event)" showAnalitica="true"></app-filtros-por-estacion>
+  <app-filtros-por-estacion #filtros (search)="search($event)" [esProyeccion]="false"></app-filtros-por-estacion>
   
   <app-detalle-analitica-de-datos #graph></app-detalle-analitica-de-datos>
 

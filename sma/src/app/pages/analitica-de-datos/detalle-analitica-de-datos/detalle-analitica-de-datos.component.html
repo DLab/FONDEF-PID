@@ -1,80 +1,9 @@
-<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center" *ngIf="isPopup">
-  <div fxLayout="row" fxLayoutGap.gt-sm="15px" >
-    <div class="title">{{app.screen.Analitica_de_Datos}}<div class="subtitle">{{subTitle}}</div></div>    
-    <button type="button" mat-icon-button tabindex="-1" [mat-dialog-close]="true">
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>  
+<app-filtros-por-estacion-popup *ngIf="isPopup" [esProyeccion]="false"
+      [title]="app.screen.Analitica_de_Datos" [subTitle]="subTitle"
+      [analiticas]="analiticas" [hsAnaliticas]="hsAnaliticas"
+      [inicio]="inicio" [termino]="termino"
+      (search)="searchItem($event)"></app-filtros-por-estacion-popup>
 
-</div>
-
-<form [formGroup]="form" class="person" *ngIf="isPopup">
-  <div fxLayout="row" fxLayoutGap.gt-sm="15px" >  
-    <mat-form-field fxFlex="23">
-      <mat-label>{{app.screen.Fecha_Inicio}}</mat-label>
-      <input matInput [ngxMatDatetimePicker]="inicio" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="inicio" >
-      <mat-datepicker-toggle matSuffix [for]="inicio"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker #inicio
-          [showSpinners]="true"
-          [showSeconds]="true"
-          [stepMinute]="5"
-          [touchUi]="true">
-          <ng-template>
-            <!-- <mat-icon>star</mat-icon> -->
-            <span>{{app.screen.Aceptar}}</span>
-          </ng-template>
-      </ngx-mat-datetime-picker>
-    </mat-form-field>
-
-    <mat-form-field fxFlex="23">
-      <mat-label>{{app.screen.Fecha_Termino}}</mat-label>
-      <input matInput [ngxMatDatetimePicker]="termino" placeholder="{{app.screen.Elija_una_fecha}}" formControlName="termino" >
-      <mat-datepicker-toggle matSuffix [for]="termino"></mat-datepicker-toggle>
-      <ngx-mat-datetime-picker #termino
-          [showSpinners]="true"
-          [showSeconds]="true"
-          [stepMinute]="5"
-          [touchUi]="true">
-          <ng-template>
-            <!-- <mat-icon>star</mat-icon> -->
-            <span>{{app.screen.Aceptar}}</span>
-          </ng-template>
-      </ngx-mat-datetime-picker>
-    </mat-form-field>              
-
-  </div>
-</form>
-<div fxLayout="row" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="16px" fxLayoutAlign="start end" [style.width]="'95%'" *ngIf="isPopup">
-  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" [style.width]="'100%'">
-    <ng-select [items]="analiticas"
-    placeholder="{{app.screen.Analitica}}s*"
-    bindLabel="descripcion"
-    bindValue="codigo"
-    required
-    groupBy="codigoPadre"
-    [closeOnSelect]="false"
-    [multiple]="true"
-    [clearable]="true"
-    [searchable]="true"
-    [selectableGroup]="true"
-    [selectableGroupAsModel]="false"
-    [(ngModel)]="analitica"
-    ngDefaultControl>
-    <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
-      <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{app.screen[item.codigoPadre] | uppercase}}
-    </ng-template>
-    <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-      <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected"/> {{app.screen[item.codigo]}}
-    </ng-template>
-  </ng-select>
-  </div>
-  <div class="actions">
-    <button class="create" (click)="searchItem()" type="button" mat-mini-fab color="primary" [disabled]="!isValid()">
-      <mat-icon>rotate_right</mat-icon>
-    </button>
-  </div>
-
-</div>          
 <div fxLayout="column" fxLayoutAlign="start stretch">
   <div *ngFor="let graph of optionsGraph; let i = index" [style.width]="'100%'">
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px"  [style.margin-top]="'20px'" >

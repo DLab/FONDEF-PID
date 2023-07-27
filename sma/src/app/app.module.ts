@@ -27,6 +27,7 @@ import { WaitMessageModule } from './pages/message-box/wait-message/wait-message
 import { ToastrModule } from 'ngx-toastr';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 const CUSTOM_DATE_FORMATS_HM: NgxMatDateFormats = {
   parse: {
@@ -71,7 +72,8 @@ registerLocaleData(localeEs, 'es');
     DateFormatModule,
     CodigoModule,
     LeafletModule,
-    ValidacionArchivosModule
+    ValidacionArchivosModule,
+    NgxSliderModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent],

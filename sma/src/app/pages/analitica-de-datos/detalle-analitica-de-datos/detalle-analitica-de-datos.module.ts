@@ -1,3 +1,4 @@
+import { FiltrosPorEstacionPopupModule } from './../../filtros-por-estacion-popup/filtros-por-estacion-popup.module';
 import { AdditionalDataComponent } from './additional-data/additional-data.component';
 import { FurySharedModule } from 'src/@fury/fury-shared.module';
 import { MaterialModule } from 'src/@fury/shared/material-components.module';
@@ -20,6 +21,8 @@ import { NumberFormatModule } from 'src/app/utils/number-format/number-format.mo
     NgSelectModule,
     NgxMatDatetimePickerModule,
     NumberFormatModule,
+    FiltrosPorEstacionPopupModule,
+
 
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')

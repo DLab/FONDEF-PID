@@ -1,11 +1,19 @@
 app-despliegue-territorial {
     
+    .header-filter{
+        width: 93% !important;
+        margin-right: 68px !important;
+    }
     .long-demo-chart{
         height: 700px !important;
     }
     .person{
         width: 100% !important;
     }
+    .mat-expansion-panel, .mat-dialog-content{
+        overflow: visible !important;
+    }    
+
 }
 .mat-dialog-container{
     overflow: auto;

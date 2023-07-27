@@ -32,15 +32,16 @@ export class FiltrosPorEstacionComponent implements OnInit, OnDestroy {
   analitica:any[] = [];
   
   analiticas:any[];
+  _analiticas:any[];
   hsAnaliticas:any;
   listener:any;
 
   @Output() search:EventEmitter<any> = new EventEmitter<any>();
   @Input() filterBaseDatoFn:any;
   @Input() filterTipoDatoFn:any;
-  @Input() showAnalitica:boolean = false;
+  @Input() esProyeccion:boolean;
 
-  multiplesParametros:any = {codigoPadre: ['REGIONES', 'COMUNAS', 'BASE_DATOS', 'PARAMETROS', 'ANALITICAS', 'TIPOS_DE_DATOS']};
+  multiplesParametros:any = {codigoPadre: ['REGIONES', 'COMUNAS', 'BASE_DATOS', 'PARAMETROS', 'ANALITICAS', 'FUENTE_DE_DATOS']};
   constructor(private baseService: BaseService
     , private messageBox: MessageBox
     , private fb: FormBuilder) { }
@@ -71,7 +72,7 @@ export class FiltrosPorEstacionComponent implements OnInit, OnDestroy {
 
       this.hsArray = result;
       this.filterRegiones.init(this.hsArray['REGIONES'], this.form.get('region'));    
-      this.filterFuenteDato.init(this.hsArray['TIPOS_DE_DATOS'], this.form.get('fuente'));    
+      this.filterFuenteDato.init(this.hsArray['FUENTE_DE_DATOS'], this.form.get('fuente'));    
       if (this.filterBaseDatoFn){
         this.filterBaseDato.init(this.hsArray['BASE_DATOS'].filter(e=>this.filterBaseDatoFn(e)) , this.form.get('baseDato'));    
       }
@@ -90,11 +91,15 @@ export class FiltrosPorEstacionComponent implements OnInit, OnDestroy {
   }
   changeLanguage(){
     let list:any[] = [];
+    this._analiticas = [];
+    console.log('aa', this.esProyeccion, this.analiticas)
     this.analiticas.forEach(e=>{
-      e.descripcion = this.app.screen[e.codigo]
-      list.push(e);
+      if (e.esProyeccion == this.esProyeccion){
+        e.descripcion = this.app.screen[e.codigo]
+        list.push(e);  
+      }
     });
-    this.analiticas = list;
+    this._analiticas = list;
   }
 
   isValid(){
@@ -141,6 +146,7 @@ export class FiltrosPorEstacionComponent implements OnInit, OnDestroy {
     else{
       this.filterTipoDato.init(this.hsArray['PARAMETROS'].filter(e=> e.codigoBaseDato == baseDato.codigo), this.form.get('tipoDato'));    
     }
+    this.changeLanguage();
   }
   changeRegiones():void{
     this.filterComunas.init([], this.form.get('comuna'));    

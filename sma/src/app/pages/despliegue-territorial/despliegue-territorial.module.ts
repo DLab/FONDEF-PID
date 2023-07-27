@@ -10,6 +10,9 @@ import { DespliegueTerritorialComponent } from './despliegue-territorial.compone
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { ProyeccionesIaModule } from '../proyecciones-ia/proyecciones-ia.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -21,7 +24,10 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     NgxMatDatetimePickerModule,
     DespliegueTerritorialRoutingModule,
     DetalleAnaliticaDeDatosModule,
+    ProyeccionesIaModule,
     LeafletModule,
+    NgxSliderModule,
+    NgSelectModule,
 
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
