@@ -45,7 +45,6 @@ def generaAnalitica(params, analiticas, additionalData, dataFrame):
             params[2] = addData[0]
             param = addData[0]
             addData[0] = getData(params)
-            print(len(addData[0]), len(dataFrame['valor'].values))
             data.append({'name': param, 'Y': getList(pd.to_numeric(addData[0]))})
             
         resultFn = fn(dataFrame['fecha'].values, dataFrame['valor'].values, addData)
@@ -58,7 +57,11 @@ def generaAnalitica(params, analiticas, additionalData, dataFrame):
             list = [];
             n = len(resultFn)
             for i in range(1, n):
-                list.append(getList(resultFn[i]))
+                print('isinstabce', resultFn[i], isinstance(resultFn[i], float))
+                if (isinstance(resultFn[i], float)):
+                    list.append(resultFn[i])
+                else:
+                    list.append(getList(resultFn[i]))
             data.append({'analitica': analitica['codigo'], 'data': list})
     return result
 

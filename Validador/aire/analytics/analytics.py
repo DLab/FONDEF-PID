@@ -225,8 +225,10 @@ def statistical_process_control(timestamp, data, additionalData):
 
     # Identify points that are out of control
     out_of_control_points = [(index, value) for index, value in enumerate(data) if value > UCL or value < LCL]
-
-    return timestamp, data_mean, UCL, LCL, out_of_control_points
+    result = []
+    for item in out_of_control_points:
+        result.append([item[0], float(item[1])])
+    return timestamp, float(data_mean), float(UCL), float(LCL), result, data
 
 
 '''
@@ -388,4 +390,5 @@ def granger_causality(timestamp, data1, additionalData):
     p_value = results[1][0]['ssr_ftest'][1]
 
     causality_percentage = (1 - p_value) * 100
+    print('causality_percentage', causality_percentage)
     return causality_percentage
