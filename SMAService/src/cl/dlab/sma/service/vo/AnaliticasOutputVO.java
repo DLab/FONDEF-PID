@@ -1,7 +1,5 @@
 package cl.dlab.sma.service.vo;
 
-import cl.dlab.sma.service.vo.VOBase;
-
 public class AnaliticasOutputVO extends VOBase {
 
 	public void setCodigo(java.lang.String codigo) {
@@ -42,6 +40,14 @@ public class AnaliticasOutputVO extends VOBase {
 
 	public String getCodigoPadre() {
 		return get("codigoPadre");
+	}
+
+	public void setEsProyeccion(java.lang.Boolean esProyeccion) {
+		set("esProyeccion", esProyeccion);
+	}
+
+	public Boolean getEsProyeccion() {
+		return get("esProyeccion");
 	}
 
 	public void setParametrosGui(java.lang.String parametrosGui) {

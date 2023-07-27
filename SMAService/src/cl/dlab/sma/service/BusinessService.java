@@ -27,6 +27,7 @@ import cl.dlab.sma.core.RolService;
 import cl.dlab.sma.core.TipoArchivoService;
 import cl.dlab.sma.core.TipoDatoService;
 import cl.dlab.sma.core.TipoErrorService;
+import cl.dlab.sma.core.TipoOperacionService;
 import cl.dlab.sma.core.TipoValidacionService;
 import cl.dlab.sma.core.UsuarioService;
 import cl.dlab.sma.util.Param;
@@ -141,9 +142,14 @@ public class BusinessService
 		return (ArrayList<HashMap<String, Object>>)new TipoErrorService().consultar(new HashMap<String, Object>()).get("listData");
 	}
 	@SuppressWarnings("unchecked")
-	public ArrayList<HashMap<String, Object>> consultaTiposDeDatos() throws Exception
+	public ArrayList<HashMap<String, Object>> consultaFuenteDeDatos() throws Exception
 	{
 		return (ArrayList<HashMap<String, Object>>)new TipoDatoService().consultar(new HashMap<String, Object>()).get("listData");
+	}
+	@SuppressWarnings("unchecked")
+	public ArrayList<HashMap<String, Object>> consultaTipoOperacion() throws Exception
+	{
+		return (ArrayList<HashMap<String, Object>>)new TipoOperacionService().consultar(new HashMap<String, Object>()).get("listData");
 	}
 	public HashMap<String, Object> consultaDetalleTiposDeArchivo(HashMap<String, Object> input) throws Exception
 	{

@@ -613,9 +613,13 @@ public class RestServices
 			{
 				result.put("TIPOS_DE_ERRORES", new BusinessService().consultaTiposDeErrores());
 			}
-			if (codigos.remove("TIPOS_DE_DATOS"))
+			if (codigos.remove("FUENTE_DE_DATOS"))
 			{
-				result.put("TIPOS_DE_DATOS", new BusinessService().consultaTiposDeDatos());
+				result.put("FUENTE_DE_DATOS", new BusinessService().consultaFuenteDeDatos());
+			}
+			if (codigos.remove("TIPO_OPERACION"))
+			{
+				result.put("TIPO_OPERACION", new BusinessService().consultaTipoOperacion());
 			}
 			if (codigos.remove("TIPOS_DE_VALIDACIONES"))
 			{

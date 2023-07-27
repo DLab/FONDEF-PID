@@ -43,4 +43,12 @@ public class AnaliticasOutputVO extends VOBase {
 	public String getCodigoPadre() {
 		return get("codigoPadre");
 	}
+
+	public void setParametrosGui(java.lang.String parametrosGui) {
+		set("parametrosGui", parametrosGui);
+	}
+
+	public String getParametrosGui() {
+		return get("parametrosGui");
+	}
 }
