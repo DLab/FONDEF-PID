@@ -34,6 +34,22 @@ def analitica():
         else:
             return {'ERROR': 'NODATA'}
 
+@app.post("/analiticaIA")
+def analiticaIA():
+    data = request.get_json(True)
+    print(data)
+    with getConnect() as conn:
+        cur = conn.cursor()
+        params = [data['inicio'], data['termino'], data['tipoDato'], data['regulado'], data['estacion'], data['fuente']]
+        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha < %s and dpr_prm_codigo = %s and dpr_ufid = %s and dpr_idproceso = %s  and  dpr_tipo = %s order by dpr_fecha asc", params)
+        df = DataFrame(cur.fetchall())
+        cur.close()        
+        if (len(df) == 0):
+            return {'ERROR': 'NODATA'}
+
+        df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
+        return generaAnaliticaIA(params, data['analitica'], data['additionalData'], df)
+
 #los parámetros de entrada solo para aire: fecha, hora (0-23)
 #dataframe, ufid, idproceso, fecha timestamp, parametro, valor
 # los datos son: ufid, idProceso, fecha timestamp, parametro, valor
@@ -45,16 +61,6 @@ def promediosPorHora():
 def promediosActuales():
     return calculaUltimosPromedios()
                 
-@app.get("/analiticaIA")
-def analiticaIA():
-    with getConnect() as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT dpr_ufid, dpr_idproceso, dpr_fecha, dpr_prm_codigo, dpr_valor from datos_promedios where dpr_fecha >= %s and dpr_fecha <= %s and dpr_tipo = %s", [request.args.get('inicio'), request.args.get('termino'), request.args.get('fuente')])
-        df = DataFrame(cur.fetchall())
-        cur.close()        
-        if (len(df) > 0):
-            df.columns = ['ufId', 'idProceso', 'fecha', 'parametro', 'valor']
-        return generaAnaliticaIA(df)
 
 @app.get("/validacionesNormativasAire")
 def validacionesNormativasAire():
@@ -87,5 +93,3 @@ def validaLimites():
     errores = validaLimitesChile(request.get_json(True))
     return jsonify(errores)
 
-
-#calculaUltimosPromedios()

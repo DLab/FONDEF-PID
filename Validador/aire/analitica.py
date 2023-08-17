@@ -1,4 +1,5 @@
 from aire.analytics.analytics import *
+from aire.analiticaIA import *
 import numbers
 import numpy as np
 import pandas as pd
@@ -8,6 +9,9 @@ from connect_db import getConnect
 def getList(data):
     list = []
     for i in data:
+        if (isinstance(i, np.ndarray)):
+            i = float(i[0])
+            print(i)
         if isinstance(i, float) and np.isnan(i):
             i = 'nan'
         elif isinstance(i, numbers.Integral):

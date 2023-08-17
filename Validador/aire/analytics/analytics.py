@@ -159,21 +159,23 @@ def partial_autocorrelation(timestamp, data, additionalData):
         timestamp of the data, and the partial autocorrelation of the data.
     """
     # Convert timestamps to pandas datetime index
+    
+    # Calculate partial autocorrelation
+    nlags = None
     dt_index = pd.to_datetime(timestamp)
     
     # Create a time series with the data
     data_series = pd.Series(data, index=dt_index)
     
     # Calculate partial autocorrelation
-    nlags = len(timestamp)
     partial_autocorr, conf_int = pacf(data_series, nlags=nlags, alpha=0.05)
     # lower and upper confidence interval at 95%
     low_conf_int = conf_int[:, 0] - partial_autocorr
     up_conf_int  = conf_int[:, 1] - partial_autocorr
     # lag is the x axis
-    #lag = np.arange(0, len(partial_autocorr))
-    lag = [element[0:len(partial_autocorr)] for element in  timestamp]
-    return lag, partial_autocorr, low_conf_int, up_conf_int
+    lag = np.arange(0, len(partial_autocorr))
+
+    return timestamp, up_conf_int, low_conf_int, partial_autocorr
     #return timestamp, {'name': 'partial_autocorrelation', 'data': partial_autocorr}
 
 '''
