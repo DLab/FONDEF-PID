@@ -11,7 +11,7 @@ import cl.dlab.sma.service.vo.EstacionesOutputVO;
 import cl.dlab.sma.service.vo.InputVO;
 import cl.dlab.sma.service.vo.RespuestaVO;
 
-public class EstacionesService extends BaseService {
+public class EstacionesService extends UnidadesMedicionService {
 
 	private static final String SQL_ESTACIONES = "select rgd_id, rgd_descripcion, rgd_rut, est_id, est_descripcion, est_latitud, est_longitud, x.lmt_maximo "
 			+ "from estaciones, regulados, datos_por_estacion"
@@ -57,11 +57,6 @@ public class EstacionesService extends BaseService {
 	public void guardar(java.util.HashMap<String, Object> input)
 			throws Exception {
 		new cl.dlab.sma.core.sql.rad.Estaciones(con, true).guardar(input);
-	}
-	private String getFecha(String property, HashMap<String, Object> input)
-	{
-		String fecha = (String)input.get(property);
-		return fecha == null ? null : fecha.substring(0, 19).replace("T", " ");
 	}
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> getEstaciones(HashMap<String, Object> input) throws Exception
@@ -131,6 +126,9 @@ public class EstacionesService extends BaseService {
 					}
 					else if (tipoOperacion.equals("Promedio")) {
 						ope = ", avg(dpr_valor)";
+					}
+					else if (tipoOperacion.equals("Suma")) {
+						ope = ", sum(dpr_valor)";
 					}
 				}
 				if (!esUltValor)

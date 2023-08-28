@@ -44,6 +44,14 @@ public class AnaliticasOutputVO extends VOBase {
 		return get("codigoPadre");
 	}
 
+	public void setEsProyeccion(java.lang.Boolean esProyeccion) {
+		set("esProyeccion", esProyeccion);
+	}
+
+	public Boolean getEsProyeccion() {
+		return get("esProyeccion");
+	}
+
 	public void setParametrosGui(java.lang.String parametrosGui) {
 		set("parametrosGui", parametrosGui);
 	}

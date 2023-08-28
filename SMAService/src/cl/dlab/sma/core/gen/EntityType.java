@@ -66,6 +66,9 @@ public class EntityType implements Serializable
     @XmlAttribute(name = "procedureName")
     protected String procedureName;
 
+    @XmlAttribute(name = "datasource")
+    protected String datasource;
+
     protected List<FieldType> keys;
     protected List<FieldType> akeys;
     protected List<FieldType> dkeys;
@@ -688,6 +691,12 @@ public class EntityType implements Serializable
 	public String getSelectMaxId()
 	{
 		return selectMaxId;
+	}
+	public String getDatasource() {
+		return datasource;
+	}
+	public void setDatasource(String datasource) {
+		this.datasource = datasource;
 	}
 
 	//select

@@ -66,8 +66,10 @@ export class ProyeccionesIaComponent implements OnInit {
   }
   search(event:any):void
   {
-    this.baseService.getPrediccionIA({}, null).subscribe((result:any)=>{
-
+    console.log(event)
+    event['additionalData'] = {'largoPrediccion': 24}
+    this.baseService.getPrediccionIA(event, function(error){console.log(error)}).subscribe((result:any)=>{
+      console.log(result)
       this.configureChart(result);
 
     });

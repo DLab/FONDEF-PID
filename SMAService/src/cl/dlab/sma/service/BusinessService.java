@@ -3,10 +3,8 @@ package cl.dlab.sma.service;
 import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -17,9 +15,11 @@ import cl.dlab.sma.core.AccionService;
 import cl.dlab.sma.core.AccionesxFuncionRolService;
 import cl.dlab.sma.core.AnaliticasService;
 import cl.dlab.sma.core.BaseDatosService;
+import cl.dlab.sma.core.ClasificacionService;
 import cl.dlab.sma.core.ComunaService;
 import cl.dlab.sma.core.EstacionesService;
 import cl.dlab.sma.core.FuncionService;
+import cl.dlab.sma.core.MonitoreoOcurrenciaService;
 import cl.dlab.sma.core.ParametroService;
 import cl.dlab.sma.core.RegionService;
 import cl.dlab.sma.core.ReguladosService;
@@ -37,7 +37,6 @@ import cl.dlab.sma.util.Utils;
 public class BusinessService
 {
 	private static SimpleDateFormat FMT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private static SimpleDateFormat monthFormatter2 = new SimpleDateFormat("MM-yy");
 	
 	
 	public HashMap<Integer, HashMap<Integer, HashMap<String, Object>>> obtenerAccionesxFuncionRol(HashMap<String, Object> input) throws Exception
@@ -221,74 +220,37 @@ public class BusinessService
 		HashMap<String, Object> hs = (HashMap<String, Object>)input.get(key);
 		return new Param(key, hs.get(subKey));
 	}
-	public String getAnaliticaDeDatos(HashMap<String, Object> input) throws Exception
+	private String getAnalitica(HashMap<String, Object> input, String sUrl) throws Exception
 	{
 		String fechaInicio = PropertyUtil.getProperty("defaul_fecha_inicio");
 		String fechaTermino = FMT.format(new Date());
-		String url = PropertyUtil.getProperty("URL_ANALITICA_DATOS");
+		String url = PropertyUtil.getProperty(sUrl);
 		return Utils.sendPostData(url, getParamFecha("inicio", input, fechaInicio), getParamFecha("termino", input, fechaTermino), getParam("tipoDato", "codigo", input)
 									 , getParam("estacion", "idRegulado", input).setKey("regulado"), getParam("estacion", "id", input)
 									 , getParam("fuente", "codigo", input)
 									 , getParam("analitica", input)
 									 , getParam("additionalData", input));
 	}
-	private double getPow(double a, double b, double c, double d, double e, double x)
+	public String getAnaliticaDeDatos(HashMap<String, Object> input) throws Exception
 	{
-		x = x + a;
-		return  b *Math.pow(x, 2) + c * x + d;
+		return getAnalitica(input, "URL_ANALITICA_DATOS");
 	}
-	public HashMap<String, Object> getEstaciones(HashMap<String, Object> input) throws Exception
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> getUnidadesMedicion(HashMap<String, Object> input) throws Exception
 	{	
-		return new EstacionesService().getEstaciones(input);
-
+		String baseDato = (String)((HashMap<String, Object>)input.get("baseDato")).get("codigo");
+		if (baseDato.equals("AIRE")) {
+			return new EstacionesService().getEstaciones(input);
+		}
+		else if (baseDato.equals("SeguimientoBio")) {
+			return new MonitoreoOcurrenciaService().getMediciones(input);
+		}
+		
+		return new HashMap<String, Object>();
 	}
-	public HashMap<String, Object> getPrediccionIA(HashMap<String, Object> input) throws Exception
+	public String getPrediccionIA(HashMap<String, Object> input) throws Exception
 	{
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		String[] parameters = new String[] {"Vanadio Total", "Wolframio Disuelto", "Turbiedad", "Sulfuro", "Sulfato Disuelto"};
-
-		Calendar cal = Calendar.getInstance();
-		result.put("hoy", monthFormatter2.format(cal.getTime()));
-		
-		ArrayList<String> xaxis = new ArrayList<String>();
-		cal.add(Calendar.YEAR, 10);
-		long max = cal.getTime().getTime();
-
-		cal.add(Calendar.YEAR, -20);
-		while (cal.getTime().getTime() < max)
-		{
-			xaxis.add(monthFormatter2.format(cal.getTime()));
-			cal.add(Calendar.MONTH, 1);
-		}
-		result.put("maxFecha", xaxis.get(xaxis.size() - 1));
-		
-		result.put("xaxis", xaxis);
-		
-		
-		cal.add(Calendar.YEAR, 30);
-		ArrayList<HashMap<String, Object>> series = new ArrayList<HashMap<String,Object>>();
-		
-		Random random = new Random();
-		for (String param : parameters) {
-			HashMap<String, Object> serie = new HashMap<String, Object>();
-			serie.put("name", param);
-			double a = random.nextDouble() * 10 - 5;
-			double b = random.nextDouble() * 10 - 5;
-			double c = random.nextDouble() * 10 - 5 ;
-			double d = random.nextDouble() * 10 - 5;
-			double e = random.nextDouble() * 10 - 5;
-			
-			ArrayList<Double> list = new ArrayList<Double>();
-			for (int i = 0; i < xaxis.size(); i++) 
-			{
-				list.add(getPow(a, b, c, d, e, i));
-			}
-			serie.put("data", list);
-			series.add(serie);
-		}
-		
-		result.put("series", series);
-		return result;
+		return getAnalitica(input, "URL_ANALITICAIA_DATOS");
 	}	
 	public ArrayList<HashMap<String, Object>> getPlantillaTipoArchivo(byte[] bytes) throws Exception
 	{
@@ -319,5 +281,23 @@ public class BusinessService
 		 
 		return result;
 	}
+	
+	public ArrayList<HashMap<String, Object>> changeClasificacionBiodiversidad(HashMap<String, Object> input) throws Exception
+	{
+		return new ClasificacionService().consultar(input);
+	}
+	public ArrayList<HashMap<String, Object>> getClasificacionBiodiversidad(HashMap<String, Object> input) throws Exception
+	{
+		return new ClasificacionService().consultar(input);
+	}
+	public HashMap<String, Object> downloadAnalisis(HashMap<String, Object> input) throws Exception
+	{
+		return new ReportesUtil().downloadAnalisis(input);
+	}
+	public HashMap<String, Object> downloadDespliegueTerritorial(HashMap<String, Object> input) throws Exception
+	{
+		return new ReportesUtil().downloadDespliegueTerritorial(input);
+	}
+	
 	
 }

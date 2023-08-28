@@ -7,28 +7,41 @@
 
 <mat-dialog-content >
   <form [formGroup]="form" class="person">
+
+    <div fxLayout="row" fxLayoutGap.gt-sm="15px" *ngIf="esProyeccion">  
+      <mat-form-field fxFlex="50">
+        <mat-label>{{app.screen.number_of_test_steps_hh}}</mat-label>
+        <input [numberFormat]="0" matInput formControlName="numberOfTestStep" required>
+      </mat-form-field>
+      <mat-form-field fxFlex="50">
+        <mat-label>{{app.screen.number_of_steps_hh}}</mat-label>
+        <input [numberFormat]="0" matInput formControlName="numberOfStep" required>
+      </mat-form-field>
+    </div>
+
     <div *ngFor="let item of items; let i = index">
       <div *ngIf="item.additionalData.length > 0">
+
         <h4 class="heading_a">{{item.name}}</h4>
         <div *ngFor="let additionalData of item.additionalData; let i = index"  fxLayout="row" fxLayoutGap.gt-sm="15px" >  
 
           <mat-form-field fxFlex="100" *ngIf="additionalData.type == 'number'">
             <mat-label>{{app.screen[additionalData.name]}}</mat-label>
-            <input [numberFormat]="additionalData.decimals" matInput formControlName="{{additionalData.name}}" required>
+            <input [numberFormat]="additionalData.decimals" matInput formControlName="{{item.name + '_' + additionalData.name}}" required>
           </mat-form-field>
 
           <mat-form-field fxFlex="100" *ngIf="additionalData.type == 'parametro'">
             <mat-label>{{app.screen[additionalData.name]}}</mat-label>
-            <input matInput [matAutocomplete]="tipoDato" formControlName="{{additionalData.name}}" required>
+            <input matInput [matAutocomplete]="tipoDato" formControlName="{{item.name + '_' + additionalData.name}}" required>
             <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterTipoDato.displayItem">
               <mat-option *ngFor="let item of filterTipoDato.filteredItems| async" [value]="item">
                 <span>{{ item.descripcion }}</span>
               </mat-option>
             </mat-autocomplete>
-            <button *ngIf="form.get(additionalData.name).value != null" type="button" mat-icon-button (click)="form.get(additionalData.name).reset()" matSuffix>
+            <button *ngIf="form.get(item.name + '_' + additionalData.name).value != null" type="button" mat-icon-button (click)="form.get(item.name + '_' + additionalData.name).reset()" matSuffix>
               <mat-icon>close</mat-icon>
             </button>
-            <button *ngIf="form.get(additionalData.name).value == null" type="button" mat-icon-button matSuffix>
+            <button *ngIf="form.get(item.name + '_' + additionalData.name).value == null" type="button" mat-icon-button matSuffix>
               <mat-icon>arrow_drop_down</mat-icon>
             </button>
           </mat-form-field>

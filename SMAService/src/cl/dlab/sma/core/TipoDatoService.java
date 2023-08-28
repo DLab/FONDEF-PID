@@ -1,11 +1,11 @@
 package cl.dlab.sma.core;
 
-import cl.dlab.sma.core.BaseService;
 import java.sql.Connection;
+import java.util.HashMap;
+
+import cl.dlab.sma.service.vo.InputVO;
 import cl.dlab.sma.service.vo.RespuestaVO;
 import cl.dlab.sma.service.vo.TipoDatoOutputVO;
-import cl.dlab.sma.service.vo.InputVO;
-import java.util.HashMap;
 
 public class TipoDatoService extends BaseService {
 

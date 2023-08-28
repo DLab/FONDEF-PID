@@ -20,20 +20,26 @@ export class AdditionalDataComponent implements OnInit {
   tipoDatos:any[];
   tipoDatoProperty:string;
   initTipoDato:boolean;
+  esProyeccion:boolean;
   multiplesParametros:any = {codigoPadre: ['PARAMETROS']};
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any
           , private dialogRef: MatDialogRef<AdditionalDataComponent>
           , private fb: FormBuilder
           , private baseService: BaseService) { 
     this.items = data.items;
+    this.esProyeccion = data.esProyeccion;
   }
 
   ngOnInit() {
     let fields: any = {};
     this.initTipoDato = false;
+    if (this.esProyeccion){
+      fields['numberOfTestStep'] = [{value: global.properties['numberOfSimulationTestStep'], disabled: false}];
+      fields['numberOfStep'] = [{value: global.properties['numberOfSimulationStep'], disabled: false}];
+    }
     this.items.forEach(item=>{
       item.additionalData.forEach(e => {
-        fields[e.name] = [{value: e.defaultValue, disabled: false}];
+        fields[item.name + '_' + e.name] = [{value: e.defaultValue, disabled: false}];
         if (e.type == 'parametro') {
           this.tipoDatoProperty = e.name;
           this.baseService.consultarMultiplesParametros(this.multiplesParametros).subscribe((result:any)=>{
@@ -42,7 +48,7 @@ export class AdditionalDataComponent implements OnInit {
           });
         }
       });
-    })
+    });
     this.form = this.fb.group(fields);   
     if (this.tipoDatoProperty){
       this.filterTipoDato = new FilterList();
@@ -64,26 +70,33 @@ export class AdditionalDataComponent implements OnInit {
   {
     return this.initTipoDato && this.form.valid;
   }
-
+  getValue(type:string, decimals:number, value:any){
+    if (type == 'number' && typeof(value) == 'string'){
+      if (decimals > 0){
+        value = value.replace(',', '.')
+      }
+      value = Number(value)
+    }
+    else if (type == 'parametro'){
+      if (value['codigo'])
+        value = value['codigo'];
+    }
+    return value;
+  }
   accept()
   {
     let data:any = this.form.value;
     let result:any[] = [];
+    if (this.esProyeccion){
+      global.properties['numberOfSimulationStep'] = this.getValue('number', 0, data.numberOfStep);
+      global.properties['numberOfSimulationTestStep'] = this.getValue('number', 0, data.numberOfTestStep);
+      result.push([global.properties['numberOfSimulationTestStep'], global.properties['numberOfSimulationStep']]);
+    }
     this.items.forEach(item=>{
       let ritem:any[] = [];
       result.push(ritem);
       item.additionalData.forEach(e => {
-        let value:any = data[e.name]
-        if (e.type == 'number' && typeof(value) == 'string'){
-          if (e.decimals > 0){
-            value = value.replace(',', '.')
-          }
-          value = Number(value)
-        }
-        else if (e.type == 'parametro'){
-          if (value['codigo'])
-            value = value['codigo'];
-        }
+        let value:any = this.getValue(e.type, e.decimals, data[item.name + '_' + e.name])
         e.defaultValue = value;
         ritem.push(value)
       });

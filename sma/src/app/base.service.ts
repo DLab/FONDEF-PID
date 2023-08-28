@@ -249,9 +249,9 @@ export class BaseService {
                 return this.handleError(error);
               })));
   }
-  getEstaciones(params:Object, errorFn:any): Observable<Object>{
+  getUnidadesMedicion(params:Object, errorFn:any): Observable<Object>{
     global.loading.emit('loading', 'start');
-    return this.stopLoading(this.http.post(this.url + '/service/restServices/getEstaciones', this.getStringify(params), this.httpOptions)
+    return this.stopLoading(this.http.post(this.url + '/service/restServices/getUnidadesMedicion', this.getStringify(params), this.httpOptions)
               .pipe(catchError(error=>{
                 errorFn();
                 return this.handleError(error);
@@ -312,6 +312,31 @@ export class BaseService {
               })));
   }
   
+  changeClasificacionBiodiversidad(params:Object): Observable<Object>{
+    global.loading.emit('loading', 'start');
+    return this.stopLoading(this.http.post(this.url + '/service/restServices/changeClasificacionBiodiversidad', this.getStringify(params), this.httpOptions)
+              .pipe(catchError(error=>{
+                return this.handleError(error);
+              })));
+  }
+  
+  downloadAnalisis(params:Object): Observable<Object>{
+    global.loading.emit('loading', 'start');
+    return this.stopLoading(this.http.post(this.url + '/service/restServices/downloadAnalisis', this.getStringify(params), {headers: this.httpOptions.headers, responseType: 'blob' as 'json' })
+              .pipe(catchError(error=>{
+                return this.handleError(error);
+              })));
+
+  }
+  
+  downloadDespliegueTerritorial(params:Object): Observable<Object>{
+    global.loading.emit('loading', 'start');
+    return this.stopLoading(this.http.post(this.url + '/service/restServices/downloadDespliegueTerritorial', this.getStringify(params), {headers: this.httpOptions.headers, responseType: 'blob' as 'json' })
+              .pipe(catchError(error=>{
+                return this.handleError(error);
+              })));
+
+  }
 }
 
 

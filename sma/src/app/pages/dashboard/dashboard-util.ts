@@ -205,13 +205,8 @@ export function getAnaliticsOptions(xaxis:any[], series:any[], title:string, cap
     trigger: 'axis',
     axisPointer: {
       type: 'cross'
-    }
-  },
-  toolbox: {
-    show: true,
-    feature: {
-      saveAsImage: {}
-    }
+    },
+    valueFormatter: (value) => value.toFixed ? value.toFixed(2) : value
   },
   grid:{height: '75%'},
   xAxis: {

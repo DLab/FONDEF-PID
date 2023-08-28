@@ -192,8 +192,18 @@ public class RestServices
 			}
 			json.put("acciones", servletRequest.getSession().getAttribute("user-acciones"));
 			BufferedReader br = new BufferedReader(new FileReader(PropertyUtil.BASE + "sma.config"));
+			String line;
+			JSONObject prop = new JSONObject();
+			while((line = br.readLine()) != null)
+			{
+				if (line.trim().length() == 0)
+					continue;
+				String[] t = line.split("=");
+				prop.put(t[0], t[1]);
+			}
 			br.close();
 			json.put("SCREEN", screen);
+			json.put("properties", prop);
 			json.put("info", info);
 			json.put("user", getUser());
 			json.put("userBanca", getUserBanca());
@@ -565,6 +575,68 @@ public class RestServices
 		}
 	}	
 	
+	@POST
+	@Path("changeClasificacionBiodiversidad")
+	@Produces("application/json")
+	public ArrayList<HashMap<String, Object>> changeClasificacionBiodiversidad(HashMap<String, Object> input)
+	{
+		try
+		{
+			return new BusinessService().changeClasificacionBiodiversidad(input);
+		}
+		catch (Exception e)
+		{
+			LogUtil.error(this.getClass(), e, "changeClasificacionBiodiversidad exception");
+			throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+		}
+	}
+	
+	@POST
+	@Path("downloadAnalisis")
+	@Produces("application/json")
+	public void downloadAnalisis(HashMap<String, Object> input)
+	{
+		try
+		{
+			input.put("screen", _getScreen());
+			new BusinessService().downloadAnalisis(getInput(input));
+			input.remove("screen");
+			byte[] bytes = (byte[]) input.remove("zipFile");
+			servletResponse.setContentType("application/zip");
+			servletResponse.setContentLength(bytes.length);
+			servletResponse.setHeader("Content-disposition", "attachment; filename=export.zip");
+			servletResponse.getOutputStream().write(bytes);
+		}
+		catch (Throwable e)
+		{
+			LogUtil.error(this.getClass(), e, "downloadAnalisis exception");
+			throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+		}
+	}	
+
+	@POST
+	@Path("downloadDespliegueTerritorial")
+	@Produces("application/json")
+	public void downloadDespliegueTerritorial(HashMap<String, Object> input)
+	{
+		try
+		{
+			input.put("screen", _getScreen());
+			new BusinessService().downloadDespliegueTerritorial(getInput(input));
+			input.remove("screen");
+			byte[] bytes = (byte[]) input.remove("zipFile");
+			servletResponse.setContentType("application/zip");
+			servletResponse.setContentLength(bytes.length);
+			servletResponse.setHeader("Content-disposition", "attachment; filename=export.zip");
+			servletResponse.getOutputStream().write(bytes);
+		}
+		catch (Throwable e)
+		{
+			LogUtil.error(this.getClass(), e, "downloadDespliegueTerritorial exception");
+			throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
+		}
+	}	
+	
 	@SuppressWarnings("unchecked")
 	@POST
 	@Path("consultarMultiplesParametros")
@@ -625,7 +697,11 @@ public class RestServices
 			{
 				result.put("TIPOS_DE_VALIDACIONES", new BusinessService().consultaTiposDeValidaciones());
 			}
-
+			if (codigos.remove("REINOS"))
+			{
+				result.put("REINOS", new BusinessService().getClasificacionBiodiversidad(new HashMap<String, Object>()));
+			}
+			
 			
 			if (idProperties != null)
 			{
@@ -927,7 +1003,7 @@ public class RestServices
 
 	@POST
 	@Path("getPrediccionIA")
-	public HashMap<String, Object> getPrediccionIA(HashMap<String, Object> input)
+	public String getPrediccionIA(HashMap<String, Object> input)
 	{
 		long t = System.currentTimeMillis();
 		try
@@ -968,14 +1044,14 @@ public class RestServices
 		}
 	}	
 	@POST
-	@Path("getEstaciones")
-	public HashMap<String, Object> getEstaciones(HashMap<String, Object> input)
+	@Path("getUnidadesMedicion")
+	public HashMap<String, Object> getUnidadesMedicion(HashMap<String, Object> input)
 	{
 		long t = System.currentTimeMillis();
 		try
 		{
 			validaModoApp(input);
-			System.out.println("Entra a getEstaciones:" + input);
+			System.out.println("Entra a getUnidadesMedicion:" + input);
 
 			HashMap<String, Object> usr = getUser();
 			if (usr == null)
@@ -992,7 +1068,7 @@ public class RestServices
 				        Response.serverError().entity("Por_favor_conectese_nuevamente").build());
 			}
 
-			return new BusinessService().getEstaciones(getInput(input));
+			return new BusinessService().getUnidadesMedicion(getInput(input));
 		}
 		catch (WebApplicationException e)
 		{
@@ -1000,7 +1076,7 @@ public class RestServices
 		}
 		catch (Exception e)
 		{
-			LogUtil.error(this.getClass(), e, "getEstaciones exception");
+			LogUtil.error(this.getClass(), e, "getUnidadesMedicion exception");
 			throw new WebApplicationException(Response.serverError().entity(e.getMessage()).build());
 		}
 		finally

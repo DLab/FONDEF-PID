@@ -1,3 +1,4 @@
+import { GraphComponentComponent } from './graph-component/graph-component.component';
 import { FiltrosPorEstacionPopupModule } from './../../filtros-por-estacion-popup/filtros-por-estacion-popup.module';
 import { AdditionalDataComponent } from './additional-data/additional-data.component';
 import { FurySharedModule } from 'src/@fury/fury-shared.module';
@@ -29,9 +30,9 @@ import { NumberFormatModule } from 'src/app/utils/number-format/number-format.mo
     })
   
   ],
-  declarations: [DetalleAnaliticaDeDatosComponent, AdditionalDataComponent],
+  declarations: [DetalleAnaliticaDeDatosComponent, AdditionalDataComponent, GraphComponentComponent],
   exports: [DetalleAnaliticaDeDatosComponent],
-  entryComponents:[DetalleAnaliticaDeDatosComponent, AdditionalDataComponent]
+  entryComponents:[DetalleAnaliticaDeDatosComponent, AdditionalDataComponent, GraphComponentComponent]
 
 
 })

@@ -31,6 +31,7 @@ export class AppComponent {
 
     baseService.obtieneCondicionesIniciales().subscribe(data=>{
       global.screen = data['SCREEN'];
+      global.properties = data['properties'];
       global.currentLanguage = data['currentLanguage'];
       global.acciones = data['acciones'];
       global.cliente = data['cliente'];

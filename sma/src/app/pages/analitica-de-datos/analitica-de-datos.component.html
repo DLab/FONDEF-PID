@@ -3,11 +3,11 @@
   <fury-breadcrumbs class="breadcrumbs" 
          *ngIf="app.selectedMenuItem != null"
          [crumbs]="app.selectedMenuItem.lang_crumbs" 
-         current="{{app.screen[app.selectedMenuItem.name]}}" >
+         current="{{app.screen[title]}}" >
   </fury-breadcrumbs>
 
-  <app-filtros-por-estacion #filtros (search)="search($event)" [esProyeccion]="false"></app-filtros-por-estacion>
+  <app-filtros-por-estacion #filtros (search)="search($event)" [esProyeccion]="esProyeccion"></app-filtros-por-estacion>
   
-  <app-detalle-analitica-de-datos #graph></app-detalle-analitica-de-datos>
+  <app-detalle-analitica-de-datos [title]="title" [esProyeccion]="esProyeccion" #graph></app-detalle-analitica-de-datos>
 
 </div>

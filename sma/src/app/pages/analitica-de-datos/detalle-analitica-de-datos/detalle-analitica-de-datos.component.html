@@ -1,19 +1,12 @@
-<app-filtros-por-estacion-popup *ngIf="isPopup" [esProyeccion]="false"
-      [title]="app.screen.Analitica_de_Datos" [subTitle]="subTitle"
+<app-filtros-por-estacion-popup *ngIf="isPopup" [esProyeccion]="esProyeccion"
+      [title]="app.screen[title]" [subTitle]="subTitle"
       [analiticas]="analiticas" [hsAnaliticas]="hsAnaliticas"
       [inicio]="inicio" [termino]="termino"
       (search)="searchItem($event)"></app-filtros-por-estacion-popup>
 
 <div fxLayout="column" fxLayoutAlign="start stretch">
   <div *ngFor="let graph of optionsGraph; let i = index" [style.width]="'100%'">
-    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px"  [style.margin-top]="'20px'" >
-      <mat-checkbox *ngFor="let item of graph._series" color="accent" inderterminate="false" 
-          [(ngModel)]="item.selected" 
-          (change)="selectedSeriesChange(graph)" 
-          (contextmenu)="openMenu($event, i, item)"
-          [style.color]="item.itemStyle.color">{{item.name}}</mat-checkbox>
-    </div>
-    <div #graph echarts [options]="graph" [ngClass]="chartClassName" [style.width]="'100%'"></div>
+    <app-graph-component [withData]="withData" [graph]="graph" ></app-graph-component>
   </div>
 </div>
 

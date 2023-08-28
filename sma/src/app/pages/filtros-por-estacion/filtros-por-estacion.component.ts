@@ -77,7 +77,7 @@ export class FiltrosPorEstacionComponent implements OnInit, OnDestroy {
         this.filterBaseDato.init(this.hsArray['BASE_DATOS'].filter(e=>this.filterBaseDatoFn(e)) , this.form.get('baseDato'));    
       }
       else{
-        this.filterBaseDato.init(this.hsArray['BASE_DATOS'], this.form.get('baseDato'));    
+        this.filterBaseDato.init(this.hsArray['BASE_DATOS'].filter(e=>e.codigo == 'AIRE'), this.form.get('baseDato'));    
       }
       
     });
@@ -206,6 +206,7 @@ export class FiltrosPorEstacionComponent implements OnInit, OnDestroy {
   {    
     this.search.emit({inicio: this.getFecha('inicio')
                     , termino: this.getFecha('termino')
+                    , regulado: this.form.get('regulado').value
                     , estacion: this.form.get('estacion').value
                     , baseDatos: this.form.get('baseDato').value
                     , tipoDato: this.form.get('tipoDato').value

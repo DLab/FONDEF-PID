@@ -16,6 +16,7 @@ export class FilterList{
   init(items:any[], control:AbstractControl):void{
     this.items = items; 
     this.control = control;
+    control['filterList'] = this;
     this.filteredItems = this.control.valueChanges.pipe(
       startWith<string | any>(''),
       map(value=> typeof value === 'string' ? value : value == null ? null : value.descripcion),

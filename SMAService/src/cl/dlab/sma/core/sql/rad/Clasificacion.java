@@ -4,13 +4,13 @@ import java.sql.Connection;
 
 import cl.dlab.sma.core.sql.BaseSQL;
 
-public class TipoOperacion extends BaseSQL {
+public class Clasificacion extends BaseSQL {
 
-	public TipoOperacion() throws Exception {
+	public Clasificacion() throws Exception {
 		super();
 	}
 
-	public TipoOperacion(Connection con, java.lang.Boolean commitAndClose)
+	public Clasificacion(Connection con, java.lang.Boolean commitAndClose)
 			throws Exception {
 		super(con, commitAndClose);
 	}

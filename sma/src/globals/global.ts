@@ -4,6 +4,7 @@ import { EventEmitter } from "events";
 export var global = {
     constants: {},
     screen: {},
+    properties: {},
     user: null,
     userName: null,
     passwordUser: null,

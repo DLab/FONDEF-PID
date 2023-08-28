@@ -1,7 +1,8 @@
 package cl.dlab.sma.core.sql.rad;
 
-import cl.dlab.sma.core.sql.BaseSQL;
 import java.sql.Connection;
+
+import cl.dlab.sma.core.sql.BaseSQL;
 
 public class TipoDato extends BaseSQL {
 

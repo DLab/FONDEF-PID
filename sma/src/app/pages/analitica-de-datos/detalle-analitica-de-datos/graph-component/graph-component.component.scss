@@ -1,0 +1,14 @@
+app-graph-component{
+    .long-demo-chart{
+        height: 700px !important;
+        padding-top: 20px;
+    }
+    .log-scale{
+        margin-left: 7px;
+    }
+    .log-scale .mat-checkbox-layout .mat-checkbox-label{
+        font-size: 14 !important;
+        font-weight: 400;
+        color: rgba(0, 0, 0, 0.6);
+    }
+}

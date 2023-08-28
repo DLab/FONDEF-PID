@@ -18,8 +18,8 @@
       
         <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="16px" fxLayoutAlign="start end" [style.width]="'100%'">
           <div fxLayout="column" class="header-filter" fxLayout.gt-sm="row" fxLayoutGap.gt-sm="24px" >
-              <mat-dialog-content>
-                <div class="person">
+              <mat-dialog-content [style.width]="'100%'">
+                <div class="person" >
                   <form [formGroup]="form" class="person">
 
                     <div fxLayout="row" fxLayoutGap.gt-sm="24px" >            
@@ -39,7 +39,7 @@
                         </button>
                       </mat-form-field>
       
-                      <mat-form-field fxFlex="20">
+                      <mat-form-field fxFlex="20" *ngIf="!esBiodiversidad">
                         <mat-label>{{app.screen.Parametro}}</mat-label>
                         <input matInput [matAutocomplete]="tipoDato" formControlName="tipoDato" required>
                         <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterParametro.displayItem">
@@ -55,7 +55,7 @@
                         </button>
                       </mat-form-field>
                       
-                      <mat-form-field fxFlex="20">
+                      <mat-form-field fxFlex="20" *ngIf="!esBiodiversidad">
                         <mat-label>{{app.screen.Fuente_de_datos}}</mat-label>
                         <input matInput [matAutocomplete]="fuente" formControlName="fuente" required>
                         <mat-autocomplete #fuente="matAutocomplete" [displayWith]="filterFuenteDato.displayItem">
@@ -101,8 +101,169 @@
                               <span>{{app.screen.Aceptar}}</span>
                             </ng-template>
                         </ngx-mat-datetime-picker>
-                      </mat-form-field>                       
+                      </mat-form-field>    
+                      
+                      <div fxFlex="20" *ngIf="esBiodiversidad"></div>
+                      <div fxFlex="20" *ngIf="esBiodiversidad"></div>
                     </div>
+
+                    <div fxLayout="row" fxLayoutGap.gt-sm="24px" *ngIf="esBiodiversidad">
+                      
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.nombre_comun}}</mat-label>
+                        <input  matInput formControlName="nombreComun" >
+                      </mat-form-field>
+
+                      <mat-form-field fxFlex="20"> 
+                        <mat-label>{{app.screen.Region}}</mat-label>
+                        <input matInput [matAutocomplete]="region" formControlName="region">
+                        <mat-autocomplete #region="matAutocomplete" [displayWith]="filterRegion.displayItem" >
+                          <mat-option *ngFor="let item of filterRegion.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('region').value != null" type="button" mat-icon-button (click)="form.get('region').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('region').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+                      
+                      <mat-form-field fxFlex="20"> 
+                        <mat-label>{{app.screen.Reino}}</mat-label>
+                        <input matInput [matAutocomplete]="reino" formControlName="reino" >
+                        <mat-autocomplete #reino="matAutocomplete" [displayWith]="filterReino.displayItem" (optionSelected)="changeClasificacion('reino')">
+                          <mat-option *ngFor="let item of filterReino.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('reino').value != null" type="button" mat-icon-button (click)="form.get('reino').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('reino').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+                      
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.Filo_Division}}</mat-label>
+                        <input matInput [matAutocomplete]="filodivision" formControlName="filodivision">
+                        <mat-autocomplete #filodivision="matAutocomplete" [displayWith]="filterFiloDivision.displayItem" (optionSelected)="changeClasificacion('filodivision')">
+                          <mat-option *ngFor="let item of filterFiloDivision.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('filodivision').value != null" type="button" mat-icon-button (click)="form.get('filodivision').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('filodivision').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>    
+                      
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.Clase}}</mat-label>
+                        <input matInput [matAutocomplete]="clase" formControlName="clase">
+                        <mat-autocomplete #clase="matAutocomplete" [displayWith]="filterClase.displayItem" (optionSelected)="changeClasificacion('clase')">
+                          <mat-option *ngFor="let item of filterClase.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('clase').value != null" type="button" mat-icon-button (click)="form.get('clase').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('clase').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayoutGap.gt-sm="24px" *ngIf="esBiodiversidad">
+                      
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.order}}</mat-label>
+                        <input matInput [matAutocomplete]="orden" formControlName="orden">
+                        <mat-autocomplete #orden="matAutocomplete" [displayWith]="filterOrden.displayItem" (optionSelected)="changeClasificacion('orden')">
+                          <mat-option *ngFor="let item of filterOrden.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('orden').value != null" type="button" mat-icon-button (click)="form.get('orden').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('orden').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.Familia}}</mat-label>
+                        <input matInput [matAutocomplete]="familia" formControlName="familia">
+                        <mat-autocomplete #familia="matAutocomplete" [displayWith]="filterFamilia.displayItem" (optionSelected)="changeClasificacion('familia')">
+                          <mat-option *ngFor="let item of filterFamilia.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('familia').value != null" type="button" mat-icon-button (click)="form.get('familia').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('familia').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+                      
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.Genero}}</mat-label>
+                        <input matInput [matAutocomplete]="genero" formControlName="genero">
+                        <mat-autocomplete #genero="matAutocomplete" [displayWith]="filterGenero.displayItem" (optionSelected)="changeClasificacion('genero')">
+                          <mat-option *ngFor="let item of filterGenero.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('genero').value != null" type="button" mat-icon-button (click)="form.get('genero').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('genero').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>    
+                      
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.Epiteto_especifico}}</mat-label>
+                        <input matInput [matAutocomplete]="epitetoespecifico" formControlName="epitetoespecifico">
+                        <mat-autocomplete #epitetoespecifico="matAutocomplete" [displayWith]="filterEpitetoEspecifico.displayItem">
+                          <mat-option *ngFor="let item of filterEpitetoEspecifico.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('epitetoespecifico').value != null" type="button" mat-icon-button (click)="form.get('epitetoespecifico').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('epitetoespecifico').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+
+                      <mat-form-field fxFlex="20" >
+                        <mat-label>{{app.screen.Parametro}}</mat-label>
+                        <input matInput [matAutocomplete]="tipoDato" formControlName="tipoDato" >
+                        <mat-autocomplete #tipoDato="matAutocomplete" [displayWith]="filterParametro.displayItem">
+                          <mat-option *ngFor="let item of filterParametro.filteredItems| async" [value]="item">
+                            <span>{{ item.descripcion }}</span>
+                          </mat-option>
+                        </mat-autocomplete>
+                        <button *ngIf="form.get('tipoDato').value != null" type="button" mat-icon-button (click)="form.get('tipoDato').reset()" matSuffix>
+                          <mat-icon>close</mat-icon>
+                        </button>
+                        <button *ngIf="form.get('tipoDato').value == null" type="button" mat-icon-button matSuffix>
+                          <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                      </mat-form-field>
+
+                    </div>
+
                   </form>
 
                   <div fxLayout="row" fxLayoutGap.gt-sm="24px" >        
@@ -121,6 +282,7 @@
                           [selectableGroup]="true"
                           [selectableGroupAsModel]="false"
                           [(ngModel)]="tipoOperacion"
+                          (change)="changeTipoOperacion()"
                           ngDefaultControl>
                           <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
                             <input id="item-{{index}}" type="checkbox" disabled [ngModel]="item$.selected"/> {{app.screen[item.clasificacion] | uppercase}}
@@ -145,16 +307,24 @@
     <ngx-slider [(value)]="minValue" 
       [(highValue)]="maxValue" 
       (userChange)="filterChange()"
-      [options]="optionsSlider" *ngIf="layers.length > 0 && tipoOperacion"></ngx-slider>
+      [options]="optionsSlider" *ngIf="isLayersLoaded && tipoOperacion"></ngx-slider>
+      <div fxFlex="100" fxLayoutAlign="end center" [style.margin-top]="'10px'" [style.margin-bottom]="'10px'">
+        <button class="download-btn" 
+            (click)="downloadChart()" 
+            type="button"         
+            mat-mini-fab color="accent" 
+            [matTooltip]="app.screen.Haga_click_para_descargar_la_informacion_generada_por_la_vista_procesada">
+            <mat-icon>cloud_download</mat-icon>
+        </button>
+      </div>
+    
     <div style="height: 760px;"
-       leaflet 
-      [leafletOptions]="options"
-      [leafletLayers]="layers">
+       id="map">
     </div>    
 
 </div>
 
-<div style="visibility: hidden; position: fixed"
+<div *ngIf="!esBiodiversidad" style="visibility: hidden; position: fixed"
     [style.left]="contextMenuPosition.x"
     [style.top]="contextMenuPosition.y"
     [matMenuTriggerFor]="contextMenu">

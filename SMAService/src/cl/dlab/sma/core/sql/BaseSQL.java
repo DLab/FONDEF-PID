@@ -119,9 +119,12 @@ public class BaseSQL
 	{
 		if (con == null)
 		{
+			EntityType entity = getEntity();
+			String datasource = entity.getDatasource();
+			String datasourceName = datasource == null ? PropertyUtil.getProperty("jdbc.resource.name") : PropertyUtil.getProperty("jdbc.resource.name." + datasource);
 			Context initContext = new InitialContext();
 			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			DataSource ds = (DataSource)envContext.lookup(PropertyUtil.getProperty("jdbc.resource.name"));
+			DataSource ds = (DataSource)envContext.lookup(datasourceName);
 			con = ds.getConnection();		
 			con.setAutoCommit(false);
 			return con;

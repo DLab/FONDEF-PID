@@ -1,10 +1,9 @@
-import { Component, OnInit, Optional, ViewEncapsulation, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Optional, ViewEncapsulation, Inject, ViewChild, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { BaseService } from 'src/app/base.service';
 import { global } from 'src/globals/global';
 import { getAnaliticsOptions, renderStem } from '../../dashboard/dashboard-util';
-import { FilterList } from 'src/app/utils/filter-list';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageBox, MessageBoxType } from '../../message-box/message.box';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -31,13 +30,18 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
   termino:Date;
 
 
-  chartClassName:string;
   optionsGraph:any[] = [];
   xAxis:any[] = [];
   usedColors:string[];
   listener:any;
   moveToGraphs:any[];
   contextMenuPosition = { x: '0px', y: '0px' };  
+  withData:boolean = false;
+
+  methodName:string;
+
+  @Input() title:string;
+  @Input() esProyeccion:boolean;
 
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
  
@@ -48,10 +52,12 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
             , private fb: FormBuilder) { 
     this.isPopup  = data != undefined;
     if (this.isPopup){
+      this.title = data.data.title;
       this.subTitle = data.data.regulado + '-' + data.data.estacion + ' ( ' + data.searchData.tipoDato.descripcion + ' - ' + data.searchData.fuente.descripcion + ' )';
       this.inicio = this.data.searchData.inicio;
       this.termino = this.data.searchData.termino;
       this.hsArray = this.data.hsArray;
+      this.esProyeccion = this.data.data.esProyeccion
       this.analiticas = this.hsArray['ANALITICAS'];
       this.hsAnaliticas = {};
       this.analiticas.forEach(e=>{
@@ -63,11 +69,12 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.chartClassName = 'long-demo-chart';
-    this.optionsGraph = [this.newOptionGraph([], [], this.app.screen.Analitica_de_Datos, '', 'Fechas', 'Valores')];
+    this.optionsGraph = [this.newOptionGraph([], [], '', 'Fechas', 'Valores', {})];
     global.load.addListener('loadok', this.listener = ()=>{
       this.changeLanguage();
     });
+
+    this.methodName = this.esProyeccion ? 'getPrediccionIA': 'getAnaliticaDeDatos'
   }
   ngOnDestroy(): void {
     global.load.removeListener('loadok', this.listener);
@@ -88,7 +95,7 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
     let newItem:any = clone(item);
     item.selected = false;
     newItem.selected = true;
-    this.optionsGraph.push(this.newOptionGraph(this.xAxis, [newItem], this.app.screen.Analitica_de_Datos, '', 'Fechas', 'Valores'));
+    this.optionsGraph.push(this.newOptionGraph(this.xAxis, [newItem], '', 'Fechas', 'Valores', {}));
     this.optionsGraph = this.optionsGraph;
     this.selectedSeriesChange(this.optionsGraph[0])
   }
@@ -131,9 +138,10 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
     this.contextMenu.menu.focusFirstItem('mouse');
     this.contextMenu.openMenu();
   }
-  newOptionGraph(xaxis:any[], series:any[], title:string, caption:string, xAxisLabel:string, yAxisLabel:string){
-    let optionGraph = getAnaliticsOptions(xaxis, series, title, caption, xAxisLabel, yAxisLabel);
+  newOptionGraph(xaxis:any[], series:any[], caption:string, xAxisLabel:string, yAxisLabel:string, searchData:any){
+    let optionGraph = getAnaliticsOptions(xaxis, series, this.app.screen[this.title], caption, xAxisLabel, yAxisLabel);
     optionGraph['_series'] = clone(series);
+    optionGraph['searchData'] = searchData
     return optionGraph;
   }
   selectedSeriesChange(graph:any){
@@ -169,6 +177,7 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
 
     this.dialog.open(AdditionalDataComponent, {
       data: {items: items
+          , esProyeccion: this.esProyeccion
           , hsArray: this.hsArray
       }
     }).afterClosed().subscribe((result:any) => {      
@@ -217,12 +226,17 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
       }
   }
   _search(data:any):void{
-      this.baseService.getAnaliticaDeDatos(data, function(){console.log('error')}).subscribe((result:any)=>{
+    this.withData = false;
+    let dialogRef = this.messageBox.showWaitMessageBox(this.app.screen.Estamos_procesando_sus_analisis)
+    this.baseService[this.methodName](data, function(){console.log('error')}).subscribe((result:any)=>{
+        this.withData = true;
+        dialogRef.close();
         console.log(result)
         let series = [];
         if (result.ERROR){
-          this.optionsGraph = [this.newOptionGraph([], [], this.app.screen.Analitica_de_Datos, '', 'Fechas', 'Valores')];
-          this.messageBox.showMessageBox(MessageBoxType.Information, this.app.screen[result.ERROR]);  
+          this.optionsGraph = [this.newOptionGraph([], [], '', 'Fechas', 'Valores', {})];
+          let error:string = this.app.screen[result.ERROR];
+          this.messageBox.showMessageBox(MessageBoxType.Error, error ? error : result.ERROR);  
           return;
         }
         this.xAxis = [];
@@ -301,7 +315,7 @@ export class DetalleAnaliticaDeDatosComponent implements OnInit {
         result.X.forEach((e:any)=>{
           this.xAxis.push(moment(e, 'YYYY-MM-DD HH:mm:ss').format('DD MMM-YY HH'));
         });
-        this.optionsGraph = [this.newOptionGraph(this.xAxis, series, this.app.screen.Analitica_de_Datos, '', 'Fechas', 'Valores')];
+        this.optionsGraph = [this.newOptionGraph(this.xAxis, series, '', 'Fechas', 'Valores', data)];
     });    
   }
 

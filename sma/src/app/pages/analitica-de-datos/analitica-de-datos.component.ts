@@ -2,6 +2,7 @@ import { DetalleAnaliticaDeDatosComponent } from './detalle-analitica-de-datos/d
 import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { global } from 'src/globals/global';
 import { FiltrosPorEstacionComponent } from '../filtros-por-estacion/filtros-por-estacion.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-analitica-de-datos',
@@ -12,15 +13,22 @@ import { FiltrosPorEstacionComponent } from '../filtros-por-estacion/filtros-por
 export class AnaliticaDeDatosComponent implements OnInit, AfterViewInit {
 
   app:any = global;
+  title:string;
+  esProyeccion:boolean
   hsArray:any  = {};
 
   @ViewChild('graph', { static: true }) graph: DetalleAnaliticaDeDatosComponent;
   @ViewChild('filtros', { static: true }) filtros: FiltrosPorEstacionComponent;
-  constructor() { }
+
+  constructor(actRoute: ActivatedRoute) { 
+    this.title = actRoute.snapshot.data.title;
+    this.esProyeccion = actRoute.snapshot.data.esProyeccion;
+  }
 
   ngOnInit() {
   }
   ngAfterViewInit(): void {
+    console.log(this.filtros, this.graph)
     this.graph.hsAnaliticas = this.filtros.hsAnaliticas;
   }
 

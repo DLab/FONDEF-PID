@@ -1,0 +1,24 @@
+<div fxLayout="row" *ngIf="withData">
+  <div fxFlex="20" fxLayoutAlign="start center">
+    <mat-checkbox color="accent" inderterminate="false" class="log-scale"
+      [(ngModel)]="logScale" 
+      (change)="changeLogScale()">{{app.screen.Escala_logaritmica}}</mat-checkbox>   
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px"  [style.margin-top]="'20px'" fxFlex="60">
+    <mat-checkbox *ngFor="let item of _graph._series" color="accent" inderterminate="false" 
+        [(ngModel)]="item.selected" 
+        (change)="selectedSeriesChange(graph)" 
+        (contextmenu)="openMenu($event, i, item)"
+        [style.color]="item.itemStyle.color">{{item.name}}</mat-checkbox>      
+  </div>
+  <div fxFlex="20" fxLayoutAlign="end center" [style.margin-top]="'10px'">
+    <button class="download-btn" 
+        (click)="downloadChart()" 
+        type="button"         
+        mat-mini-fab color="accent" 
+        [matTooltip]="app.screen.Haga_click_para_descargar_la_informacion_generada_por_la_vista_procesada">
+        <mat-icon>cloud_download</mat-icon>
+    </button>
+  </div>
+</div>
+<div #graph echarts [options]="_graph" [ngClass]="chartClassName" [style.width]="'100%'"></div>

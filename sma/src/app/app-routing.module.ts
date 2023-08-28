@@ -63,6 +63,9 @@ const routes: Routes = [
       },
       {
         path: 'procesos/analitica_de_datos',
+        data:{title: 'Analitica_de_Datos'
+            , esProyeccion: false
+        },
         loadChildren: () => import('./pages/analitica-de-datos/analitica-de-datos.module').then(m => m.AnaliticaDeDatosModule)
       },
       {
@@ -71,7 +74,10 @@ const routes: Routes = [
       },
       {
         path: 'procesos/proyecciones_ia',
-        loadChildren: () => import('./pages/proyecciones-ia/proyecciones-ia.module').then(m => m.ProyeccionesIaModule)
+        data:{title: 'Proyecciones_IA'
+            , esProyeccion: true
+        },
+        loadChildren: () => import('./pages/analitica-de-datos/analitica-de-datos.module').then(m => m.AnaliticaDeDatosModule)
       }
 
     ]
